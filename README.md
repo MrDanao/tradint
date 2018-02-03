@@ -1,3 +1,5 @@
+README.md à compléter ! Merci :)
+
 # Trad'INT
 
 Dans le cadre du module de base de données : projet Leboncoin-like pour le campus TMSP.
