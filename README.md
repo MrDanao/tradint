@@ -41,3 +41,14 @@ Ce fichier contient des fonctions php communes au site.
 
 Les credentials (user, passwd) n'étant pas présents dans la fonction `connectDB()` pour se connecter à la base de données, il faut donc écrire vos propres credentials correspondant à votre environnement de développement.
 
+### Page d'Inscription
+
+Il faut remplir tous les champs à la main et ne pas utiliser les suggestions du navigateur Web.
+
+## To-Do List
+
+* Inscription : done
+* Connexion : done
+* Ajout d'annonce
+* Listing des annonces dans la page d'accueil
+* Gestion de l'utilisateur (mdp, annonces, suppression compte, etc)
