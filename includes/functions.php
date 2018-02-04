@@ -119,6 +119,6 @@
 
 		// echo $reference." ".$nom." ".$prix." ".$photo1." ".$pseudo." ".$categorie." ".$typeAnnonce;
 
-	}
+	//}
 
 ?>
