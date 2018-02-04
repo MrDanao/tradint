@@ -3,7 +3,7 @@
 include '../includes/functions.php';
 
 if (isLogged()) {
-	header('Location: ../annonces');
+	header('Location: ../accueil.php');
 }
 
 // si clique sur le bouton "Créer mon compte" (POST)
@@ -56,8 +56,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <body>
 	<ul>
 		<li><h2>Trad'INT</h2></li>
-		<li>Accueil</li>
-		<li>Poster une annonce</li>
+		<li><a href="../accueil.php">Accueil</a></li>
+		<li><a href="../poster/">Poster une annonce</a></li>
 		<li><a href="../inscription/">Inscription</a></li>
 		<li><a href="../connexion/">Connexion</a></li>
 	</ul>

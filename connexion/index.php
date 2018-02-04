@@ -3,7 +3,7 @@ session_start();
 include '../includes/functions.php';
 
 if (isLogged()) {
-	header('Location: ../annonces');
+	header('Location: ../accueil.php');
 }
 
 // si clique sur le bouton "Connexion" (POST)
@@ -22,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		// appel de la fonction connectUser située dans ../includes/functions.php ligne 63
 		if (connectUser($pseudo, $passwd)) {
 				$_SESSION['pseudo'] = $pseudo;
-				header('Location: ../annonces');
+				header('Location: ../accueil.php');
 		} else {
 			$error = "Le pseudo et le mot de passe sont incorrects.";
 		}
@@ -39,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <body>
 	<ul>
 		<li><h2>Trad'INT</h2></li>
-		<li><a href="../annonces/">Accueil</a></li>
+		<li><a href="../accueil.php">Accueil</a></li>
 		<li><a href="../poster/">Poster une annonce</a></li>
 		<li><a href="../inscription/">Inscription</a></li>
 		<li><a href="../connexion/">Connexion</a></li>

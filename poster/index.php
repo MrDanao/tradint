@@ -17,8 +17,8 @@ if (!isLogged()) {
 <body>
 	<ul>
 		<li><h2>Trad'INT</h2></li>
-		<li><a href="../annonces/">Accueil</a></li>
-		<li><a href="../post/">Poster une annonce</a></li>
+		<li><a href="../accueil.php">Accueil</a></li>
+		<li><a href="../poster/">Poster une annonce</a></li>
 		<li><a href="../compte/">Mon compte</a></li>
 		<li><a href="../deconnexion.php">Se déconnecter</a></li>
 	</ul>

@@ -11,7 +11,7 @@
 
     // pour se connecter à la base de données et sélection de la base 'tradint'
 	function connectDB() {
-		$conn = mysqli_connect("127.0.0.1", "USERNAME", "PASSWORD", "tradint");
+		$conn = mysqli_connect("127.0.0.1", "USERNAME", "MOTDEPASSE", "tradint");
 		return $conn;
 	}
 
@@ -85,6 +85,39 @@
 		} else {
 			return false;
 		}
+
+	}
+
+	function showNewAnnonce() {
+
+		$select_db = connectDB();
+		$query     = "SELECT reference,nom,prix,photo1 FROM annonce ORDER BY reference;";
+		$result    = mysqli_query($select_db, $query);
+
+		while ($annonce = mysqli_fetch_assoc($result)) {
+			echo '<p><img src="../src/photos/'.$annonce['photo1'].'"></br>id : '.$annonce['reference'].'</br>nom annonce : <a href="annonce.php?ref='.$annonce['reference'].'">'.$annonce['nom'].'</a></br>prix : '.$annonce['prix'].'€</p>'."\n\t";
+		}
+
+	}
+
+	//fonction à revoir...
+	//function showAnnonce($refAnnonce) {
+
+		//$select_db = connectDB();
+		//$query     = "SELECT DISTINCT ann.reference, ann.nom, ann.descriptif, ann.prix, ann.photo1, ann.pseudo, typ.descTypeAnnonce, cat.descCat FROM annonce ann, categorie cat, type_annonce typ WHERE ann.reference='".$refAnnonce."' ann.idTypeAnnonce=typ.idTypeAnnonce and ann.idCat=cat.idCat";
+		//$result    = mysqli_query($select_db, $query);
+		
+		//$row       = mysqli_fetch_assoc($result);
+
+		//$reference = $row['ann.reference'];
+		//$nom	   = $row['ann.nom'];
+		//$prix	   = $row['ann.prix'];
+		//$photo1	   = $row['ann.photo1'];
+		//$pseudo    = $row['ann.pseudo'];
+		//$categorie = $row['cat.descCat'];
+		//$typeAnnonce = $row['typ.descTypeAnnonce'];
+
+		// echo $reference." ".$nom." ".$prix." ".$photo1." ".$pseudo." ".$categorie." ".$typeAnnonce;
 
 	}
 
