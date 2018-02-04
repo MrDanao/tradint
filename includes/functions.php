@@ -11,7 +11,7 @@
 
     // pour se connecter à la base de données et sélection de la base 'tradint'
 	function connectDB() {
-		$conn = mysqli_connect("127.0.0.1", "USERNAME", "MOT_DE_PASSE", "NOM_DE_LA_BASE_DE_DONNEES");
+		$conn = mysqli_connect("127.0.0.1", "USERNAME", "PASSWORD", "tradint");
 		return $conn;
 	}
 
