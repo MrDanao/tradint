@@ -8,13 +8,17 @@ Dans le cadre du module de base de données : projet Leboncoin-like pour le camp
 
 ### Paquets installés
 
-`apt install apache2 libapache2-mod-php mysql-client mysql-server phpmyadmin`
+```
+apt install apache2 libapache2-mod-php mysql-client mysql-server phpmyadmin
+```
 
 ### MySQL
 
 Pour mot de passe root mysql :
 
-`sudo mysql_secure_installation`
+```
+sudo mysql_secure_installation
+```
 
 Création d'un utilisateur administrateur pour phpmyadmin et les requêtes :
 
