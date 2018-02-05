@@ -8,7 +8,7 @@ Dans le cadre du module de base de données : projet Leboncoin-like pour le camp
 
 * Inscription : done
 * Connexion : done
-* Ajout d'annonce : presque done, manque v�rification du formulaire
+* Ajout d'annonce : presque done, manque vérification du formulaire
 * Listing des annonces dans la page d'accueil avec pagination : done
 * Gestion de l'utilisateur (mdp, annonces, suppression compte, etc)
 
