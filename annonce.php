@@ -10,6 +10,7 @@ $refAnnonce = $_GET['ref'];
 <html>
 <head>
 	<title>Trad'INT - NOM ANNONCE A MODIFIER</title>
+	<meta charset="utf-8">
 </head>
 <body>
 	<ul>
@@ -29,7 +30,7 @@ $refAnnonce = $_GET['ref'];
 	<h1>ESPACE dédiée à une annonce</h1>
 	
 	<?php
-	//showAnnonce($refAnnonce);
+	showAnnonce($refAnnonce);
 	?>
 
 	<!-- 

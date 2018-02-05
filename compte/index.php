@@ -13,6 +13,7 @@ if (!isLogged()) {
 <html>
 <head>
 	<title>Trad'INT - Compte</title>
+	<meta charset="utf-8">
 </head>
 <body>
 	<ul>

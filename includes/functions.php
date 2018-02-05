@@ -11,7 +11,7 @@
 
     // pour se connecter à la base de données et sélection de la base 'tradint'
 	function connectDB() {
-		$conn = mysqli_connect("127.0.0.1", "USERNAME", "MOTDEPASSE", "tradint");
+		$conn = mysqli_connect("127.0.0.1", "USERNAME", "PASSWORD", "tradint");
 		return $conn;
 	}
 
@@ -88,37 +88,139 @@
 
 	}
 
+
+	// pour lister les dernières annonces, notamment utilisée dans la page d'accueil (accueil.php, ligne 32)
 	function showNewAnnonce() {
 
 		$select_db = connectDB();
-		$query     = "SELECT reference,nom,prix,photo1 FROM annonce ORDER BY reference;";
+		$query     = "SELECT reference,nom,prix,photo1,typ.descTypeAnnonce FROM annonce ann, type_annonce typ WHERE ann.idTypeAnnonce=typ.idTypeAnnonce ORDER BY reference;";
 		$result    = mysqli_query($select_db, $query);
 
 		while ($annonce = mysqli_fetch_assoc($result)) {
-			echo '<p><img src="../src/photos/'.$annonce['photo1'].'"></br>id : '.$annonce['reference'].'</br>nom annonce : <a href="annonce.php?ref='.$annonce['reference'].'">'.$annonce['nom'].'</a></br>prix : '.$annonce['prix'].'€</p>'."\n\t";
+
+			$reference   = $annonce['reference'];
+			$nomAnnonce  = $annonce['nom'];
+			$photo1	 	 = $annonce['photo1'];
+			$typeAnnonce = $annonce['descTypeAnnonce'];
+			$prix		 = $annonce['prix'];
+
+			if ($typeAnnonce != "Vente") {
+				echo '<p><img src="../src/photos/'.$photo1.'"></br><a href="annonce.php?ref='.$reference.'">'.$nomAnnonce.'</a></br>'.$typeAnnonce.'</p>'."\n\t";
+			} else {
+				// à changer avec bon code html/css
+				echo '<p><img src="../src/photos/'.$photo1.'"></br><a href="annonce.php?ref='.$reference.'">'.$nomAnnonce.'</a></br>'.$typeAnnonce.' - '.$prix.'€</p>'."\n\t";
+			}
 		}
 
 	}
 
-	//fonction à revoir...
-	//function showAnnonce($refAnnonce) {
+	// pour afficher l'annonce (appelé dans le fichier annonce.php, ligne 33)
+	function showAnnonce($refAnnonce) {
 
-		//$select_db = connectDB();
-		//$query     = "SELECT DISTINCT ann.reference, ann.nom, ann.descriptif, ann.prix, ann.photo1, ann.pseudo, typ.descTypeAnnonce, cat.descCat FROM annonce ann, categorie cat, type_annonce typ WHERE ann.reference='".$refAnnonce."' ann.idTypeAnnonce=typ.idTypeAnnonce and ann.idCat=cat.idCat";
-		//$result    = mysqli_query($select_db, $query);
-		
-		//$row       = mysqli_fetch_assoc($result);
+		$select_db   = connectDB();
+		$query       = "SELECT DISTINCT ann.reference, ann.nom, ann.descriptif, ann.prix, ann.photo1, ann.pseudo, typ.descTypeAnnonce, cat.descCat FROM annonce ann, categorie cat, type_annonce typ WHERE ann.reference='".$refAnnonce."' and ann.idTypeAnnonce=typ.idTypeAnnonce and ann.idCat=cat.idCat";
+		$result      = mysqli_query($select_db, $query);
+		$row         = mysqli_fetch_assoc($result);
 
-		//$reference = $row['ann.reference'];
-		//$nom	   = $row['ann.nom'];
-		//$prix	   = $row['ann.prix'];
-		//$photo1	   = $row['ann.photo1'];
-		//$pseudo    = $row['ann.pseudo'];
-		//$categorie = $row['cat.descCat'];
-		//$typeAnnonce = $row['typ.descTypeAnnonce'];
+		// récupération des données propres à l'annonce
+		$reference   = $row['reference'];
+		$nomAnnonce  = $row['nom'];
+		$prix	     = $row['prix'];
+		$photo1	     = $row['photo1'];
+		$pseudo      = $row['pseudo'];
+		$categorie   = $row['descCat'];
+		$typeAnnonce = $row['descTypeAnnonce'];
+		$descriptif  = $row['descriptif'];
 
-		// echo $reference." ".$nom." ".$prix." ".$photo1." ".$pseudo." ".$categorie." ".$typeAnnonce;
+		// à changer avec bon code html/css
+		echo $nomAnnonce."</br>";
+		echo '<img src="src/photos/'.$photo1.'"></br>';
+		echo $typeAnnonce." - ".$prix."€</br>";
+		echo $descriptif;
 
-	//}
+	}
+
+	function checkPhotoFileExistance($photo) {
+
+		if ($photo == 'NULL') {
+			return $photo;
+		} else {
+			return "'".$photo['name']."'";
+		}
+
+	}
+
+	function uploadPhoto($photo, $id, $number) {
+
+		$tmpPathFile = $photo['tmp_name'];
+        $tmpMimeFile = $photo['type'];
+            		
+        switch ($tmpMimeFile) {
+        	
+        	case 'image/jpeg':
+          		$file_destination = '../src/photos/'.$id.'_p'.$number.'.jpg';
+           		if (move_uploaded_file($tmpPathFile, $file_destination)) {
+           			$select_db = connectDB();
+           			$query = "UPDATE `annonce` SET `photo".$number."` = '".$id."_p".$number.".jpg' WHERE `annonce`.`reference` = ".$id."";
+					$result = mysqli_query($select_db, $query);
+               		return true;
+           		} else {
+               		return false;
+           		}
+           		break;
+           	
+           	case 'image/png':
+          		$file_destination = '../src/photos/'.$id.'_p'.$number.'.png';
+           		if (move_uploaded_file($tmpPathFile, $file_destination)) {
+           			$select_db = connectDB();
+           			$query = "UPDATE `annonce` SET `photo".$number."` = '".$id."_p".$number.".png' WHERE `annonce`.`reference` = ".$id."";
+					$result = mysqli_query($select_db, $query);
+               		return true;
+           		} else {
+               		return false;
+           		}
+           		break;
+        }
+
+	}
+
+	function addAnnonce($utilisateur, $titre, $typeAnnonce, $categorie, $description, $prix, $photo1, $photo2, $photo3) {
+
+		$photo1_name = $photo1['name'];
+		$photo2_name = checkPhotoFileExistance($photo2);
+		$photo3_name = checkPhotoFileExistance($photo3);
+
+		$select_db   = connectDB();
+		$query       = "INSERT INTO `annonce` (`reference`, `nom`, `descriptif`, `prix`, `dateAjout`, `photo1`, `photo2`, `photo3`, `pseudo`, `idTypeAnnonce`, `idCat`) VALUES (NULL, '".$titre."', '".$description."', ".$prix.", CURRENT_TIMESTAMP, '".$photo1_name."', ".$photo2_name.", ".$photo3_name.", '".$utilisateur."', '".$typeAnnonce."', '".$categorie."')";
+
+		//echo $query;
+		$result      = mysqli_query($select_db, $query);
+
+		if ($result) {
+			echo "ajout d'annonce ok";
+			// donne la valeur de la PRIMARY_KEY du dernier INSERT dans la table
+			// cette valeur sera utilisée pour nommer le fichier photo
+			$id = mysqli_insert_id($select_db);
+			$number = 1;
+			$photos = array($photo1, $photo2, $photo3);
+
+			foreach ($photos as $photo_to_up) {
+
+				if (checkPhotoFileExistance($photo_to_up) != 'NULL') {
+					if (uploadPhoto($photo_to_up, $id, $number)) {
+						echo 'La photo '.$number.' a été ajoutée.';
+					} else {
+						echo 'La photo '.$number.' n\'a pas été ajoutée.';
+					}
+					$number++;
+				}
+			} 
+
+		} else {
+			echo "fail";
+		}
+
+
+	}
 
 ?>

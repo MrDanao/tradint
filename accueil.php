@@ -9,6 +9,7 @@ include 'includes/functions.php';
 <html>
 <head>
 	<title>Trad'INT - Accueil</title>
+	<meta charset="utf-8">
 </head>
 <body>
 	<ul>
