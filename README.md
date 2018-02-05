@@ -4,6 +4,14 @@ README.md à compléter ! Merci :)
 
 Dans le cadre du module de base de données : projet Leboncoin-like pour le campus TMSP.
 
+## To-Do List
+
+* Inscription : done
+* Connexion : done
+* Ajout d'annonce : presque done, manque v�rification du formulaire
+* Listing des annonces dans la page d'accueil avec pagination : done
+* Gestion de l'utilisateur (mdp, annonces, suppression compte, etc)
+
 ## Environnement
 
 ### Paquets installés
@@ -50,11 +58,3 @@ Les credentials (user, passwd) n'étant pas présents dans la fonction `connectD
 ### Page d'Inscription
 
 Il faut remplir tous les champs à la main et ne pas utiliser les suggestions du navigateur Web.
-
-## To-Do List
-
-* Inscription : done
-* Connexion : done
-* Ajout d'annonce : presque done, manque v�rification du formulaire
-* Listing des annonces dans la page d'accueil avec pagination : done
-* Gestion de l'utilisateur (mdp, annonces, suppression compte, etc)
