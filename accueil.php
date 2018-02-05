@@ -1,9 +1,6 @@
 <?php
 session_start();
 include 'includes/functions.php';
-
-// à compléter
-
 ?>
 <!DOCTYPE html>
 <html>

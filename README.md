@@ -55,6 +55,6 @@ Il faut remplir tous les champs √† la main et ne pas utiliser les suggestions du
 
 * Inscription : done
 * Connexion : done
-* Ajout d'annonce
-* Listing des annonces dans la page d'accueil
+* Ajout d'annonce : presque done, manque v√rification du formulaire
+* Listing des annonces dans la page d'accueil avec pagination : done
 * Gestion de l'utilisateur (mdp, annonces, suppression compte, etc)

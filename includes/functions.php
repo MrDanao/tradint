@@ -11,7 +11,7 @@
 
     // pour se connecter à la base de données et sélection de la base 'tradint'
 	function connectDB() {
-		$conn = mysqli_connect("127.0.0.1", "USERNAME", "PASSWORD", "tradint");
+		$conn = mysqli_connect("127.0.0.1", "dantran", "vitrygtr", "tradint");
 		return $conn;
 	}
 
@@ -89,11 +89,31 @@
 	}
 
 
-	// pour lister les dernières annonces, notamment utilisée dans la page d'accueil (accueil.php, ligne 32)
+	// pour lister les dernières annonces avec pagination, notamment utilisée dans la page d'accueil (accueil.php, ligne 32)
 	function showNewAnnonce() {
 
-		$select_db = connectDB();
-		$query     = "SELECT reference,nom,prix,photo1,typ.descTypeAnnonce FROM annonce ann, type_annonce typ WHERE ann.idTypeAnnonce=typ.idTypeAnnonce ORDER BY reference;";
+		
+		$select_db 		  = connectDB();
+		$query    		  = "SELECT COUNT(*) AS nb_annonce FROM annonce";
+		$result           = mysqli_query($select_db, $query);
+		$row 			  = mysqli_fetch_assoc($result);
+		$nbTotalAnnonce   = $row['nb_annonce'];
+		$nbAnnonceParPage = 3;
+		$nbTotalPage      = ceil($nbTotalAnnonce / $nbAnnonceParPage);
+
+		if (isset($_GET['page'])) {
+    		$pageCourante = $_GET['page'];
+		    if ($pageCourante > $nbTotalPage) {
+        		$pageCourante = $nbTotalPage;
+        		header('Location: accueil.php?page='.$pageCourante.'');
+    		}
+		} else {
+    		$pageCourante = 1; 
+		}
+
+		$premiereEntree = ($pageCourante-1)*$nbAnnonceParPage;
+
+		$query     = "SELECT reference,nom,prix,photo1,typ.descTypeAnnonce FROM annonce ann, type_annonce typ WHERE ann.idTypeAnnonce=typ.idTypeAnnonce ORDER BY reference DESC LIMIT ".$premiereEntree.",".$nbAnnonceParPage."";
 		$result    = mysqli_query($select_db, $query);
 
 		while ($annonce = mysqli_fetch_assoc($result)) {
@@ -111,6 +131,17 @@
 				echo '<p><img src="../src/photos/'.$photo1.'"></br><a href="annonce.php?ref='.$reference.'">'.$nomAnnonce.'</a></br>'.$typeAnnonce.' - '.$prix.'€</p>'."\n\t";
 			}
 		}
+
+		// Listing des pages avec redirection
+		echo '<p>Page : ';
+		for ($i=1; $i<=$nbTotalPage; $i++) {
+    		if($i==$pageCourante) {
+        		echo ' [ '.$i.' ] '; 
+    		} else {
+        		echo ' <a href="accueil.php?page='.$i.'">'.$i.'</a> ';
+    		}
+		}
+		echo '</p>';
 
 	}
 
@@ -140,7 +171,7 @@
 
 	}
 
-	function checkPhotoFileExistance($photo) {
+	function isPhoto($photo) {
 
 		if ($photo == 'NULL') {
 			return $photo;
@@ -150,7 +181,7 @@
 
 	}
 
-	function uploadPhoto($photo, $id, $number) {
+	function UploadInsertPhoto($photo, $id, $number) {
 
 		$tmpPathFile = $photo['tmp_name'];
         $tmpMimeFile = $photo['type'];
@@ -186,28 +217,26 @@
 
 	function addAnnonce($utilisateur, $titre, $typeAnnonce, $categorie, $description, $prix, $photo1, $photo2, $photo3) {
 
-		$photo1_name = $photo1['name'];
-		$photo2_name = checkPhotoFileExistance($photo2);
-		$photo3_name = checkPhotoFileExistance($photo3);
-
 		$select_db   = connectDB();
-		$query       = "INSERT INTO `annonce` (`reference`, `nom`, `descriptif`, `prix`, `dateAjout`, `photo1`, `photo2`, `photo3`, `pseudo`, `idTypeAnnonce`, `idCat`) VALUES (NULL, '".$titre."', '".$description."', ".$prix.", CURRENT_TIMESTAMP, '".$photo1_name."', ".$photo2_name.", ".$photo3_name.", '".$utilisateur."', '".$typeAnnonce."', '".$categorie."')";
-
-		//echo $query;
+		// pour ajouter un anti-slash \ avant un caractère spécial
+		$titre 		 = mysqli_real_escape_string($select_db, $titre);
+		$description = mysqli_real_escape_string($select_db, $description);
+		$query       = "INSERT INTO `annonce` (`reference`, `nom`, `descriptif`, `prix`, `dateAjout`, `photo1`, `photo2`, `photo3`, `pseudo`, `idTypeAnnonce`, `idCat`) VALUES (NULL, '".$titre."', '".$description."', ".$prix.", CURRENT_TIMESTAMP, 'nomPhoto1', NULL, NULL, '".$utilisateur."', '".$typeAnnonce."', '".$categorie."')";
+		//echo $query; // pour debug
 		$result      = mysqli_query($select_db, $query);
 
 		if ($result) {
-			echo "ajout d'annonce ok";
-			// donne la valeur de la PRIMARY_KEY du dernier INSERT dans la table
-			// cette valeur sera utilisée pour nommer le fichier photo
-			$id = mysqli_insert_id($select_db);
-			$number = 1;
+			echo "Annonce ajoutée dans la base de données.";
+			// à partir d'ici, l'annonce est bien ajouté dans la base de données mais pas les bons nom de fichiers de photo. Le code qui suit permet de nommer correctement les photos, de les uploader et d'insérer le nom dans la base de données.
+			// donne la valeur de la PRIMARY_KEY du dernier INSERT dans la table. Cette valeur sera utilisée pour nommer le fichier photo
+			$id 	= mysqli_insert_id($select_db);
 			$photos = array($photo1, $photo2, $photo3);
+			$number = 1; // valeur qui s'incrémentera : 1 > photo1 ; 2 > photo2 ; 3 > photo3
 
 			foreach ($photos as $photo_to_up) {
 
-				if (checkPhotoFileExistance($photo_to_up) != 'NULL') {
-					if (uploadPhoto($photo_to_up, $id, $number)) {
+				if (isPhoto($photo_to_up) != 'NULL') {
+					if (UploadInsertPhoto($photo_to_up, $id, $number)) {
 						echo 'La photo '.$number.' a été ajoutée.';
 					} else {
 						echo 'La photo '.$number.' n\'a pas été ajoutée.';
