@@ -12,7 +12,7 @@ Dans le cadre du module de base de données : projet Leboncoin-like pour le camp
   - [Paquets installés](https://github.com/MrDanao/tradint#paquets-install%C3%A9s)
   - [MySQL](https://github.com/MrDanao/tradint#mysql)
   - [PhpMyAdmin](https://github.com/MrDanao/tradint#phpmyadmin)
-- [Le site et son code](https://github.com/MrDanao/tradint#le-site-et-son-code)
+- [Remarques sur le site et son code](https://github.com/MrDanao/tradint#remarques-sur-le-site-et-son-code)
    - [Fichier includes/functions.php](https://github.com/MrDanao/tradint#fichier-includesfunctionsphp)
    - [Page d'Inscription](https://github.com/MrDanao/tradint#page-dinscription)
 
@@ -102,7 +102,7 @@ Dans ce dépôt git se trouve le fichier `bdd.sql` qui décrit en SQL la base de
 
 Note : quelques catégories, types d'annonce et localisations sont créés.
 
-## Le site et son code
+## Remarques sur le site et son code
 ### Fichier `includes/functions.php`
 
 Ce fichier contient des fonctions php communes au site.
