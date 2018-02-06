@@ -6,7 +6,7 @@ Dans le cadre du module de base de données : projet Leboncoin-like pour le camp
 
 ## Sommaire
 
-- [Sommaire](https://github.com/MrDanao/tradint#sommaine)
+- [Sommaire](https://github.com/MrDanao/tradint#sommaire)
 - [To-Do List](https://github.com/MrDanao/tradint#to-do-list)
 - [Environnement](https://github.com/MrDanao/tradint#environnement)
   - [Paquets installés](https://github.com/MrDanao/tradint#paquets-install%C3%A9s)
