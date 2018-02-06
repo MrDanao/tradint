@@ -132,15 +132,28 @@
 		}
 
 		// Listing des pages avec redirection
-		echo '<p>Page : ';
-		for ($i=1; $i<=$nbTotalPage; $i++) {
-    		if($i==$pageCourante) {
-        		echo ' [ '.$i.' ] '; 
-    		} else {
-        		echo ' <a href="accueil.php?page='.$i.'">'.$i.'</a> ';
-    		}
+		//echo '<p>Page : ';
+		//for ($i=1; $i<=$nbTotalPage; $i++) {
+    	//	if($i==$pageCourante) {
+        //		echo ' [ '.$i.' ] '; 
+    	//	} else {
+        //		echo ' <a href="accueil.php?page='.$i.'">'.$i.'</a> ';
+    	//	}
+
+		if ($pageCourante == 1) {
+			$pageSuivante = $pageCourante+1;
+			echo '1/'.$nbTotalPage.' <a href="accueil.php?page='.$pageSuivante.'">></a>';
+		} elseif ($pageCourante > 1 && $pageCourante < $nbTotalPage) {
+			$pageSuivante = $pageCourante+1;
+			$pagePrecedente = $pageCourante-1;
+			echo '<a href="accueil.php?page='.$pagePrecedente.'"><</a>'.$pageCourante.'/'.$nbTotalPage.' <a href="accueil.php?page='.$pageSuivante.'">></a>';
+		} elseif ($pageCourante == $nbTotalPage) {
+			$pagePrecedente = $pageCourante-1;
+			echo '<a href="accueil.php?page='.$pagePrecedente.'"><</a>'.$nbTotalPage.'/'.$nbTotalPage.'';
 		}
-		echo '</p>';
+
+		//}
+		//echo '</p>';
 
 	}
 
@@ -248,7 +261,9 @@
 					}
 					$number++;
 				}
-			} 
+			}
+
+			header('Location: ../annonce.php?ref='.$id.''); 
 
 		} else {
 			echo "fail";

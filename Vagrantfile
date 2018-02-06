@@ -14,6 +14,7 @@ Vagrant.configure("2") do |config|
   # boxes at https://vagrantcloud.com/search.
   config.vm.box = "ubuntu/xenial64"
   config.vm.network "public_network",
+    bridge: "wlp2s0",
     use_dhcp_assigned_default_route: true
   config.vm.synced_folder "./", "/var/www/trad-int.fr", id: "vagrant-root",
     owner: "vagrant",

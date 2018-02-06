@@ -18,16 +18,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		$photo1      = $_FILES['photo1'];
 		$photo2      = isFileUp($_FILES['photo2']);
 		$photo3      = isFileUp($_FILES['photo3']);
-		//if (is_uploaded_file($_FILES['photo2']['tmp_name'])) {
-		//	$photo2 = $_FILES['photo2'];
-		//} else {
-		//	$photo2 = "NULL";
-		//}
-		//if (is_uploaded_file($_FILES['photo3']['tmp_name'])) {
-		//	$photo3 = $_FILES['photo3'];
-		//} else {
-		//	$photo3 = "NULL";
-		//}
 
 		if ($typeAnnonce == '1') {
 			if ($_POST['prix'] > 0) {
