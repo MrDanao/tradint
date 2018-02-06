@@ -58,13 +58,14 @@ Dans le cadre du module de base de données : projet Leboncoin-like pour le camp
 
 - Moteur de recherche d'annonce :   
 :clock8: Formulaire HTML.   
-:clock8: Recherche avec critères (nom, catégorie, type d'annonce).
+:clock8: Recherche avec critères (nom, catégorie, type d'annonce).   
+:clock8: Style CSS.
 
 - Gestion du compte utilisateur :   
 :clock8: Gestionnaire d'annonce (modification et suppression).   
 :clock8: Modification du mot de passe.   
-:clock8: Suppression du compte.
-
+:clock8: Suppression du compte.   
+:clock8: Style CSS.
 
 ## Environnement
 
