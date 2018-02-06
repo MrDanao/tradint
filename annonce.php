@@ -1,10 +1,6 @@
 <?php
 session_start();
 include 'includes/functions.php';
-
-// récupère la référence de l'annonce depuis l'URL : domain.tld/annonce.php?ref=[numéro_de_réf]
-$refAnnonce = $_GET['ref'];
-
 ?>
 <!DOCTYPE html>
 <html>
@@ -30,16 +26,22 @@ $refAnnonce = $_GET['ref'];
 	<h1>ESPACE dédiée à une annonce</h1>
 	
 	<?php
-	showAnnonce($refAnnonce);
+	list($pseudoEmail, $pseudoTel) = showAnnonce();
 	?>
 
-	<!-- 
-		Ecrire partie pour la Recherche d'annonce (prioritaire)
-
-		Ecrire partie pour lister les dernières annonces (prioritaire)
-
-		Ecrire partie pour la pagination (pas prioritaire)
-	-->
+	<form action="" method="post">
+		<input type="submit" name="submit" value="Contacter le vendeur"/>
+	</form>
+	
+	<?php
+	if (isset($_POST['submit'])) {
+		if (isLogged()) {
+			echo $pseudoEmail."</br>".$pseudoTel;
+		} else {
+			echo "Connectez-vous pour afficher les contacts du vendeur";
+		}
+	}
+	?>
 
 </body>
 </html>

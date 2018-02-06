@@ -6,6 +6,7 @@ if (!isLogged()) {
 	header('Location: ../accueil.php');
 }
 
+$pseudo = $_SESSION['pseudo'];
 // à compléter
 
 ?>
@@ -24,6 +25,7 @@ if (!isLogged()) {
 		<li><a href="../deconnexion.php">Se déconnecter</a></li>
 	</ul>
 	<h1>ESPACE Compte</h1>
+	<h3>Gestion des annonces de l'utilisateur <?php echo $pseudo; ?></h3>
 
 	<!--
 		Ecrire partie pour gestion du compte, mot de passe (pas prioritaire)
@@ -32,7 +34,7 @@ if (!isLogged()) {
 
 	<!-- code php ci-dessous uniquement à titre indicatif, pour vérifier si le user est connecté, etc.. -->
 	<?php
-	echo "Connecté en tant que ".$_SESSION['pseudo'];
+	showUserAnnonce($pseudo);
 	?>
 	
 </body>

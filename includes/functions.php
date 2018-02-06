@@ -88,7 +88,6 @@
 
 	}
 
-
 	// pour lister les dernières annonces avec pagination, notamment utilisée dans la page d'accueil (accueil.php, ligne 32)
 	function showNewAnnonce() {
 
@@ -146,19 +145,23 @@
 	}
 
 	// pour afficher l'annonce (appelé dans le fichier annonce.php, ligne 33)
-	function showAnnonce($refAnnonce) {
+	function showAnnonce() {
 
+		$refAnnonce  = $_GET['ref'];
 		$select_db   = connectDB();
-		$query       = "SELECT DISTINCT ann.reference, ann.nom, ann.descriptif, ann.prix, ann.photo1, ann.pseudo, typ.descTypeAnnonce, cat.descCat FROM annonce ann, categorie cat, type_annonce typ WHERE ann.reference='".$refAnnonce."' and ann.idTypeAnnonce=typ.idTypeAnnonce and ann.idCat=cat.idCat";
+		$query       = "SELECT DISTINCT ann.reference, ann.nom, ann.descriptif, ann.prix, ann.photo1, ann.pseudo, ann.dateAjout, typ.descTypeAnnonce, cat.descCat, user.email, user.numeroTel FROM annonce ann, categorie cat, type_annonce typ, utilisateur user WHERE ann.reference='".$refAnnonce."' and ann.idTypeAnnonce=typ.idTypeAnnonce and ann.idCat=cat.idCat and ann.pseudo=user.pseudo";
 		$result      = mysqli_query($select_db, $query);
 		$row         = mysqli_fetch_assoc($result);
 
 		// récupération des données propres à l'annonce
 		$reference   = $row['reference'];
+		$pseudo      = $row['pseudo'];
+		$pseudoEmail = $row['email'];
+		$pseudoTel   = $row['numeroTel'];
 		$nomAnnonce  = $row['nom'];
 		$prix	     = $row['prix'];
 		$photo1	     = $row['photo1'];
-		$pseudo      = $row['pseudo'];
+		$dateAjout	 = $row['dateAjout'];
 		$categorie   = $row['descCat'];
 		$typeAnnonce = $row['descTypeAnnonce'];
 		$descriptif  = $row['descriptif'];
@@ -168,6 +171,8 @@
 		echo '<img src="src/photos/'.$photo1.'"></br>';
 		echo $typeAnnonce." - ".$prix."€</br>";
 		echo $descriptif;
+
+		return array($pseudoEmail, $pseudoTel);
 
 	}
 
@@ -248,7 +253,27 @@
 		} else {
 			echo "fail";
 		}
+	}
 
+	function showUserAnnonce($pseudo) {
+
+		$select_db = connectDB();
+		$query	   = "SELECT reference,nom,photo1 FROM annonce WHERE pseudo='".$pseudo."' ORDER BY dateAjout DESC";;
+		$result    = mysqli_query($select_db, $query);
+
+		while ($annonce = mysqli_fetch_assoc($result)) {
+
+			$reference  = $annonce['reference'];
+			$nomAnnonce = $annonce['nom'];
+			$photo1     = $annonce['photo1'];
+
+			echo '<p><img src="../src/photos/'.$photo1.'"></br><a href="../annonce.php?ref='.$reference.'">'.$nomAnnonce.'</a>'."\n\t";
+
+			// ajouter bouton de suppression de l'annonce
+
+			// ajouter bouton de modification de l'annonce
+
+		}
 
 	}
 
