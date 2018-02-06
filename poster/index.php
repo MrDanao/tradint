@@ -8,32 +8,41 @@ if (!isLogged()) {
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-	$utilisateur = $_SESSION['pseudo'];
-	$titre 		 = $_POST['titre'];
-	$typeAnnonce = $_POST['typeAnnonce'];
-	$categorie   = $_POST['categorie'];
-	$description = $_POST['description'];
-	$photo1      = $_FILES['photo1'];
+	if (isset($_POST['titre']) && isset($_POST['description']) && isset($_POST['categorie']) && isset($_POST['typeAnnonce']) && !empty($_FILES['photo1']['tmp_name'])) {
 
-	if (isset($_POST['prix'])) {
-		$prix = $_POST['prix'];
-	} else {
-		$prix = "NULL";
-	}
-	
-	if (is_uploaded_file($_FILES['photo2']['tmp_name'])) {
-		$photo2 = $_FILES['photo2'];
-	} else {
-		$photo2 = "NULL";
-	}
+		$utilisateur = $_SESSION['pseudo'];
+		$titre 		 = $_POST['titre'];
+		$typeAnnonce = $_POST['typeAnnonce'];
+		$categorie   = $_POST['categorie'];
+		$description = $_POST['description'];
+		$photo1      = $_FILES['photo1'];
+		$photo2      = isFileUp($_FILES['photo2']);
+		$photo3      = isFileUp($_FILES['photo3']);
+		//if (is_uploaded_file($_FILES['photo2']['tmp_name'])) {
+		//	$photo2 = $_FILES['photo2'];
+		//} else {
+		//	$photo2 = "NULL";
+		//}
+		//if (is_uploaded_file($_FILES['photo3']['tmp_name'])) {
+		//	$photo3 = $_FILES['photo3'];
+		//} else {
+		//	$photo3 = "NULL";
+		//}
 
-	if (is_uploaded_file($_FILES['photo3']['tmp_name'])) {
-		$photo3 = $_FILES['photo3'];
+		if ($typeAnnonce == '1') {
+			if ($_POST['prix'] > 0) {
+				$prix = $_POST['prix'];
+				addAnnonce($utilisateur, $titre, $typeAnnonce, $categorie, $description, $prix, $photo1, $photo2, $photo3);
+			} else {
+				echo "KO";
+			}
+		} else {
+			$prix = "NULL";
+			addAnnonce($utilisateur, $titre, $typeAnnonce, $categorie, $description, $prix, $photo1, $photo2, $photo3);
+		}
 	} else {
-		$photo3 = "NULL";
+		echo "KO";
 	}
-
-	addAnnonce($utilisateur, $titre, $typeAnnonce, $categorie, $description, $prix, $photo1, $photo2, $photo3);
 
 }
 

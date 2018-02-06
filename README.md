@@ -4,13 +4,67 @@ README.md à compléter ! Merci :)
 
 Dans le cadre du module de base de données : projet Leboncoin-like pour le campus TMSP.
 
+## Sommaire
+
+- [Sommaire](https://github.com/MrDanao/tradint#sommaine)
+- [To-Do List](https://github.com/MrDanao/tradint#to-do-list)
+- [Environnement](https://github.com/MrDanao/tradint#environnement)
+  - [Paquets installés](https://github.com/MrDanao/tradint#paquets-install%C3%A9s)
+  - [MySQL](https://github.com/MrDanao/tradint#mysql)
+  - [PhpMyAdmin](https://github.com/MrDanao/tradint#phpmyadmin)
+- [Le site et son code](https://github.com/MrDanao/tradint#le-site-et-son-code)
+   - [Fichier includes/functions.php](https://github.com/MrDanao/tradint#fichier-includesfunctionsphp)
+   - [Page d'Inscription](https://github.com/MrDanao/tradint#page-dinscription)
+
 ## To-Do List
 
-* Inscription : done
-* Connexion : done
-* Ajout d'annonce : presque done, manque vérification du formulaire
-* Listing des annonces dans la page d'accueil avec pagination : done
-* Gestion de l'utilisateur (mdp, annonces, suppression compte, etc)
+:heavy_check_mark: = done.   
+:clock8: = soon.
+
+- Inscription :   
+:heavy_check_mark: Formulaire HTML.   
+:heavy_check_mark: Vérification du remplissement du formulaire.   
+:heavy_check_mark: Vérification de l'inexistance d'un utilisateur.   
+:heavy_check_mark: Stockage de mot de passe protégé (hash & salt).   
+:heavy_check_mark: Ajout global d'un user dans la database.   
+:clock8: Vérification des chaînes de caractères avant l'envoi au serveur.   
+:clock8: Style CSS.
+
+- Connexion :   
+:heavy_check_mark: Formulaire HTML.   
+:heavy_check_mark: Vérification du remplissement du formulaire.   
+:heavy_check_mark: Vérification de l'existance d'un utilisateur.   
+:heavy_check_mark: Vérification du mot de passe.   
+:clock8: Style CSS.
+
+- Ajout d'annonce :   
+:heavy_check_mark: Formulaire HTML.   
+:heavy_check_mark: Vérification du remplissement du formulaire.        
+:heavy_check_mark: Ajout global d'une annonce dans la database.   
+:clock8: Vérification des chaînes de caractères avant l'envoi au serveur.   
+:clock8: Style CSS.
+
+- Accueil :   
+:heavy_check_mark: Listing des annonces.   
+:heavy_check_mark: Lien de redirection vers chaque annonce.   
+:heavy_check_mark: Système de page.   
+:clock8: Visuel de la barre des numéros de page.   
+:clock8: Style CSS.
+
+- Page dédiée à une annonce :   
+:heavy_check_mark: Affichage de l'annonce.   
+:heavy_check_mark: Affichage des coordonnées de contact du vendeur, si l'utilisateur est connectée.   
+:clock8: Style CSS.
+
+- Moteur de recherche d'annonce :   
+:clock8: Formulaire HTML.   
+:clock8: Recherche avec critères (nom, catégorie, type d'annonce).
+
+- Gestion du compte utilisateur :   
+:clock8: Gestionnaire d'annonce (modification et suppression).   
+:clock8: Modification du mot de passe.   
+:clock8: Suppression du compte.
+
 
 ## Environnement
 

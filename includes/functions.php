@@ -277,4 +277,14 @@
 
 	}
 
+	function isFileUp($filePhoto) {
+
+		if (is_uploaded_file($filePhoto['tmp_name'])) {
+			return $filePhoto;
+		} else {
+			return "NULL";
+		}
+
+	}
+
 ?>
