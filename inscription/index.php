@@ -31,8 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 				// si true alors création du user dans la base de données
 				// fonction insertUserDB dans le fichier ../includes/functions.php ligne 46
 				if (insertUserDB($pseudo, $email, $phone, $localisation, $passwd)) {
-					$error = "Votre compte a bien été créé.</br>Vous serez redirigé vers la page de connexion dans 3 secondes...";
-					sleep(3);
+					$error = "Votre compte a bien été créé.</br>Vous serez redirigé vers la page de connexion dans quelques instants";
 					header('Location: ../connexion/');
 				} else {
 					$error = "Votre compte n'a pas été créé.";

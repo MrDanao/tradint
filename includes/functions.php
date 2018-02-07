@@ -62,6 +62,39 @@
 
 	}
 
+	function rmUser($pseudo) {
+		
+		$select_db = connectDB();
+
+		// suppresion des photos des annonces de l'utilisateur à supprimer
+		$query     = "SELECT reference FROM annonce WHERE pseudo='".$pseudo."'";
+		$result    = mysqli_query($select_db, $query);
+
+		while ($annonce = mysqli_fetch_assoc($result)) {
+
+			$reference = $annonce['reference'];
+			
+			foreach (glob("../src/photos/".$reference."_*") as $filename) {
+				unlink($filename);
+			}
+		}
+
+		// suppression des annonces
+		$queryRmAnnonce  = "DELETE FROM `annonce` WHERE `annonce`.`pseudo` = '".$pseudo."'";
+		$resultRmAnnonce = mysqli_query($select_db, $queryRmAnnonce);
+
+		// suppression du compte
+		$queryRmUser  = "DELETE FROM `utilisateur` WHERE `utilisateur`.`pseudo` = '".$pseudo."'";
+		$resultRmUser = mysqli_query($select_db, $queryRmUser);
+
+		if ($resultRmAnnonce && $resultRmUser) {
+			return true;
+		} else {
+			return false;
+		}
+
+	}
+
 	function checkPassword($pseudo, $passwd_clair) {
 
 		$select_db        = connectDB();

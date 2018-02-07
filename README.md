@@ -64,7 +64,7 @@ Dans le cadre du module de base de données : projet Leboncoin-like pour le camp
 - Gestion du compte utilisateur :   
 :clock8: Gestionnaire d'annonce (modification et suppression).   
 :heavy_check_mark: Modification du mot de passe.   
-:clock8: Suppression du compte.   
+:heavy_check_mark: Suppression du compte.   
 :clock8: Style CSS.
 
 - Final :   
