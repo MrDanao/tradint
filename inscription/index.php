@@ -10,7 +10,7 @@ if (isLogged()) {
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 	// si un ou plusieurs champs manquants
-	if ((count(array_filter($_POST)) != count($_POST)) || ($_POST['localisation'] == 'none')) {
+	if ((count(array_filter($_POST)) != count($_POST)) || (!isset($_POST['localisation']))) {
     	$error = "Veuillez remplir tous les champs.";
     
     // sinon, tous les champs sont remplis
@@ -81,7 +81,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             	 -->
             	<th colspan="3">
             		<select name="localisation">
-					    <option value="none">Votre localisation</option>
+					    <option selected disabled>Votre localisation</option>
 					    <option value="1">Bâtiment U1</option>
 					    <option value="2">Bâtiment U2</option>
 					    <option value="3">Bâtiment U3</option>

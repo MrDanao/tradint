@@ -49,8 +49,13 @@
 		list($hashed_passwd, $salt) = HashAndSalting($passwd);
 		$select_db                  = connectDB();
 		$query	                    = "INSERT INTO `utilisateur` (`pseudo`, `passwd`, `email`, `numeroTel`, `salt`, `idLocal`) VALUES ('".$pseudo."', '".$hashed_passwd."', '".$email."', '".$phone."', '".$salt."', '".$localisation."');";
-		$result	                    = mysqli_query($select_db, $query);
-
+		
+		do {
+			$result	= mysqli_query($select_db, $query);
+		} while (!$result);
+		
+		echo $query;
+		
 		if ($result) {
 			return true;
 		} else {
@@ -89,8 +94,7 @@
 	}
 
 	// pour lister les dernières annonces avec pagination, notamment utilisée dans la page d'accueil (accueil.php, ligne 32)
-	function showNewAnnonce() {
-
+	function showAccueilAnnonce() {
 		
 		$select_db 		  = connectDB();
 		$query    		  = "SELECT COUNT(*) AS nb_annonce FROM annonce";
@@ -112,22 +116,23 @@
 
 		$premiereEntree = ($pageCourante-1)*$nbAnnonceParPage;
 
-		$query     = "SELECT reference,nom,prix,photo1,typ.descTypeAnnonce FROM annonce ann, type_annonce typ WHERE ann.idTypeAnnonce=typ.idTypeAnnonce ORDER BY reference DESC LIMIT ".$premiereEntree.",".$nbAnnonceParPage."";
+		$query     = "SELECT reference,nom,prix,photo1,typ.descTypeAnnonce, local.descLocal FROM annonce ann, type_annonce typ, utilisateur user, localisation local WHERE ann.idTypeAnnonce=typ.idTypeAnnonce AND ann.pseudo=user.pseudo AND user.idLocal=local.idLocal ORDER BY reference DESC LIMIT ".$premiereEntree.",".$nbAnnonceParPage."";
 		$result    = mysqli_query($select_db, $query);
 
 		while ($annonce = mysqli_fetch_assoc($result)) {
 
-			$reference   = $annonce['reference'];
-			$nomAnnonce  = $annonce['nom'];
-			$photo1	 	 = $annonce['photo1'];
-			$typeAnnonce = $annonce['descTypeAnnonce'];
-			$prix		 = $annonce['prix'];
+			$reference    = $annonce['reference'];
+			$nomAnnonce   = $annonce['nom'];
+			$photo1	 	  = $annonce['photo1'];
+			$typeAnnonce  = $annonce['descTypeAnnonce'];
+			$prix		  = $annonce['prix'];
+			$localisation = $annonce['descLocal'];
 
 			if ($typeAnnonce != "Vente") {
-				echo '<p><img src="../src/photos/'.$photo1.'"></br><a href="annonce.php?ref='.$reference.'">'.$nomAnnonce.'</a></br>'.$typeAnnonce.'</p>'."\n\t";
+				echo '<p><img src="../src/photos/'.$photo1.'"></br><a href="annonce.php?ref='.$reference.'">'.$nomAnnonce.'</a></br>'.$typeAnnonce.'</br>'.$localisation.'</p>'."\n\t";
 			} else {
 				// à changer avec bon code html/css
-				echo '<p><img src="../src/photos/'.$photo1.'"></br><a href="annonce.php?ref='.$reference.'">'.$nomAnnonce.'</a></br>'.$typeAnnonce.' - '.$prix.'€</p>'."\n\t";
+				echo '<p><img src="../src/photos/'.$photo1.'"></br><a href="annonce.php?ref='.$reference.'">'.$nomAnnonce.'</a></br>'.$typeAnnonce.' - '.$prix.'€</br>'.$localisation.'</p>'."\n\t";
 			}
 		}
 
@@ -139,8 +144,11 @@
     	//	} else {
         //		echo ' <a href="accueil.php?page='.$i.'">'.$i.'</a> ';
     	//	}
-
-		if ($pageCourante == 1) {
+    	//}
+		//echo '</p>';
+		if ($nbTotalAnnonce <= $nbAnnonceParPage) {
+			echo '1/1';
+		} elseif ($pageCourante == 1) {
 			$pageSuivante = $pageCourante+1;
 			echo '1/'.$nbTotalPage.' <a href="accueil.php?page='.$pageSuivante.'">></a>';
 		} elseif ($pageCourante > 1 && $pageCourante < $nbTotalPage) {
@@ -151,9 +159,6 @@
 			$pagePrecedente = $pageCourante-1;
 			echo '<a href="accueil.php?page='.$pagePrecedente.'"><</a>'.$nbTotalPage.'/'.$nbTotalPage.'';
 		}
-
-		//}
-		//echo '</p>';
 
 	}
 
@@ -182,7 +187,11 @@
 		// à changer avec bon code html/css
 		echo $nomAnnonce."</br>";
 		echo '<img src="src/photos/'.$photo1.'"></br>';
-		echo $typeAnnonce." - ".$prix."€</br>";
+		if ($typeAnnonce != "Vente") {
+			echo $typeAnnonce."</br>";
+		} else {
+			echo $typeAnnonce." - ".$prix."€</br>";
+		}
 		echo $descriptif;
 
 		return array($pseudoEmail, $pseudoTel);
@@ -300,6 +309,81 @@
 			return "NULL";
 		}
 
+	}
+
+	// fonction liée à la fonction recherche()
+	// Dans le moteur de recherche, les différents champs du formulaire de recherche ne sont pas tous forcément remplis. Par conséquent, cette fonction ci-dessous va attribuer la valeur "%" à la variable d'un champ vide (critère).
+	function usedForSearch($critere) {
+
+		if (empty($critere)) {
+			return "%";
+		} else {
+			return $critere;
+		}
+
+	}
+
+	function recherche($getRecherche, $getCategorie, $getTypeAnnonce, $getLocalisation) {
+		
+		$select_db 		  = connectDB();
+		$query    		  = "SELECT COUNT(*) AS nb_annonce FROM annonce ann, type_annonce typ, utilisateur user, localisation local WHERE ann.idTypeAnnonce=typ.idTypeAnnonce AND ann.pseudo=user.pseudo AND user.idLocal=local.idLocal AND nom LIKE '%".$getRecherche."%' AND ann.idTypeAnnonce LIKE '".$getTypeAnnonce."' AND ann.idCat LIKE '".$getCategorie."' AND user.idLocal LIKE '".$getLocalisation."' ORDER BY reference";
+		$result           = mysqli_query($select_db, $query);
+		$row 			  = mysqli_fetch_assoc($result);
+		$nbTotalAnnonce   = $row['nb_annonce'];
+
+		if ($nbTotalAnnonce == 0) {
+			echo "Aucunes annonces ne correspondent avec vos critères de recherche.";
+		} else {
+
+			$nbAnnonceParPage = 3;
+			$nbTotalPage      = ceil($nbTotalAnnonce / $nbAnnonceParPage);
+
+			if (isset($_GET['page'])) {
+	    		$pageCourante = $_GET['page'];
+			    if ($pageCourante > $nbTotalPage) {
+	        		$pageCourante = $nbTotalPage;
+	        		header('Location: recherche.php?q='.$getRecherche.'&typ='.$getTypeAnnonce.'&cat='.$getCategorie.'&loc='.$getLocalisation.'&page='.$pageCourante.'');
+	    		}
+			} else {
+	    		$pageCourante = 1; 
+			}
+
+			$premiereEntree = ($pageCourante-1)*$nbAnnonceParPage;
+
+			$query     = "SELECT reference,nom,prix,photo1,typ.descTypeAnnonce, local.descLocal FROM annonce ann, type_annonce typ, utilisateur user, localisation local WHERE ann.idTypeAnnonce=typ.idTypeAnnonce AND ann.pseudo=user.pseudo AND user.idLocal=local.idLocal AND nom LIKE '%".$getRecherche."%' AND ann.idTypeAnnonce LIKE '".$getTypeAnnonce."' AND ann.idCat LIKE '".$getCategorie."' AND user.idLocal LIKE '".$getLocalisation."' ORDER BY reference DESC LIMIT ".$premiereEntree.",".$nbAnnonceParPage."";
+			$result    = mysqli_query($select_db, $query);
+
+			while ($annonce = mysqli_fetch_assoc($result)) {
+
+				$reference    = $annonce['reference'];
+				$nomAnnonce   = $annonce['nom'];
+				$photo1	 	  = $annonce['photo1'];
+				$typeAnnonce  = $annonce['descTypeAnnonce'];
+				$prix		  = $annonce['prix'];
+				$localisation = $annonce['descLocal'];
+
+				if ($typeAnnonce != "Vente") {
+					echo '<p><img src="../src/photos/'.$photo1.'"></br><a href="annonce.php?ref='.$reference.'">'.$nomAnnonce.'</a></br>'.$typeAnnonce.'</br>'.$localisation.'</p>'."\n\t";
+				} else {
+					// à changer avec bon code html/css
+					echo '<p><img src="../src/photos/'.$photo1.'"></br><a href="annonce.php?ref='.$reference.'">'.$nomAnnonce.'</a></br>'.$typeAnnonce.' - '.$prix.'€</br>'.$localisation.'</p>'."\n\t";
+				}
+			}
+
+			if ($nbTotalAnnonce <= $nbAnnonceParPage) {
+				echo '1/1';
+			} elseif ($pageCourante == 1) {
+				$pageSuivante = $pageCourante+1;
+				echo '1/'.$nbTotalPage.' <a href="recherche.php?q='.$getRecherche.'&typ='.$getTypeAnnonce.'&cat='.$getCategorie.'&loc='.$getLocalisation.'&page='.$pageSuivante.'">></a>';
+			} elseif ($pageCourante > 1 && $pageCourante < $nbTotalPage) {
+				$pageSuivante = $pageCourante+1;
+				$pagePrecedente = $pageCourante-1;
+				echo '<a href="recherche.php?q='.$getRecherche.'&typ='.$getTypeAnnonce.'&cat='.$getCategorie.'&loc='.$getLocalisation.'&page='.$pagePrecedente.'"><</a>'.$pageCourante.'/'.$nbTotalPage.' <a href="recherche.php?q='.$getRecherche.'&typ='.$getTypeAnnonce.'&cat='.$getCategorie.'&loc='.$getLocalisation.'page='.$pageSuivante.'">></a>';
+			} elseif ($pageCourante == $nbTotalPage) {
+				$pagePrecedente = $pageCourante-1;
+				echo '<a href="recherche.php?q='.$getRecherche.'&typ='.$getTypeAnnonce.'&cat='.$getCategorie.'&loc='.$getLocalisation.'&page='.$pagePrecedente.'"><</a>'.$nbTotalPage.'/'.$nbTotalPage.'';
+			}
+		}
 	}
 
 ?>

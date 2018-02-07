@@ -19,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Trad'INT - Accueil</title>
+	<title>Trad'INT - Recherche</title>
 	<meta charset="utf-8">
 </head>
 <body>
@@ -37,9 +37,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		}
 		?>
 	</ul>
-	<h1>ESPACE Annonces</h1>
+	<h1>ESPACE Recherche</h1>
 
-	<form action="accueil.php" method="post">
+	<form action="recherche.php" method="post">
         <table>
             <tr>
                 <th colspan="3"><input type="text" name="recherche" placeholder="recherche"/></th>
@@ -95,7 +95,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	
 
 	<?php
-	showAccueilAnnonce();
+	// récupération des données GET dans l'url
+	$recherche    = $_GET['q'];
+	$typeAnnonce  = $_GET['typ'];
+	$categorie    = $_GET['cat'];
+	$localisation = $_GET['loc'];
+	// appel fonction de recherhe
+	recherche($recherche, $categorie, $typeAnnonce, $localisation);
 	?>
 	
 	<!-- 
