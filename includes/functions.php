@@ -54,10 +54,51 @@
 			$result	= mysqli_query($select_db, $query);
 		} while (!$result);
 		
-		echo $query;
-		
 		if ($result) {
 			return true;
+		} else {
+			return false;
+		}
+
+	}
+
+	function checkPassword($pseudo, $passwd_clair) {
+
+		$select_db        = connectDB();
+		$query            = "SELECT pseudo,passwd,salt FROM utilisateur WHERE pseudo='".$pseudo."';";
+		$result           = mysqli_query($select_db, $query);
+		
+		$row              = mysqli_fetch_assoc($result);
+		$hashed_passwd_db = $row['passwd'];
+		$salt_db          = $row['salt'];
+
+		$options          = ['cost' => 10, 'salt' => $salt_db];
+		$hashed_passwd    = password_hash($passwd_clair, PASSWORD_BCRYPT, $options);
+
+		if ($hashed_passwd == $hashed_passwd_db) {
+			return true;
+		} else {
+			return false;
+		}
+
+	}
+
+	function changePassword($pseudo, $new_passwd, $new_passwd_confirm) {
+
+		if ($new_passwd == $new_passwd_confirm) {
+			list($hashed_passwd, $salt) = HashAndSalting($new_passwd);
+			$select_db                  = connectDB();
+			$query	                    = "UPDATE `utilisateur` SET `passwd` = '".$hashed_passwd."', `salt` = '".$salt."' WHERE `utilisateur`.`pseudo` = '".$pseudo."'";
+		
+			do {
+				$result	= mysqli_query($select_db, $query);
+			} while (!$result);
+		
+			if ($result) {
+				return true;
+			} else {
+				return false;
+			}
 		} else {
 			return false;
 		}
@@ -71,22 +112,12 @@
 		if (!checkUserInexistance($pseudo)) {
 
 			// si existant, on récupère le mot de passe hashé et le salt stockés dans la table 'utilisateur' de la base 'tradint'
-			$select_db        = connectDB();
-			$query            = "SELECT pseudo,passwd,salt FROM utilisateur WHERE pseudo='".$pseudo."';";
-			$result           = mysqli_query($select_db, $query);
-			
-			$row              = mysqli_fetch_assoc($result);
-			$hashed_passwd_db = $row['passwd'];
-			$salt_db          = $row['salt'];
-
-			$options          = ['cost' => 10, 'salt' => $salt_db];
-			$hashed_passwd    = password_hash($passwd_clair, PASSWORD_BCRYPT, $options);
-
-			if ($hashed_passwd == $hashed_passwd_db) {
+			if (checkPassword($pseudo, $passwd_clair)) {
 				return true;
 			} else {
 				return false;
 			}
+
 		} else {
 			return false;
 		}
@@ -279,7 +310,9 @@
 		}
 	}
 
-	function showUserAnnonce($pseudo) {
+	function showUserAnnonce() {
+
+		$pseudo = $_SESSION['pseudo'];
 
 		$select_db = connectDB();
 		$query	   = "SELECT reference,nom,photo1 FROM annonce WHERE pseudo='".$pseudo."' ORDER BY dateAjout DESC";;
