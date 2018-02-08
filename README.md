@@ -27,7 +27,7 @@ Dans le cadre du module de base de données : projet Leboncoin-like pour le camp
 :heavy_check_mark: Vérification de l'inexistance d'un utilisateur.   
 :heavy_check_mark: Stockage de mot de passe protégé (hash & salt).   
 :heavy_check_mark: Ajout global d'un user dans la database.   
-:clock8: Vérification des chaînes de caractères avant l'envoi au serveur.   
+:clock8: Vérification des chaînes de caractères avant l'envoi ou après au serveur.   
 :clock8: Style CSS.
 
 - Connexion :   
@@ -41,7 +41,7 @@ Dans le cadre du module de base de données : projet Leboncoin-like pour le camp
 :heavy_check_mark: Formulaire HTML.   
 :heavy_check_mark: Vérification du remplissement du formulaire.        
 :heavy_check_mark: Ajout global d'une annonce dans la database.   
-:clock8: Vérification des chaînes de caractères avant l'envoi au serveur.   
+:clock8: Vérification des chaînes de caractères avant ou après l'envoi au serveur.   
 :clock8: Style CSS.
 
 - Accueil :   
