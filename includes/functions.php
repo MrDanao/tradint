@@ -337,11 +337,6 @@
 
 		$select_db = connectDB();
 
-		// suppresion des photos des annonces de l'utilisateur à supprimer
-		//foreach (glob("../src/photos/".$reference."_*") as $filename) {
-		//	unlink($filename);
-		//}
-
 		// suppression des annonces
 		$queryRmAnnonce  = "DELETE FROM `annonce` WHERE `annonce`.`pseudo` = '".$pseudo."' AND `annonce`.`reference` = '".$reference."'";
 		$resultRmAnnonce = mysqli_query($select_db, $queryRmAnnonce);
@@ -394,10 +389,10 @@
 			$localisation = $annonce['descLocal'];
 
 			if ($typeAnnonce != "Vente") {
-				echo '<p><img src="../../src/photos/'.$photo1.'"></br><a href="../../annonce.php?ref='.$reference.'">'.$nomAnnonce.'</a></br>'.$typeAnnonce.'</br>'.$localisation.'</br><a href="delete.php?ref='.$reference.'"">Supprimer</a></p>'."\n\t";
+				echo '<p><img src="../../src/photos/'.$photo1.'"></br><a href="../../annonce.php?ref='.$reference.'">'.$nomAnnonce.'</a></br>'.$typeAnnonce.'</br>'.$localisation.'</br><button onclick="location.href=\'delete.php?ref='.$reference.'\'" type="button">Supprimer</button></p>'."\n\t";
 			} else {
 				// à changer avec bon code html/css
-				echo '<p><img src="../../src/photos/'.$photo1.'"></br><a href="../../annonce.php?ref='.$reference.'">'.$nomAnnonce.'</a></br>'.$typeAnnonce.' - '.$prix.'€</br>'.$localisation.'</br><a href="delete.php?ref='.$reference.'">Supprimer</a></p>'."\n\t";
+				echo '<p><img src="../../src/photos/'.$photo1.'"></br><a href="../../annonce.php?ref='.$reference.'">'.$nomAnnonce.'</a></br>'.$typeAnnonce.' - '.$prix.'€</br>'.$localisation.'</br><button onclick="location.href=\'delete.php?ref='.$reference.'\'" type="button">Supprimer</button></p>'."\n\t";
 			}
 		}
 
