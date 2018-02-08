@@ -502,4 +502,63 @@
 		}
 	}
 
+	function showLocation() {
+
+		$select_db = connectDB();
+		$query     = "SELECT * FROM localisation";
+		$result    = mysqli_query($select_db, $query);
+
+		echo '<option selected disabled>Localisation</option>';
+
+		while ($localisation = mysqli_fetch_assoc($result)) {
+
+			$id   = $localisation['idLocal'];
+			$desc = $localisation['descLocal'];
+
+			if ($desc != "Externe") {
+				echo '<option value="'.$id.'">Bâtiment '.$desc.'</option>';
+			} else {
+				echo '<option value="'.$id.'">'.$desc.'</option>';
+			}
+		}
+	}
+
+	function showCategorie() {
+
+		$select_db = connectDB();
+		$query     = "SELECT * FROM categorie";
+		$result    = mysqli_query($select_db, $query);
+
+		echo '<option selected disabled>Catégorie</option>';
+
+		while ($categorie = mysqli_fetch_assoc($result)) {
+
+			$id   = $categorie['idCat'];
+			$desc = $categorie['descCat'];
+			
+			echo '<option value="'.$id.'">'.$desc.'</option>';
+
+		}
+
+	}
+
+	function showTypeAnnonce() {
+
+		$select_db = connectDB();
+		$query     = "SELECT * FROM type_annonce";
+		$result    = mysqli_query($select_db, $query);
+
+		echo '<option selected disabled>Type d\'annonce</option>';
+
+		while ($typeAnnonce = mysqli_fetch_assoc($result)) {
+
+			$id   = $typeAnnonce['idTypeAnnonce'];
+			$desc = $typeAnnonce['descTypeAnnonce'];
+			
+			echo '<option value="'.$id.'">'.$desc.'</option>';
+
+		}
+
+	}
+
 ?>

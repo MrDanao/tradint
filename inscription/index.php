@@ -80,15 +80,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             	 -->
             	<th colspan="3">
             		<select name="localisation">
-					    <option selected disabled>Votre localisation</option>
-					    <option value="1">Bâtiment U1</option>
-					    <option value="2">Bâtiment U2</option>
-					    <option value="3">Bâtiment U3</option>
-					    <option value="4">Bâtiment U4</option>
-					    <option value="5">Bâtiment U5</option>
-					    <option value="6">Bâtiment U6</option>
-					    <option value="7">Bâtiment U7</option>
-					    <option value="8">Externe</option>
+						<?php
+						showLocation();
+						?>
 					</select>
             	</th>
             </tr>
