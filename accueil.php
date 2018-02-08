@@ -83,19 +83,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             </tr>
         </table>
     </form>
-	
-
 	<?php
 	showAccueilAnnonce();
 	?>
-	
-	<!-- 
-		Ecrire partie pour la Recherche d'annonce (prioritaire)
-
-		Ecrire partie pour lister les dernières annonces (prioritaire)
-
-		Ecrire partie pour la pagination (pas prioritaire)
-	-->
-
 </body>
 </html>

@@ -74,10 +74,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <th colspan="3"><input type="tel" name="phone" placeholder="Numéro de téléphone"/></th>
             </tr>
             <tr>
-            	<!-- 
-            		ci-dessous, listing des locations STATIC
-					A FAIRE : listing dynamique avec php et la base de données (table localisation)
-            	 -->
             	<th colspan="3">
             		<select name="localisation">
 						<?php

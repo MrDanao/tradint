@@ -24,11 +24,9 @@ include 'includes/functions.php';
 		?>
 	</ul>
 	<h1>ESPACE dédiée à une annonce</h1>
-	
 	<?php
 	list($pseudoEmail, $pseudoTel) = showAnnonce();
 	?>
-
 	<form action="" method="post">
 		<input type="submit" name="submit" value="Contacter le vendeur"/>
 	</form>
@@ -42,6 +40,5 @@ include 'includes/functions.php';
 		}
 	}
 	?>
-
 </body>
 </html>

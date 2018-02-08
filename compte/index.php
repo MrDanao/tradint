@@ -101,15 +101,7 @@ if (isset($_POST['delete_account'])) {
 	<h1>ESPACE Compte</h1>
 	<h3>Gestion des annonces</h3>
 	<p><a href="mesannonces/">Gérer mes annonces</a></p>
-	<!--
-		Ecrire partie pour gestion du compte, mot de passe (pas prioritaire)
-		Ecrire partie pour gérer les annonces de l'utilisateur (prioritaire)
-	-->
-
-	<!-- code php ci-dessous uniquement à titre indicatif, pour vérifier si le user est connecté, etc.. -->
-
 	<h3>Modifier mon mot de passe</h3>
-	
 	<form action="index.php" method="post">
         <table>
             <tr>

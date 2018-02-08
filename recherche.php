@@ -83,8 +83,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             </tr>
         </table>
     </form>
-	
-
 	<?php
 	// récupération des données GET dans l'url
 	$recherche    = $_GET['q'];
@@ -94,14 +92,5 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	// appel fonction de recherhe
 	recherche($recherche, $categorie, $typeAnnonce, $localisation);
 	?>
-	
-	<!-- 
-		Ecrire partie pour la Recherche d'annonce (prioritaire)
-
-		Ecrire partie pour lister les dernières annonces (prioritaire)
-
-		Ecrire partie pour la pagination (pas prioritaire)
-	-->
-
 </body>
 </html>

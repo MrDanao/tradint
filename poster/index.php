@@ -70,10 +70,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <th colspan="3"><input type="text" name="titre" placeholder="Titre de l'annonce"/></th>
             </tr>
             <tr>
-            	<!-- 
-            		ci-dessous, listing des locations STATIC
-					A FAIRE : listing dynamique avec php et la base de données (table localisation)
-            	 -->
             	<th colspan="3">
             		<select id="typeAnnonce" name="typeAnnonce" onchange="changeType();">
 					    <?php
@@ -83,10 +79,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             	</th>
             </tr>
             <tr>
-            	<!-- 
-            		ci-dessous, listing des locations STATIC
-					A FAIRE : listing dynamique avec php et la base de données (table localisation)
-            	 -->
             	<th colspan="3">
             		<select name="categorie">
 					    <?php
@@ -96,7 +88,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             	</th>
             </tr>
             <tr>
-            	<th><textarea name="description" rows="4" cols="50" maxlength="2000" placeholder="Description de l'annonce"></textarea></th>
+            	<th><textarea name="description" rows="4" cols="50" maxlength="1994" placeholder="Description de l'annonce"></textarea></th>
             </tr>
         	<tr>
         		<th id="prix"></th>
@@ -122,7 +114,5 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             </tr>
         </table>
     </form>
-
-
 </body>
 </html>

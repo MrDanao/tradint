@@ -237,6 +237,7 @@
 		$categorie   = $row['descCat'];
 		$typeAnnonce = $row['descTypeAnnonce'];
 		$descriptif  = $row['descriptif'];
+		// AJOUTER PHOTO 2 ET PHOTO 3.
 
 		// à changer avec bon code html/css
 		echo $nomAnnonce."</br>";
@@ -389,10 +390,10 @@
 			$localisation = $annonce['descLocal'];
 
 			if ($typeAnnonce != "Vente") {
-				echo '<p><img src="../../src/photos/'.$photo1.'"></br><a href="../../annonce.php?ref='.$reference.'">'.$nomAnnonce.'</a></br>'.$typeAnnonce.'</br>'.$localisation.'</br><button onclick="location.href=\'delete.php?ref='.$reference.'\'" type="button">Supprimer</button></p>'."\n\t";
+				echo '<p><img src="../../src/photos/'.$photo1.'"></br><a href="../../annonce.php?ref='.$reference.'">'.$nomAnnonce.'</a></br>'.$typeAnnonce.'</br>'.$localisation.'</br><button onclick="location.href=\'modify.php?ref='.$reference.'\'" type="button">Modifier</button><button onclick="location.href=\'delete.php?ref='.$reference.'\'" type="button">Supprimer</button></p>'."\n\t";
 			} else {
 				// à changer avec bon code html/css
-				echo '<p><img src="../../src/photos/'.$photo1.'"></br><a href="../../annonce.php?ref='.$reference.'">'.$nomAnnonce.'</a></br>'.$typeAnnonce.' - '.$prix.'€</br>'.$localisation.'</br><button onclick="location.href=\'delete.php?ref='.$reference.'\'" type="button">Supprimer</button></p>'."\n\t";
+				echo '<p><img src="../../src/photos/'.$photo1.'"></br><a href="../../annonce.php?ref='.$reference.'">'.$nomAnnonce.'</a></br>'.$typeAnnonce.' - '.$prix.'€</br>'.$localisation.'</br><button onclick="location.href=\'modify.php?ref='.$reference.'\'" type="button">Modifier</button><button onclick="location.href=\'delete.php?ref='.$reference.'\'" type="button">Supprimer</button></p>'."\n\t";
 			}
 		}
 
@@ -523,6 +524,26 @@
 			echo '<option value="'.$id.'">'.$desc.'</option>';
 
 		}
+	}
+
+	function getDataAnnonce($pseudo, $reference) {
+
+		$select_db = connectDB();
+		$query     = "SELECT ann.pseudo,ann.nom,ann.descriptif,ann.prix,ann.photo1,ann.photo2,ann.photo3,typ.descTypeAnnonce,cat.descCat FROM annonce ann, type_annonce typ, categorie cat WHERE pseudo='".$pseudo."' AND reference='".$reference."' AND ann.idTypeAnnonce=typ.idTypeAnnonce AND ann.idCat=cat.idCat";
+		$result    = mysqli_query($select_db, $query);
+		$annonce   = mysqli_fetch_assoc($result);
+
+		$nom         = $annonce['nom'];
+		$description = $annonce['descriptif'];
+		$typeAnnonce = $annonce['descTypeAnnonce'];
+		$categorie   = $annonce['descCat'];
+		$prix        = $annonce['prix'];
+		$photo1      = $annonce['photo1'];
+		$photo2      = $annonce['photo2'];
+		$photo3      = $annonce['photo3'];
+
+		return array($nom, $description, $typeAnnonce, $categorie, $prix, $photo1, $photo2, $photo3);
+
 	}
 
 ?>
