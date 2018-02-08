@@ -333,7 +333,7 @@
 		}
 	}
 
-	function rmAnnonce($reference) {
+	function rmAnnonce($pseudo, $reference) {
 
 		$select_db = connectDB();
 
@@ -343,10 +343,10 @@
 		//}
 
 		// suppression des annonces
-		$queryRmAnnonce  = "DELETE FROM `annonce` WHERE `annonce`.`reference` = '".$reference."'";
+		$queryRmAnnonce  = "DELETE FROM `annonce` WHERE `annonce`.`pseudo` = '".$pseudo."' AND `annonce`.`reference` = '".$reference."'";
 		$resultRmAnnonce = mysqli_query($select_db, $queryRmAnnonce);
 
-		if ($resultRmAnnonce) {
+		if (mysqli_affected_rows($select_db) == 1) {
 			foreach (glob("../../src/photos/".$reference."_*") as $filename) {
 				unlink($filename);
 			}

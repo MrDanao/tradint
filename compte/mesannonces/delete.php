@@ -8,9 +8,14 @@ if (!isLogged()) {
     header('Location: ../../accueil.php');
 }
 
+$pseudo    = $_SESSION['pseudo'];
 $reference = $_GET['ref'];
 
-if (rmAnnonce($reference)) {
+if (rmAnnonce($pseudo, $reference)) {
+	header('Location: .');
+} else {
+	echo "ERROR";
+	sleep(2);
 	header('Location: .');
 }
 
