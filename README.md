@@ -91,7 +91,7 @@ Création d'un utilisateur administrateur pour phpmyadmin et les requêtes :
 ```
 mysql -u root -p
 > create user 'admin'@'localhost' identified by 'votre_mot_de_passe';
-> grant all privileges *.* to 'admin'@'localhost';
+> grant all privileges on *.* to 'admin'@'localhost';
 > flush privileges;
 ```
 
