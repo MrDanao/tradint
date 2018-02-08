@@ -76,11 +76,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             	 -->
             	<th colspan="3">
             		<select id="typeAnnonce" name="typeAnnonce" onchange="changeType();">
-					    <option selected disabled>Type d'annonce</option>
-					    <option value="1">Vente</option>
-					    <option value="2">Échange</option>
-					    <option value="3">Prêt</option>
-					    <option value="4">Don</option>
+					    <?php
+						showOptions("type_annonce");
+					    ?>
 					</select>
             	</th>
             </tr>
@@ -91,12 +89,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             	 -->
             	<th colspan="3">
             		<select name="categorie">
-					    <option selected disabled>Catégorie</option>
-					    <option value="1">Meubles</option>
-					    <option value="2">Fournitures</option>
-					    <option value="3">Cuisine</option>
-					    <option value="4">Vêtements</option>
-						<option value="5">Nourriture</option>
+					    <?php
+						showOptions("categorie");
+					    ?>
 					</select>
             	</th>
             </tr>

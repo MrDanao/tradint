@@ -48,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             	<th colspan="3">
             		<select name="localisation">
 					    <?php
-					    showLocation();
+					    showOptions("localisation");
 					    ?>
 					</select>
             	</th>
@@ -57,7 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             	<th colspan="3">
             		<select name="categorie">
 					    <?php
-					    showCategorie();
+					    showOptions("categorie");
 					    ?>
 					</select>
             	</th>
@@ -66,7 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	            <th colspan="3">
 	            	<select name="typeAnnonce">
 						<?php
-						showTypeAnnonce();
+						showOptions("type_annonce");
 						?>
 					</select>
 	            </th>

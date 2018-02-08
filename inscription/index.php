@@ -81,8 +81,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             	<th colspan="3">
             		<select name="localisation">
 						<?php
-						showLocation();
-						?>
+						showOptions("localisation");
+					    ?>
 					</select>
             	</th>
             </tr>

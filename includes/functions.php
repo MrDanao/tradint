@@ -443,7 +443,7 @@
 		$nbTotalAnnonce   = $row['nb_annonce'];
 
 		if ($nbTotalAnnonce == 0) {
-			echo "Aucunes annonces ne correspondent avec vos critères de recherche.";
+			echo "Aucunes annonces ne correspondent à vos critères de recherche.";
 		} else {
 
 			$nbAnnonceParPage = 3;
@@ -497,63 +497,32 @@
 		}
 	}
 
-	function showLocation() {
+	function showOptions($table) {
 
 		$select_db = connectDB();
-		$query     = "SELECT * FROM localisation";
+		$query     = "SELECT * FROM ".$table."";
 		$result    = mysqli_query($select_db, $query);
 
-		echo '<option selected disabled>Localisation</option>';
-
-		while ($localisation = mysqli_fetch_assoc($result)) {
-
-			$id   = $localisation['idLocal'];
-			$desc = $localisation['descLocal'];
-
-			if ($desc != "Externe") {
-				echo '<option value="'.$id.'">Bâtiment '.$desc.'</option>';
-			} else {
-				echo '<option value="'.$id.'">'.$desc.'</option>';
-			}
+		switch ($table) {
+    		case "categorie":
+        		echo '<option selected disabled>Catégorie</option>';
+        		break;
+    		case "localisation":
+        		echo '<option selected disabled>Localisation</option>';
+        		break;
+    		case "type_annonce":
+        		echo '<option selected disabled>Type d\'annonce</option>';
+        		break;
 		}
-	}
 
-	function showCategorie() {
+		while ($options = mysqli_fetch_array($result)) {
 
-		$select_db = connectDB();
-		$query     = "SELECT * FROM categorie";
-		$result    = mysqli_query($select_db, $query);
+			$id   = $options[0];
+			$desc = $options[1];
 
-		echo '<option selected disabled>Catégorie</option>';
-
-		while ($categorie = mysqli_fetch_assoc($result)) {
-
-			$id   = $categorie['idCat'];
-			$desc = $categorie['descCat'];
-			
 			echo '<option value="'.$id.'">'.$desc.'</option>';
 
 		}
-
-	}
-
-	function showTypeAnnonce() {
-
-		$select_db = connectDB();
-		$query     = "SELECT * FROM type_annonce";
-		$result    = mysqli_query($select_db, $query);
-
-		echo '<option selected disabled>Type d\'annonce</option>';
-
-		while ($typeAnnonce = mysqli_fetch_assoc($result)) {
-
-			$id   = $typeAnnonce['idTypeAnnonce'];
-			$desc = $typeAnnonce['descTypeAnnonce'];
-			
-			echo '<option value="'.$id.'">'.$desc.'</option>';
-
-		}
-
 	}
 
 ?>
