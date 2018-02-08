@@ -200,16 +200,6 @@
 			}
 		}
 
-		// Listing des pages avec redirection
-		//echo '<p>Page : ';
-		//for ($i=1; $i<=$nbTotalPage; $i++) {
-    	//	if($i==$pageCourante) {
-        //		echo ' [ '.$i.' ] '; 
-    	//	} else {
-        //		echo ' <a href="accueil.php?page='.$i.'">'.$i.'</a> ';
-    	//	}
-    	//}
-		//echo '</p>';
 		if ($nbTotalAnnonce <= $nbAnnonceParPage) {
 			echo '1/1';
 		} elseif ($pageCourante == 1) {
@@ -343,26 +333,86 @@
 		}
 	}
 
+	function rmAnnonce($reference) {
+
+		$select_db = connectDB();
+
+		// suppresion des photos des annonces de l'utilisateur à supprimer
+		//foreach (glob("../src/photos/".$reference."_*") as $filename) {
+		//	unlink($filename);
+		//}
+
+		// suppression des annonces
+		$queryRmAnnonce  = "DELETE FROM `annonce` WHERE `annonce`.`reference` = '".$reference."'";
+		$resultRmAnnonce = mysqli_query($select_db, $queryRmAnnonce);
+
+		if ($resultRmAnnonce) {
+			foreach (glob("../../src/photos/".$reference."_*") as $filename) {
+				unlink($filename);
+			}
+			return true;
+		} else {
+			return false;
+		}
+
+	}
+
 	function showUserAnnonce() {
 
 		$pseudo = $_SESSION['pseudo'];
 
-		$select_db = connectDB();
-		$query	   = "SELECT reference,nom,photo1 FROM annonce WHERE pseudo='".$pseudo."' ORDER BY dateAjout DESC";;
+		$select_db 		  = connectDB();
+		$query    		  = "SELECT COUNT(*) AS nb_annonce FROM annonce WHERE pseudo='".$pseudo."'";
+		$result           = mysqli_query($select_db, $query);
+		$row 			  = mysqli_fetch_assoc($result);
+		$nbTotalAnnonce   = $row['nb_annonce'];
+		$nbAnnonceParPage = 3;
+		$nbTotalPage      = ceil($nbTotalAnnonce / $nbAnnonceParPage);
+
+		if (isset($_GET['page'])) {
+    		$pageCourante = $_GET['page'];
+		    if ($pageCourante > $nbTotalPage) {
+        		$pageCourante = $nbTotalPage;
+        		header('Location: mesannonces.php?page='.$pageCourante.'');
+    		}
+		} else {
+    		$pageCourante = 1; 
+		}
+
+		$premiereEntree = ($pageCourante-1)*$nbAnnonceParPage;
+
+		$query     = "SELECT reference,nom,prix,photo1,typ.descTypeAnnonce, local.descLocal FROM annonce ann, type_annonce typ, utilisateur user, localisation local WHERE ann.pseudo='".$pseudo."' AND ann.idTypeAnnonce=typ.idTypeAnnonce AND ann.pseudo=user.pseudo AND user.idLocal=local.idLocal ORDER BY reference DESC LIMIT ".$premiereEntree.",".$nbAnnonceParPage."";
 		$result    = mysqli_query($select_db, $query);
 
 		while ($annonce = mysqli_fetch_assoc($result)) {
 
-			$reference  = $annonce['reference'];
-			$nomAnnonce = $annonce['nom'];
-			$photo1     = $annonce['photo1'];
+			$reference    = $annonce['reference'];
+			$nomAnnonce   = $annonce['nom'];
+			$photo1	 	  = $annonce['photo1'];
+			$typeAnnonce  = $annonce['descTypeAnnonce'];
+			$prix		  = $annonce['prix'];
+			$localisation = $annonce['descLocal'];
 
-			echo '<p><img src="../src/photos/'.$photo1.'"></br><a href="../annonce.php?ref='.$reference.'">'.$nomAnnonce.'</a>'."\n\t";
+			if ($typeAnnonce != "Vente") {
+				echo '<p><img src="../../src/photos/'.$photo1.'"></br><a href="../../annonce.php?ref='.$reference.'">'.$nomAnnonce.'</a></br>'.$typeAnnonce.'</br>'.$localisation.'</br><a href="delete.php?ref='.$reference.'"">Supprimer</a></p>'."\n\t";
+			} else {
+				// à changer avec bon code html/css
+				echo '<p><img src="../../src/photos/'.$photo1.'"></br><a href="../../annonce.php?ref='.$reference.'">'.$nomAnnonce.'</a></br>'.$typeAnnonce.' - '.$prix.'€</br>'.$localisation.'</br><a href="delete.php?ref='.$reference.'">Supprimer</a></p>'."\n\t";
+			}
+		}
 
-			// ajouter bouton de suppression de l'annonce
-
-			// ajouter bouton de modification de l'annonce
-
+		if ($nbTotalAnnonce <= $nbAnnonceParPage) {
+			echo '1/1';
+		} elseif ($pageCourante == 1) {
+			$pageSuivante = $pageCourante+1;
+			echo '1/'.$nbTotalPage.' <a href="mesannonces.php?page='.$pageSuivante.'">></a>';
+		} elseif ($pageCourante > 1 && $pageCourante < $nbTotalPage) {
+			$pageSuivante = $pageCourante+1;
+			$pagePrecedente = $pageCourante-1;
+			echo '<a href="mesannonces.php?page='.$pagePrecedente.'"><</a>'.$pageCourante.'/'.$nbTotalPage.' <a href="mesannonces.php?page='.$pageSuivante.'">></a>';
+		} elseif ($pageCourante == $nbTotalPage) {
+			$pagePrecedente = $pageCourante-1;
+			echo '<a href="mesannonces.php?page='.$pagePrecedente.'"><</a>'.$nbTotalPage.'/'.$nbTotalPage.'';
 		}
 
 	}

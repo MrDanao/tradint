@@ -43,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		<li><a href="../accueil.php">Accueil</a></li>
 		<li><a href="../poster/">Poster une annonce</a></li>
 		<li><a href="../inscription/">Inscription</a></li>
-		<li><a href="../connexion/">Connexion</a></li>
+		<li><a href="connexion/">Connexion</a></li>
 	</ul>
 	<h1>ESPACE Connexion</h1>
 	<form action="index.php" method="post">

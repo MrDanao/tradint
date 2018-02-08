@@ -18,8 +18,8 @@ Dans le cadre du module de base de données : projet Leboncoin-like pour le camp
 
 ## To-Do List
 
-:heavy_check_mark: = done.   
-:clock8: = soon.
+>:heavy_check_mark: = done.   
+>:clock8: = soon.
 
 - Inscription :   
 :heavy_check_mark: Formulaire HTML.   
@@ -62,7 +62,7 @@ Dans le cadre du module de base de données : projet Leboncoin-like pour le camp
 :clock8: Style CSS.
 
 - Gestion du compte utilisateur :   
-:clock8: Gestionnaire d'annonce (modification et suppression).   
+:heavy_check_mark: Gestionnaire d'annonce (~~modification et~~ suppression).   
 :heavy_check_mark: Modification du mot de passe.   
 :heavy_check_mark: Suppression du compte.   
 :clock8: Style CSS.
