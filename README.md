@@ -97,6 +97,10 @@ mysql -u root -p
 
 ### PhpMyAdmin
 
+```
+echo "Include /etc/phpmyadmin/apache.conf" >> /etc/apache2/apache2.conf
+```
+
 Aller sur : `http://adresse_ip/phpmyadmin`
 
 Dans ce dépôt git se trouve le fichier `bdd.sql` qui décrit en SQL la base de données et ses tables.
