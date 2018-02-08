@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client :  localhost
--- Généré le :  Lun 05 Février 2018 à 00:41
+-- Généré le :  Jeu 08 Février 2018 à 16:06
 -- Version du serveur :  5.7.21-0ubuntu0.16.04.1
 -- Version de PHP :  7.0.22-0ubuntu0.16.04.1
 
@@ -45,25 +45,13 @@ CREATE TABLE `annonce` (
 --
 
 INSERT INTO `annonce` (`reference`, `nom`, `descriptif`, `prix`, `dateAjout`, `photo1`, `photo2`, `photo3`, `pseudo`, `idTypeAnnonce`, `idCat`) VALUES
-(1, 'Annonce 1', 'Ceci est la description de l\'annonce 1.', 11, '2018-02-04 19:35:05', '1_p1.jpg', NULL, NULL, 'dan_tran', 1, 3),
-(2, 'Annonce 2', 'Ceci est la description de l\'annonce 2.', 9, '2018-02-04 19:35:05', '2_p1.jpg', NULL, NULL, 'yassine_farouq', 1, 1),
-(3, 'Annonce 3', 'Ceci est le descriptif de l\'annonce 3.', NULL, '2018-02-04 19:37:53', '3_p1.jpg', NULL, NULL, 'yassine_farouq', 3, 4),
-(4, 'Annonce 4', 'DESCRIPTION ANNONCE 4.', 100, '2018-02-04 19:48:13', '4_p1.jpg', NULL, NULL, 'lamine_traore', 1, 3),
-(5, 'f', 'f', 10, '2018-02-04 22:39:38', 'z', NULL, NULL, 'lamine_traore', 2, 3),
-(7, 'fegrer', 'ffdsfsdfd', NULL, '2018-02-04 23:11:11', 'lisez moi.txt', 'NULL', 'NULL', 'dan_tran', 3, 1),
-(8, 'vfdfvfd', 'vdfvfdvdf', NULL, '2018-02-04 23:12:35', 'leboncoin_campus_tmsp', NULL, NULL, 'dan_tran', 2, 2),
-(9, 'greeger', 'gregreer', 10000, '2018-02-04 23:13:21', 'localisation.sql', NULL, NULL, 'dan_tran', 1, 3),
-(10, 'gregrger', 'fezfez', 7686, '2018-02-04 23:14:09', 'localisation.sql', NULL, NULL, 'dan_tran', 1, 2),
-(11, 'trrt', 'gregre', NULL, '2018-02-04 23:17:51', 'leboncoin_campus_tmsp', NULL, NULL, 'dan_tran', 3, 2),
-(12, 'gfgdfgfd', 'gfdg', NULL, '2018-02-04 23:39:35', 'photo.jpg', 'Capture dâ€™Ã©cran de 2018-02-01 23-42-54.png', NULL, 'dan_tran', 3, 2),
-(13, 'gfgdfgfd', 'gfdg', NULL, '2018-02-04 23:40:47', 'photo.jpg', 'Capture dâ€™Ã©cran de 2018-02-01 23-42-54.png', NULL, 'dan_tran', 3, 2),
-(14, 'gfdgfdfÃ©Ã©Ã©Ã©', 'vdfd', NULL, '2018-02-04 23:41:18', 'photo.jpg', 'Capture dâ€™Ã©cran de 2018-02-01 23-42-54.png', NULL, 'dan_tran', 2, 5),
-(15, 'gfdgfdfÃ©Ã©Ã©Ã©', 'vdfd', NULL, '2018-02-04 23:50:42', 'photo.jpg', 'Capture dâ€™Ã©cran de 2018-02-01 23-42-54.png', NULL, 'dan_tran', 2, 5),
-(16, 'TEEEEST', 'TESSSSSTTT', NULL, '2018-02-05 00:21:53', 'phozzzzto.jpg', 'photo.jpg', NULL, 'dan_tran', 2, 3),
-(17, 'DETFYTYTFTYFT', 'GFDGFHGHD', 67576576, '2018-02-05 00:31:17', 'photo.jpg', '_DSC9977.jpg', NULL, 'dan_tran', 1, 2),
-(18, 'YGUYGGUYGUG', 'hgUYUY', NULL, '2018-02-05 00:32:26', '18_p1', '18_p2', NULL, 'dan_tran', 3, 1),
-(19, 'UHIUIU', 'GGYYGUYG', NULL, '2018-02-05 00:35:31', '19_p1.jpg', '19_p2.jpg', NULL, 'dan_tran', 2, 4),
-(20, 'ggggguy', 'ggggyggu', 9999, '2018-02-05 00:36:20', '20_p1.png', '20_p2.png', NULL, 'dan_tran', 1, 1);
+(36, 'Annonce 1 par dan_tran Ã©', 'Description de l\'annonce 1 up par dan_tran. Ã©', 99, '2018-02-06 21:59:24', '36_p1.jpg', '36_p2.png', NULL, 'dan_tran', 1, 2),
+(37, 'Annonce 2 par dan_tran', 'Description annonce 2.', NULL, '2018-02-06 22:00:10', '37_p1.png', NULL, NULL, 'dan_tran', 3, 2),
+(40, 'Annonce 5', 'Description annonce 5.', NULL, '2018-02-06 22:13:12', '40_p1.jpg', NULL, NULL, 'lamine_traore', 4, 3),
+(41, 'Annonce 6', 'description', 1, '2018-02-06 22:14:04', '41_p1.png', NULL, NULL, 'lamine_traore', 1, 2),
+(42, 'Annonce 7', 'descr', NULL, '2018-02-07 00:53:53', '42_p1.png', NULL, NULL, 'lamine_traore', 2, 3),
+(43, 'Annonce 8', 'desc', NULL, '2018-02-07 00:55:18', '43_p1.jpg', NULL, NULL, 'dan_tran', 2, 4),
+(44, 'cdcdz', 'ceceze', NULL, '2018-02-08 15:37:17', '44_p1.jpg', NULL, NULL, 'test', 2, 2);
 
 -- --------------------------------------------------------
 
@@ -144,7 +132,7 @@ CREATE TABLE `utilisateur` (
   `passwd` varchar(255) COLLATE utf8_bin NOT NULL,
   `email` varchar(100) COLLATE utf8_bin NOT NULL,
   `numeroTel` char(10) COLLATE utf8_bin NOT NULL,
-  `salt` char(128) COLLATE utf8_bin NOT NULL,
+  `salt` char(128) CHARACTER SET utf16 COLLATE utf16_bin NOT NULL,
   `idLocal` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
@@ -153,9 +141,10 @@ CREATE TABLE `utilisateur` (
 --
 
 INSERT INTO `utilisateur` (`pseudo`, `passwd`, `email`, `numeroTel`, `salt`, `idLocal`) VALUES
-('dan_tran', '$2y$10$ZXzd2s37e77RJerLvcCKMudZq.rbOJvJy3bf/.QDNY/pizciOpH1a', 'dan_tran@gmail.com', '0123456789', 'e|ÝÚÍû{¾Ñ%êË½ÀŠ3]!—„ýÆ-¤‰T2w“Å©z—µH‚BØ¤S“øUž××†y=”þ®cŽ%2Ç½¼)¤ñÜÖ$ =·dÉ£=pðLlf›!ÄOëºœÇì‡`ì÷ô[ÙBÙ:ÚÓcýà´\nBà¸', 3),
-('lamine_traore', '$2y$10$CX.qNkX8cnqcsBYwKNj7BullvgTd7ZlUt3n5cAOiqtanxuTI002he', 'lamine_traore@gmail.com', '0123456789', '	ª6Eürzœ°0(Øû§k—©.ŽhdgúhWÃƒ–{,•$r_ž‰Ém¹õð”„kÿgñ"VíXY½;v35ªq´ZŒ¬ºr[¡øWYRzçå#tò§Bwú\0s¬a@ž;ó5öTÇ‡y&Ý­‰Èû-ÛV\n‰4§Œ¦\Z', 7),
-('yassine_farouq', '$2y$10$fXNu9LuwCw2iSfUjcn6eCeqAIbgFDMBkPS1qoAYMjGP/VVEJcxwJC', 'yassine_farouq@gmail.com', '0123456789', '}snô»°\r¢Iõ#r~ž\n@ˆb!o_ðkŒÓŠ›‡c"™]ÛÁ²Ý·©Ò—^‡‹§ƒx&ú?ö­Š~Xü‘öƒKSÞ$õýÅ¤cŽºÑ¡Ø]ÝV\Zmq@ÍÓ‹BÎIòeÖQÍj¡<ô\nGWLi Thþ¸ÿÚTksIÑ©¶	', 3);
+('dan_tran', '$2y$10$gvU5H12PQoKAd0m5VsyaD.R7nZEmC/k5zR/lNlSRy.mO0JclC4eYO', 'dan_tran@hotmail.fr', '0123456789', '‚õ9]B‚€wI¹VÌš1>(iéÂæŸ”ãÙµ>Å*ÍPÌÉ–ò)áIL¸ƒiÛ, DlïÇ½íàüícÐãg­aO@ë£<¹+Åp«Žzw.˜îÝO?¥˜kJ‰ói"ØÆT’ÐÕŽ	£÷²(‹¢%âñýö\0­¤P¸', 3),
+('lamine_traore', '$2y$10$67bIW/GaUUzhSsa8iHcAWOx7gkEfbZZi4s1iLkBig5glqcKeuFiGO', 'lamine_traore@hotmail.fr', '0123456789', 'ë¶È[ñšQLáJÆ¼ˆw\0YCƒ—@;(.ùÙ=9Ôc-™yyÑ )Dugæ¨\n•dw[úê»F1^d]|Foòúž8N´¾ë£s€¾Í%còòHîî\nÀøóÞžÕ¸’ÝÙÆ·$èÆü!¿W ·þàrøÞx xÄ÷G}f$ƒ¾,Ë×÷', 4),
+('test', '$2y$10$BNYe.e1ZdX6KuXc0U.oKtOo8bAydRXPxMyWMRKczUAdRUEK75CZZK', 'test', '0123456789', 'ÖùíYu~Š¹w4Sê\nµtd¤9“ïÞ˜o³#UF¹àX;>òilˆ}¢ÃfBÓQ~(Ä“‹®ô¢Ñ÷ Ó5n‘°„<ZÕñè1£‰ø¸oP‡?a¶Ré`Ë(1ðÚ§¤šÜß8Y?½\Z¨ÃíRð£àÅOÇž', 3),
+('yassine_farouq', '$2y$10$nzWfBTWeoQnQIozPCHPXce0H.F61U4VoDfwDgjnh61A6HZ1lmkz0y', 'yassine_farouq@hotmail.fr', '0123456789', 'Ÿ5Ÿ5ž¡	Ð"ŒÏs×rË˜€áñ: æw7e·x–õº¦3)1´MÆ¿øÍ÷ùíD(kÑQ3ûy©â;{üÃ„¿Õ\Z¤Ðå|ÉDÉc?²Ì÷žfˆe«f¶¼z¯Æ®¾Åë¶êHòM*eøZ…Flf0mÈœJ½Ù†', 7);
 
 --
 -- Index pour les tables exportées
@@ -203,7 +192,7 @@ ALTER TABLE `utilisateur`
 -- AUTO_INCREMENT pour la table `annonce`
 --
 ALTER TABLE `annonce`
-  MODIFY `reference` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `reference` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
 --
 -- AUTO_INCREMENT pour la table `categorie`
 --

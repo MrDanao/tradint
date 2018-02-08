@@ -68,10 +68,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <th colspan="3"><input type="text" name="pseudo" placeholder="Pseudo"/></th>
             </tr>
             <tr>
-                <th colspan="3"><input type="text" name="email" placeholder="Email"/></th>
+                <th colspan="3"><input type="email" name="email" placeholder="Email"/></th>
             </tr>
             <tr>
-                <th colspan="3"><input type="text" name="phone" placeholder="Numéro de téléphone"/></th>
+                <th colspan="3"><input type="tel" name="phone" placeholder="Numéro de téléphone"/></th>
             </tr>
             <tr>
             	<!-- 
