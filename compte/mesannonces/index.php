@@ -20,8 +20,9 @@ if (!isLogged()) {
 		<li><h2>Trad'INT</h2></li>
 		<li><a href="../../accueil.php">Accueil</a></li>
 		<li><a href="../../poster/">Poster une annonce</a></li>
-		<li><a href="..">Mon compte</a></li>
-		<li><a href="../../deconnexion.php">Se déconnecter</a></li>
+		<li><a href=".">Mon Compte/Mes Annonces (à mettre dans le menu déroulant)</a></li>
+		<li><a href="../parametres/">Mon Compte/Paramètres (à mettre dans le menu déroulant)</a></li>
+		<li><a href="../../deconnexion.php">Mon Compte/Se déconnecter (à mettre dans le menu déroulant)</a></li>
 	</ul>
 	<h1>Gestion des annonces</h1>
 	<?php

@@ -58,9 +58,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	<ul>
 		<li><h2>Trad'INT</h2></li>
 		<li><a href="../accueil.php">Accueil</a></li>
-		<li><a href="../poster/">Poster une annonce</a></li>
-		<li><a href="../compte/">Mon compte</a></li>
-		<li><a href="../deconnexion.php">Se déconnecter</a></li>
+		<li><a href=".">Poster une annonce</a></li>
+		<li><a href="../compte/mesannonces/">Mon Compte/Mes Annonces (à mettre dans le menu déroulant)</a></li>
+		<li><a href="../compte/parametres/">Mon Compte/Paramètres (à mettre dans le menu déroulant)</a></li>
+		<li><a href="../deconnexion.php">Mon Compte/Se déconnecter (à mettre dans le menu déroulant)</a></li>
 	</ul>
 	<h1>ESPACE Poster une annonce</h1>
 	
