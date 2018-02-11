@@ -322,7 +322,7 @@
 			foreach ($photos as $photo_to_up) {
 
 				if (isPhoto($photo_to_up) != 'NULL') {
-					if (UploadInsertPhoto($photo_to_up, $id, $number)) {
+					if (UploadInsertPhoto($photo_to_up, $id, $number, "")) {
 						echo 'La photo '.$number.' a été ajoutée.';
 					} else {
 						echo 'La photo '.$number.' n\'a pas été ajoutée.';
@@ -592,7 +592,6 @@
 		$titre 		 = mysqli_real_escape_string($select_db, $titre);
 		$description = mysqli_real_escape_string($select_db, $description);
 		$query       = "UPDATE `annonce` SET `nom` = '".$titre."', `idTypeAnnonce` = '".$typeAnnonce."', `idCat` = '".$categorie."', `descriptif` = '".$description."', `prix` = ".$prix." WHERE `annonce`.`reference` = ".$reference.";";
-		echo $query; // pour debug
 		$result      = mysqli_query($select_db, $query);
 
 		if ($result) {
@@ -624,6 +623,34 @@
 		$select_db = connectDB();
 		$query     = "UPDATE `annonce` SET `photo".$number."` = NULL WHERE `annonce`.`reference` = ".$reference."";
 		mysqli_query($select_db, $query); 
+
+	}
+
+	// fonction pour récupérer la localisation de l'utilisateur
+	function getUserLocalisation($pseudo) {
+
+		$select_db = connectDB();
+		$query     = "SELECT idLocal FROM utilisateur WHERE pseudo='".$pseudo."'";
+		$result    = mysqli_query($select_db, $query);
+		$user      = mysqli_fetch_assoc($result);
+		$local     = $user['idLocal'];
+
+		return $local;
+
+	}
+
+	function changeLocalisation($pseudo, $newLocalisation) {
+
+		$select_db = connectDB();
+		$query     = "UPDATE `utilisateur` SET `idLocal` = '".$newLocalisation."' WHERE `utilisateur`.`pseudo` = '".$pseudo."';";
+		$result    = mysqli_query($select_db, $query);
+
+		if ($result) {
+			return true;
+		} else {
+			return false;
+		}
+
 
 	}
 ?>

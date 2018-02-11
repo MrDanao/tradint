@@ -9,6 +9,21 @@ if (!isLogged()) {
 	header('Location: ../../accueil.php');
 }
 
+//récupération de la localisation de l'utilisateur
+$localisation = getUserLocalisation($_SESSION['pseudo']);
+
+// modification de la localisation de l'utilisateur
+if (isset($_POST['changeLoc'])) {
+	$pseudo = $_SESSION['pseudo'];
+	$newLocalisation = $_POST['localisation'];
+	if (changeLocalisation($pseudo, $newLocalisation)) {
+		$loc_change_log = "Votre nouvelle localisation a bien été enregistrée.";
+		header("Refresh:0");
+	} else {
+		$loc_change_log = "Erreur de changement de localisation;";
+	}
+}
+
 // Modification de mot de passe
 // si appui suir  le boutton "Modifier le mot de passe"
 if (isset($_POST['change_pass'])) {
@@ -58,6 +73,7 @@ if (isset($_POST['change_pass'])) {
 
 }
 
+// suppression du compte
 if (isset($_POST['delete_account'])) {
 
 	$pseudo       = $_SESSION['pseudo'];
@@ -100,6 +116,28 @@ if (isset($_POST['delete_account'])) {
 		<li><a href="../../deconnexion.php">Mon Compte/Se déconnecter (à mettre dans le menu déroulant)</a></li>
 	</ul>
 	<h1>ESPACE Mon Compte/Paramètres</h1>
+	<h3>Modifier ma localisation</h3>
+	<form action="index.php" method="post">
+		<table>
+			<tr>
+				<th>
+					<select name="localisation">
+						<?php
+						showOptionsModify("localisation", $localisation);
+					    ?>
+					</select>
+					<input type="submit" name="changeLoc" value="Modifier">
+				</th>
+			</tr>
+            <tr>
+                <th colspan="3" id="error">
+                    <?php
+                    if (isset($loc_change_log)) { echo $loc_change_log; }
+                    ?>
+                </th>
+            </tr>
+		</table>
+	</form>
 	<h3>Modifier mon mot de passe</h3>
 	<form action="index.php" method="post">
         <table>
