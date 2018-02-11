@@ -14,6 +14,14 @@ if (!isLogged()) {
 <head>
 	<title>Trad'INT - Mes annonces</title>
 	<meta charset="utf-8">
+	<script type="text/javascript">
+		function rmConfirm(ref) {
+			if (confirm("Êtes-vous sûr de supprimer l'annonce ?")) {
+				window.alert("L'annonce a été supprimée.");
+				window.location.href = "delete.php?ref=" + ref;
+			}
+		}
+	</script>
 </head>
 <body>
 	<ul>

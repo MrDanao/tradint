@@ -390,10 +390,9 @@
 			$localisation = $annonce['descLocal'];
 
 			if ($typeAnnonce != "Vente") {
-				echo '<p><img src="../../src/photos/'.$photo1.'"></br><a href="../../annonce.php?ref='.$reference.'">'.$nomAnnonce.'</a></br>'.$typeAnnonce.'</br>'.$localisation.'</br><button onclick="location.href=\'modify.php?ref='.$reference.'\'" type="button">Modifier</button><button onclick="location.href=\'delete.php?ref='.$reference.'\'" type="button">Supprimer</button></p>'."\n\t";
+				echo '<p><img src="../../src/photos/'.$photo1.'"></br><a href="../../annonce.php?ref='.$reference.'">'.$nomAnnonce.'</a></br>'.$typeAnnonce.'</br>'.$localisation.'</br><button onclick="location.href=\'modify.php?ref='.$reference.'\'" type="button">Modifier</button><button onclick="rmConfirm('.$reference.')" type="button">Supprimer</button></p>'."\n\t";
 			} else {
-				// à changer avec bon code html/css
-				echo '<p><img src="../../src/photos/'.$photo1.'"></br><a href="../../annonce.php?ref='.$reference.'">'.$nomAnnonce.'</a></br>'.$typeAnnonce.' - '.$prix.'€</br>'.$localisation.'</br><button onclick="location.href=\'modify.php?ref='.$reference.'\'" type="button">Modifier</button><button onclick="location.href=\'delete.php?ref='.$reference.'\'" type="button">Supprimer</button></p>'."\n\t";
+				echo '<p><img src="../../src/photos/'.$photo1.'"></br><a href="../../annonce.php?ref='.$reference.'">'.$nomAnnonce.'</a></br>'.$typeAnnonce.' - '.$prix.'€</br>'.$localisation.'</br><button onclick="location.href=\'modify.php?ref='.$reference.'\'" type="button">Modifier</button><button onclick="rmConfirm('.$reference.')" type="button">Supprimer</button></p>'."\n\t";
 			}
 		}
 
@@ -501,7 +500,7 @@
 	function showOptions($table) {
 
 		$select_db = connectDB();
-		$query     = "SELECT * FROM ".$table."";
+		$query     = "SELECT * FROM ".$table." ORDER BY 2";
 		$result    = mysqli_query($select_db, $query);
 
 		switch ($table) {
