@@ -120,4 +120,4 @@ Les credentials (user, passwd) n'étant pas présents dans la fonction `connectD
 
 ### Page d'Inscription
 
-Il faut remplir tous les champs à la main et ne pas utiliser les suggestions du navigateur Web.
+~~Il faut remplir tous les champs à la main et ne pas utiliser les suggestions du navigateur Web.~~
