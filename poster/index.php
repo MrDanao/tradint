@@ -48,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 				message = "";
 				document.getElementById('prix').innerHTML = message;
             } else {
-            	message = "<input type=\"number\" name=\"prix\" placeholder=\"Prix\"/>";
+            	message = "<input type=\"number\" name=\"prix\" placeholder=\"Prix\"/> €";
 				document.getElementById('prix').innerHTML = message;
             }
 		}
