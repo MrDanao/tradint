@@ -27,7 +27,7 @@ Dans le cadre du module de base de données : projet Leboncoin-like pour le camp
 :heavy_check_mark: Vérification de l'inexistance d'un utilisateur.   
 :heavy_check_mark: Stockage de mot de passe protégé (hash & salt).   
 :heavy_check_mark: Ajout global d'un user dans la database.   
-:clock8: Vérification des chaînes de caractères avant l'envoi au serveur.   
+:clock8: Vérification des chaînes de caractères avant l'envoi ou après au serveur.   
 :clock8: Style CSS.
 
 - Connexion :   
@@ -41,7 +41,7 @@ Dans le cadre du module de base de données : projet Leboncoin-like pour le camp
 :heavy_check_mark: Formulaire HTML.   
 :heavy_check_mark: Vérification du remplissement du formulaire.        
 :heavy_check_mark: Ajout global d'une annonce dans la database.   
-:clock8: Vérification des chaînes de caractères avant l'envoi au serveur.   
+:clock8: Vérification des chaînes de caractères avant ou après l'envoi au serveur.   
 :clock8: Style CSS.
 
 - Accueil :   
@@ -62,7 +62,8 @@ Dans le cadre du module de base de données : projet Leboncoin-like pour le camp
 :clock8: Style CSS.
 
 - Gestion du compte utilisateur :   
-:heavy_check_mark: Gestionnaire d'annonce (~~modification et~~ suppression).   
+:heavy_check_mark: Gestionnaire d'annonce (modification et suppression).   
+:heavy_check_mark: Modification de la localisation de l'utilisateur.   
 :heavy_check_mark: Modification du mot de passe.   
 :heavy_check_mark: Suppression du compte.   
 :clock8: Style CSS.
@@ -91,11 +92,15 @@ Création d'un utilisateur administrateur pour phpmyadmin et les requêtes :
 ```
 mysql -u root -p
 > create user 'admin'@'localhost' identified by 'votre_mot_de_passe';
-> grant all privileges *.* to 'admin'@'localhost';
+> grant all privileges on *.* to 'admin'@'localhost';
 > flush privileges;
 ```
 
 ### PhpMyAdmin
+
+```
+echo "Include /etc/phpmyadmin/apache.conf" >> /etc/apache2/apache2.conf
+```
 
 Aller sur : `http://adresse_ip/phpmyadmin`
 
@@ -115,4 +120,4 @@ Les credentials (user, passwd) n'étant pas présents dans la fonction `connectD
 
 ### Page d'Inscription
 
-Il faut remplir tous les champs à la main et ne pas utiliser les suggestions du navigateur Web.
+~~Il faut remplir tous les champs à la main et ne pas utiliser les suggestions du navigateur Web.~~

@@ -48,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 				message = "";
 				document.getElementById('prix').innerHTML = message;
             } else {
-            	message = "<input type=\"number\" name=\"prix\" placeholder=\"Prix\"/>";
+            	message = "<input type=\"number\" name=\"prix\" placeholder=\"Prix\"/> €";
 				document.getElementById('prix').innerHTML = message;
             }
 		}
@@ -58,9 +58,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	<ul>
 		<li><h2>Trad'INT</h2></li>
 		<li><a href="../accueil.php">Accueil</a></li>
-		<li><a href="../poster/">Poster une annonce</a></li>
-		<li><a href="../compte/">Mon compte</a></li>
-		<li><a href="../deconnexion.php">Se déconnecter</a></li>
+		<li><a href=".">Poster une annonce</a></li>
+		<li><a href="../compte/mesannonces/">Mon Compte/Mes Annonces (à mettre dans le menu déroulant)</a></li>
+		<li><a href="../compte/parametres/">Mon Compte/Paramètres (à mettre dans le menu déroulant)</a></li>
+		<li><a href="../deconnexion.php">Mon Compte/Se déconnecter (à mettre dans le menu déroulant)</a></li>
 	</ul>
 	<h1>ESPACE Poster une annonce</h1>
 	
@@ -70,38 +71,25 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <th colspan="3"><input type="text" name="titre" placeholder="Titre de l'annonce"/></th>
             </tr>
             <tr>
-            	<!-- 
-            		ci-dessous, listing des locations STATIC
-					A FAIRE : listing dynamique avec php et la base de données (table localisation)
-            	 -->
             	<th colspan="3">
             		<select id="typeAnnonce" name="typeAnnonce" onchange="changeType();">
-					    <option selected disabled>Type d'annonce</option>
-					    <option value="1">Vente</option>
-					    <option value="2">Échange</option>
-					    <option value="3">Prêt</option>
-					    <option value="4">Don</option>
+					    <?php
+						showOptions("type_annonce");
+					    ?>
 					</select>
             	</th>
             </tr>
             <tr>
-            	<!-- 
-            		ci-dessous, listing des locations STATIC
-					A FAIRE : listing dynamique avec php et la base de données (table localisation)
-            	 -->
             	<th colspan="3">
             		<select name="categorie">
-					    <option selected disabled>Catégorie</option>
-					    <option value="1">Meubles</option>
-					    <option value="2">Fournitures</option>
-					    <option value="3">Cuisine</option>
-					    <option value="4">Vêtements</option>
-						<option value="5">Nourriture</option>
+					    <?php
+						showOptions("categorie");
+					    ?>
 					</select>
             	</th>
             </tr>
             <tr>
-            	<th><textarea name="description" rows="4" cols="50" maxlength="2000" placeholder="Description de l'annonce"></textarea></th>
+            	<th><textarea name="description" rows="4" cols="50" maxlength="1994" placeholder="Description de l'annonce"></textarea></th>
             </tr>
         	<tr>
         		<th id="prix"></th>
@@ -127,7 +115,5 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             </tr>
         </table>
     </form>
-
-
 </body>
 </html>

@@ -29,8 +29,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		<li><a href="poster/">Poster une annonce</a></li>
 		<?php
 		if (isLogged()) {
-			echo '<li><a href="compte/">Mon compte</a></li>
-		<li><a href="deconnexion.php">Se déconnecter</a></li>';
+			echo '<li><a href="compte/mesannonces/">Mon Compte/Mes Annonces (à mettre dans le menu déroulant)</a></li>
+		<li><a href="compte/parametres/">Mon Compte/Paramètres (à mettre dans le menu déroulant)</a></li>
+		<li><a href="deconnexion.php">Mon Compte/Se déconnecter (à mettre dans le menu déroulant)</a></li>';
 		} else {
 			echo '<li><a href="inscription/">Inscription</a></li>
 		<li><a href="connexion/">Connexion</a></li>';
@@ -47,39 +48,30 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <tr>
             	<th colspan="3">
             		<select name="localisation">
-					    <option selected disabled>Votre localisation</option>
-					    <option value="1">Bâtiment U1</option>
-					    <option value="2">Bâtiment U2</option>
-					    <option value="3">Bâtiment U3</option>
-					    <option value="4">Bâtiment U4</option>
-					    <option value="5">Bâtiment U5</option>
-					    <option value="6">Bâtiment U6</option>
-					    <option value="7">Bâtiment U7</option>
-					    <option value="8">Externe</option>
+					    <?php
+					    showOptions("localisation");
+					    ?>
 					</select>
             	</th>
             </tr>
             <tr>
             	<th colspan="3">
             		<select name="categorie">
-					    <option selected disabled>Catégorie</option>
-					    <option value="1">Meubles</option>
-					    <option value="2">Fournitures</option>
-					    <option value="3">Cuisine</option>
-					    <option value="4">Vêtements</option>
-						<option value="5">Nourriture</option>
+					    <?php
+					    showOptions("categorie");
+					    ?>
 					</select>
             	</th>
             </tr>
-            <th colspan="3">
-            	<select name="typeAnnonce">
-				    <option selected disabled>Type d'annonce</option>
-				    <option value="1">Vente</option>
-				    <option value="2">Échange</option>
-				    <option value="3">Prêt</option>
-				    <option value="4">Don</option>
-				</select>
-            </th>
+            <tr>
+	            <th colspan="3">
+	            	<select name="typeAnnonce">
+						<?php
+						showOptions("type_annonce");
+						?>
+					</select>
+	            </th>
+	        </tr>
             <tr>
                 <th colspan="3"><input type="submit" value="Rechercher"/></th>
             </tr>
@@ -92,19 +84,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             </tr>
         </table>
     </form>
-	
-
 	<?php
 	showAccueilAnnonce();
 	?>
-	
-	<!-- 
-		Ecrire partie pour la Recherche d'annonce (prioritaire)
-
-		Ecrire partie pour lister les dernières annonces (prioritaire)
-
-		Ecrire partie pour la pagination (pas prioritaire)
-	-->
-
 </body>
 </html>

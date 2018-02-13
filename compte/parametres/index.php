@@ -2,11 +2,26 @@
 session_start();
 
 // récupère les fonctions PHP
-include '../includes/functions.php';
+include '../../includes/functions.php';
 
 // si user pas connecté, alors internaute est redirigé vers l'accueil
 if (!isLogged()) {
-	header('Location: ../accueil.php');
+	header('Location: ../../accueil.php');
+}
+
+//récupération de la localisation de l'utilisateur
+$localisation = getUserLocalisation($_SESSION['pseudo']);
+
+// modification de la localisation de l'utilisateur
+if (isset($_POST['changeLoc'])) {
+	$pseudo = $_SESSION['pseudo'];
+	$newLocalisation = $_POST['localisation'];
+	if (changeLocalisation($pseudo, $newLocalisation)) {
+		$loc_change_log = "Votre nouvelle localisation a bien été enregistrée.";
+		header("Refresh:0");
+	} else {
+		$loc_change_log = "Erreur de changement de localisation;";
+	}
 }
 
 // Modification de mot de passe
@@ -58,6 +73,7 @@ if (isset($_POST['change_pass'])) {
 
 }
 
+// suppression du compte
 if (isset($_POST['delete_account'])) {
 
 	$pseudo       = $_SESSION['pseudo'];
@@ -71,7 +87,7 @@ if (isset($_POST['delete_account'])) {
 				$user_rm_log = "La suppression de votre compte a été effectuée. Vous serez redirigé vers la page d'accueil dans quelques instants...";
 				$_SESSION  = array();
 				session_destroy();
-				header('Location: ../accueil.php');
+				header('Location: ../../accueil.php');
 			} else {
 				$user_rm_log = "KO";
 			}
@@ -93,23 +109,36 @@ if (isset($_POST['delete_account'])) {
 <body>
 	<ul>
 		<li><h2>Trad'INT</h2></li>
-		<li><a href="../accueil.php">Accueil</a></li>
-		<li><a href="../poster/">Poster une annonce</a></li>
-		<li><a href="../compte/">Mon compte</a></li>
-		<li><a href="../deconnexion.php">Se déconnecter</a></li>
+		<li><a href="../../accueil.php">Accueil</a></li>
+		<li><a href="../../poster/">Poster une annonce</a></li>
+		<li><a href="../mesannonces/">Mon Compte/Mes Annonces (à mettre dans le menu déroulant)</a></li>
+		<li><a href=".">Mon Compte/Paramètres (à mettre dans le menu déroulant)</a></li>
+		<li><a href="../../deconnexion.php">Mon Compte/Se déconnecter (à mettre dans le menu déroulant)</a></li>
 	</ul>
-	<h1>ESPACE Compte</h1>
-	<h3>Gestion des annonces</h3>
-	<p><a href="mesannonces/">Gérer mes annonces</a></p>
-	<!--
-		Ecrire partie pour gestion du compte, mot de passe (pas prioritaire)
-		Ecrire partie pour gérer les annonces de l'utilisateur (prioritaire)
-	-->
-
-	<!-- code php ci-dessous uniquement à titre indicatif, pour vérifier si le user est connecté, etc.. -->
-
+	<h1>ESPACE Mon Compte/Paramètres</h1>
+	<h3>Modifier ma localisation</h3>
+	<form action="index.php" method="post">
+		<table>
+			<tr>
+				<th>
+					<select name="localisation">
+						<?php
+						showOptionsModify("localisation", $localisation);
+					    ?>
+					</select>
+					<input type="submit" name="changeLoc" value="Modifier">
+				</th>
+			</tr>
+            <tr>
+                <th colspan="3" id="error">
+                    <?php
+                    if (isset($loc_change_log)) { echo $loc_change_log; }
+                    ?>
+                </th>
+            </tr>
+		</table>
+	</form>
 	<h3>Modifier mon mot de passe</h3>
-	
 	<form action="index.php" method="post">
         <table>
             <tr>

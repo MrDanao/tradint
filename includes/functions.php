@@ -193,10 +193,10 @@
 			$localisation = $annonce['descLocal'];
 
 			if ($typeAnnonce != "Vente") {
-				echo '<p><img src="../src/photos/'.$photo1.'"></br><a href="annonce.php?ref='.$reference.'">'.$nomAnnonce.'</a></br>'.$typeAnnonce.'</br>'.$localisation.'</p>'."\n\t";
+				echo '<p><img src="src/photos/'.$photo1.'"></br><a href="annonce.php?ref='.$reference.'">'.$nomAnnonce.'</a></br>'.$typeAnnonce.'</br>'.$localisation.'</p>'."\n\t";
 			} else {
 				// à changer avec bon code html/css
-				echo '<p><img src="../src/photos/'.$photo1.'"></br><a href="annonce.php?ref='.$reference.'">'.$nomAnnonce.'</a></br>'.$typeAnnonce.' - '.$prix.'€</br>'.$localisation.'</p>'."\n\t";
+				echo '<p><img src="src/photos/'.$photo1.'"></br><a href="annonce.php?ref='.$reference.'">'.$nomAnnonce.'</a></br>'.$typeAnnonce.' - '.$prix.'€</br>'.$localisation.'</p>'."\n\t";
 			}
 		}
 
@@ -237,6 +237,7 @@
 		$categorie   = $row['descCat'];
 		$typeAnnonce = $row['descTypeAnnonce'];
 		$descriptif  = $row['descriptif'];
+		// AJOUTER PHOTO 2 ET PHOTO 3.
 
 		// à changer avec bon code html/css
 		echo $nomAnnonce."</br>";
@@ -262,7 +263,11 @@
 
 	}
 
-	function UploadInsertPhoto($photo, $id, $number) {
+	// fonction pour uploader une image dans le serveur + mise à jour da la base de données
+	// le quatrième paramètres $link complète le chemin relatif de la destination du fichier photo
+	// ce paramètre est notamment utilisé pour la Modification d'Annonce (voir fonction modPhoto()) où $link = "../"
+	// pour l'ajout d'un annonce, $link = NULL
+	function UploadInsertPhoto($photo, $id, $number, $link) {
 
 		$tmpPathFile = $photo['tmp_name'];
         $tmpMimeFile = $photo['type'];
@@ -270,7 +275,7 @@
         switch ($tmpMimeFile) {
         	
         	case 'image/jpeg':
-          		$file_destination = '../src/photos/'.$id.'_p'.$number.'.jpg';
+          		$file_destination = ''.$link.'../src/photos/'.$id.'_p'.$number.'.jpg';
            		if (move_uploaded_file($tmpPathFile, $file_destination)) {
            			$select_db = connectDB();
            			$query = "UPDATE `annonce` SET `photo".$number."` = '".$id."_p".$number.".jpg' WHERE `annonce`.`reference` = ".$id."";
@@ -282,7 +287,7 @@
            		break;
            	
            	case 'image/png':
-          		$file_destination = '../src/photos/'.$id.'_p'.$number.'.png';
+          		$file_destination = ''.$link.'../src/photos/'.$id.'_p'.$number.'.png';
            		if (move_uploaded_file($tmpPathFile, $file_destination)) {
            			$select_db = connectDB();
            			$query = "UPDATE `annonce` SET `photo".$number."` = '".$id."_p".$number.".png' WHERE `annonce`.`reference` = ".$id."";
@@ -317,7 +322,7 @@
 			foreach ($photos as $photo_to_up) {
 
 				if (isPhoto($photo_to_up) != 'NULL') {
-					if (UploadInsertPhoto($photo_to_up, $id, $number)) {
+					if (UploadInsertPhoto($photo_to_up, $id, $number, "")) {
 						echo 'La photo '.$number.' a été ajoutée.';
 					} else {
 						echo 'La photo '.$number.' n\'a pas été ajoutée.';
@@ -333,20 +338,15 @@
 		}
 	}
 
-	function rmAnnonce($reference) {
+	function rmAnnonce($pseudo, $reference) {
 
 		$select_db = connectDB();
 
-		// suppresion des photos des annonces de l'utilisateur à supprimer
-		//foreach (glob("../src/photos/".$reference."_*") as $filename) {
-		//	unlink($filename);
-		//}
-
 		// suppression des annonces
-		$queryRmAnnonce  = "DELETE FROM `annonce` WHERE `annonce`.`reference` = '".$reference."'";
+		$queryRmAnnonce  = "DELETE FROM `annonce` WHERE `annonce`.`pseudo` = '".$pseudo."' AND `annonce`.`reference` = '".$reference."'";
 		$resultRmAnnonce = mysqli_query($select_db, $queryRmAnnonce);
 
-		if ($resultRmAnnonce) {
+		if (mysqli_affected_rows($select_db) == 1) {
 			foreach (glob("../../src/photos/".$reference."_*") as $filename) {
 				unlink($filename);
 			}
@@ -394,10 +394,9 @@
 			$localisation = $annonce['descLocal'];
 
 			if ($typeAnnonce != "Vente") {
-				echo '<p><img src="../../src/photos/'.$photo1.'"></br><a href="../../annonce.php?ref='.$reference.'">'.$nomAnnonce.'</a></br>'.$typeAnnonce.'</br>'.$localisation.'</br><a href="delete.php?ref='.$reference.'"">Supprimer</a></p>'."\n\t";
+				echo '<p><img src="../../src/photos/'.$photo1.'"></br><a href="../../annonce.php?ref='.$reference.'">'.$nomAnnonce.'</a></br>'.$typeAnnonce.'</br>'.$localisation.'</br><button onclick="location.href=\'modify.php?ref='.$reference.'\'" type="button">Modifier</button><button onclick="rmConfirm('.$reference.')" type="button">Supprimer</button></p>'."\n\t";
 			} else {
-				// à changer avec bon code html/css
-				echo '<p><img src="../../src/photos/'.$photo1.'"></br><a href="../../annonce.php?ref='.$reference.'">'.$nomAnnonce.'</a></br>'.$typeAnnonce.' - '.$prix.'€</br>'.$localisation.'</br><a href="delete.php?ref='.$reference.'">Supprimer</a></p>'."\n\t";
+				echo '<p><img src="../../src/photos/'.$photo1.'"></br><a href="../../annonce.php?ref='.$reference.'">'.$nomAnnonce.'</a></br>'.$typeAnnonce.' - '.$prix.'€</br>'.$localisation.'</br><button onclick="location.href=\'modify.php?ref='.$reference.'\'" type="button">Modifier</button><button onclick="rmConfirm('.$reference.')" type="button">Supprimer</button></p>'."\n\t";
 			}
 		}
 
@@ -448,7 +447,7 @@
 		$nbTotalAnnonce   = $row['nb_annonce'];
 
 		if ($nbTotalAnnonce == 0) {
-			echo "Aucunes annonces ne correspondent avec vos critères de recherche.";
+			echo "Aucunes annonces ne correspondent à vos critères de recherche.";
 		} else {
 
 			$nbAnnonceParPage = 3;
@@ -502,4 +501,156 @@
 		}
 	}
 
+	function showOptions($table) {
+
+		$select_db = connectDB();
+		$query     = "SELECT * FROM ".$table." ORDER BY 2";
+		$result    = mysqli_query($select_db, $query);
+
+		switch ($table) {
+    		case "categorie":
+        		echo '<option selected disabled>Catégorie</option>';
+        		break;
+    		case "localisation":
+        		echo '<option selected disabled>Localisation</option>';
+        		break;
+    		case "type_annonce":
+        		echo '<option selected disabled>Type d\'annonce</option>';
+        		break;
+		}
+
+		while ($options = mysqli_fetch_array($result)) {
+
+			$id   = $options[0];
+			$desc = $options[1];
+
+			echo '<option value="'.$id.'">'.$desc.'</option>';
+
+		}
+	}
+
+	// fonction identique à showOptions mais ajoute l'attribut "selected" à l'option concernée. cette fonction est utilisée pour la page de modification d'annonce.
+	function showOptionsModify($table, $selected) {
+
+		$select_db = connectDB();
+		$query     = "SELECT * FROM ".$table." ORDER BY 2";
+		$result    = mysqli_query($select_db, $query);
+
+		switch ($table) {
+    		case "categorie":
+        		echo '<option selected disabled>Catégorie</option>';
+        		break;
+    		case "localisation":
+        		echo '<option selected disabled>Localisation</option>';
+        		break;
+    		case "type_annonce":
+        		echo '<option selected disabled>Type d\'annonce</option>';
+        		break;
+		}
+
+		while ($options = mysqli_fetch_array($result)) {
+
+			$id   = $options[0];
+			$desc = $options[1];
+
+			if ($id == $selected) {
+				echo '<option value="'.$id.'" selected>'.$desc.'</option>';
+			} else {
+				echo '<option value="'.$id.'">'.$desc.'</option>';
+			}
+
+		}
+	}
+
+	function getDataAnnonce($pseudo, $reference) {
+
+		$select_db = connectDB();
+		$query     = "SELECT ann.pseudo,ann.nom,ann.descriptif,ann.prix,ann.photo1,ann.photo2,ann.photo3,typ.descTypeAnnonce,cat.descCat,ann.idTypeAnnonce,ann.idCat FROM annonce ann, type_annonce typ, categorie cat WHERE pseudo='".$pseudo."' AND reference='".$reference."' AND ann.idTypeAnnonce=typ.idTypeAnnonce AND ann.idCat=cat.idCat";
+		$result    = mysqli_query($select_db, $query);
+		$annonce   = mysqli_fetch_assoc($result);
+
+		$nom           = $annonce['nom'];
+		$description   = $annonce['descriptif'];
+		$typeAnnonce   = $annonce['descTypeAnnonce'];
+		$typeAnnonceID = $annonce['idTypeAnnonce'];
+		$categorie     = $annonce['descCat'];
+		$categorieID   = $annonce['idCat'];
+		$prix          = $annonce['prix'];
+		$photo1        = $annonce['photo1'];
+		$photo2        = $annonce['photo2'];
+		$photo3        = $annonce['photo3'];
+
+		return array($nom, $description, $typeAnnonce, $typeAnnonceID, $categorie, $categorieID, $prix, $photo1, $photo2, $photo3);
+
+	}
+
+	// fonction pour modifier une annonce, elle ne touche pas aux photos
+	function modAnnonce($reference, $titre, $typeAnnonce, $categorie, $description, $prix) {
+
+		$select_db   = connectDB();
+		// pour ajouter un anti-slash \ avant un caractère spécial
+		$titre 		 = mysqli_real_escape_string($select_db, $titre);
+		$description = mysqli_real_escape_string($select_db, $description);
+		$query       = "UPDATE `annonce` SET `nom` = '".$titre."', `idTypeAnnonce` = '".$typeAnnonce."', `idCat` = '".$categorie."', `descriptif` = '".$description."', `prix` = ".$prix." WHERE `annonce`.`reference` = ".$reference.";";
+		$result      = mysqli_query($select_db, $query);
+
+		if ($result) {
+			echo "Annonce modifiée dans la base de données.";
+			header('Location: index.php');
+		} else {
+			echo "fail";
+		}
+	}
+
+	// fonction pour changer une photo par une nouvelle
+	// implique : suppresion de l'ancienne photo et upload de la nouvelle photo dans le serveur & mise à jour de la base de données
+	function modPhoto($reference, $newPhoto, $oldPhoto, $number) {
+
+		// suppresion de l'ancienne photo $oldPhoto
+		unlink("../../src/photos/".$oldPhoto);
+		// upload de la nouvelle photo dans le serveur & mise à jour de la base de données (colonne photo)
+		UploadInsertPhoto($newPhoto, $reference, $number, "../");
+
+	}
+
+	// fonction pour supprimer la photo2 ou photo3 (selon $number)
+	// implique : suppresion de la photo + mise à jour de la base de données
+	function rmPhoto($reference, $photoToDel, $number) {
+
+		// suppresion de la photo
+		unlink("../../src/photos/".$photoToDel);
+		// mise à jour de la base de données. Mise à NULL de la colonne photo concernée
+		$select_db = connectDB();
+		$query     = "UPDATE `annonce` SET `photo".$number."` = NULL WHERE `annonce`.`reference` = ".$reference."";
+		mysqli_query($select_db, $query); 
+
+	}
+
+	// fonction pour récupérer la localisation de l'utilisateur
+	function getUserLocalisation($pseudo) {
+
+		$select_db = connectDB();
+		$query     = "SELECT idLocal FROM utilisateur WHERE pseudo='".$pseudo."'";
+		$result    = mysqli_query($select_db, $query);
+		$user      = mysqli_fetch_assoc($result);
+		$local     = $user['idLocal'];
+
+		return $local;
+
+	}
+
+	function changeLocalisation($pseudo, $newLocalisation) {
+
+		$select_db = connectDB();
+		$query     = "UPDATE `utilisateur` SET `idLocal` = '".$newLocalisation."' WHERE `utilisateur`.`pseudo` = '".$pseudo."';";
+		$result    = mysqli_query($select_db, $query);
+
+		if ($result) {
+			return true;
+		} else {
+			return false;
+		}
+
+
+	}
 ?>

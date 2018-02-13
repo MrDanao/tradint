@@ -68,27 +68,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <th colspan="3"><input type="text" name="pseudo" placeholder="Pseudo"/></th>
             </tr>
             <tr>
-                <th colspan="3"><input type="text" name="email" placeholder="Email"/></th>
+                <th colspan="3"><input type="email" name="email" placeholder="Email"/></th>
             </tr>
             <tr>
-                <th colspan="3"><input type="text" name="phone" placeholder="Numéro de téléphone"/></th>
+                <th colspan="3"><input type="tel" name="phone" placeholder="Numéro de téléphone"/></th>
             </tr>
             <tr>
-            	<!-- 
-            		ci-dessous, listing des locations STATIC
-					A FAIRE : listing dynamique avec php et la base de données (table localisation)
-            	 -->
             	<th colspan="3">
             		<select name="localisation">
-					    <option selected disabled>Votre localisation</option>
-					    <option value="1">Bâtiment U1</option>
-					    <option value="2">Bâtiment U2</option>
-					    <option value="3">Bâtiment U3</option>
-					    <option value="4">Bâtiment U4</option>
-					    <option value="5">Bâtiment U5</option>
-					    <option value="6">Bâtiment U6</option>
-					    <option value="7">Bâtiment U7</option>
-					    <option value="8">Externe</option>
+						<?php
+						showOptions("localisation");
+					    ?>
 					</select>
             	</th>
             </tr>
