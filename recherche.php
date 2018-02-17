@@ -6,11 +6,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 	if (isset($_POST['recherche']) || isset($_POST['localisation']) || isset($_POST['categorie']) || isset($_POST['typeAnnonce'])) {
 
-		$recherche	  = usedForSearch($_POST['recherche']);
-		$typeAnnonce  = usedForSearch($_POST['typeAnnonce']);
-		$categorie    = usedForSearch($_POST['categorie']);
-		$localisation = usedForSearch($_POST['localisation']);
+		$recherche	  = usedForSearch(isset($_POST['recherche'])?$_POST['recherche']:NULL);
+		$typeAnnonce  = usedForSearch(isset($_POST['typeAnnonce'])?$_POST['typeAnnonce']:NULL);
+		$categorie    = usedForSearch(isset($_POST['categorie'])?$_POST['categorie']:NULL);
+		$localisation = usedForSearch(isset($_POST['localisation'])?$_POST['localisation']:NULL);
 
+
+    $typeAnnonce  = rtrim($typeAnnonce);
+    $categorie    = rtrim($categorie);
+    $localisation = rtrim($localisation);
+    
 		header('Location: recherche.php?q='.$recherche.'&typ='.$typeAnnonce.'&cat='.$categorie.'&loc='.$localisation.'');
 	} 
 }
@@ -78,7 +83,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 				    </div>
 					<div class="form-group col-md-4">
 				      <select id="inputState" name="localisation" class="form-control">
-				      	<option value='%' selected>Votre localisation</option>
+				      	<option selected disabled="disabled">Votre localisation</option>
 				      	<?php 
 				      		
 				      	$select_db 		  = connectDB();
@@ -96,7 +101,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 				<div class="form-row">
 					<div class="form-group col-md-6">
 				      <select id="inputState" name="categorie" class="form-control">
-				        <option value='%' selected>Catégorie</option>
+				        <option selected disabled="disabled">Catégorie</option>
 				        <?php 
                   
                 $select_db      = connectDB();
@@ -112,7 +117,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 				    </div>
 				    <div class="form-group col-md-6">
 				      <select id="inputState" name="typeAnnonce" class="form-control">
-				        <option value='%' selected>Type d'annonce</option>
+				        <option selected disabled="disabled">Type d'annonce</option>
 				        <?php 
                   
                 $select_db      = connectDB();
@@ -143,12 +148,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <div class="container">
 
           <div class="row">
-            <?php
+        <?php
 				// récupération des données GET dans l'url
-				$recherche    = $_GET['q'];
-				$typeAnnonce  = $_GET['typ'];
-				$categorie    = $_GET['cat'];
-				$localisation = $_GET['loc'];
+				  $recherche    = $_GET['q'];
+				  $typeAnnonce  = $_GET['typ'];
+				  $categorie    = $_GET['cat'];
+				  $localisation = $_GET['loc'];
 				// appel fonction de recherhe
 				recherche($recherche, $categorie, $typeAnnonce, $localisation);
 			?>
