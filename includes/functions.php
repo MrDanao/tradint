@@ -11,7 +11,7 @@
 
     // pour se connecter à la base de données et sélection de la base 'tradint'
 	function connectDB() {
-		$conn = mysqli_connect("127.0.0.1", "dantran", "vitrygtr", "tradint");
+		$conn = mysqli_connect("localhost", "lamine", "Lamine", "tradint");
 		return $conn;
 	}
 
@@ -157,7 +157,7 @@
 
 	}
 
-	// pour lister les dernières annonces avec pagination, notamment utilisée dans la page d'accueil (accueil.php, ligne 32)
+		// pour lister les dernières annonces avec pagination, notamment utilisée dans la page d'accueil (accueil.php, ligne 32)
 	function showAccueilAnnonce() {
 		
 		$select_db 		  = connectDB();
@@ -165,7 +165,7 @@
 		$result           = mysqli_query($select_db, $query);
 		$row 			  = mysqli_fetch_assoc($result);
 		$nbTotalAnnonce   = $row['nb_annonce'];
-		$nbAnnonceParPage = 3;
+		$nbAnnonceParPage = 4;
 		$nbTotalPage      = ceil($nbTotalAnnonce / $nbAnnonceParPage);
 
 		if (isset($_GET['page'])) {
@@ -193,28 +193,32 @@
 			$localisation = $annonce['descLocal'];
 
 			if ($typeAnnonce != "Vente") {
-				echo '<p><img src="src/photos/'.$photo1.'"></br><a href="annonce.php?ref='.$reference.'">'.$nomAnnonce.'</a></br>'.$typeAnnonce.'</br>'.$localisation.'</p>'."\n\t";
+				echo '<div class="col-md-3">'."\n\t".'<div class="card mb-3 box-shadow">'."\n\t\t".' <img class="card-img-top" src="src/photos/'.$photo1.'" alt="Card image cap">'."\n\t\t".'<div class="card-body">'."\n\t\t\t".'<h5 style="color: #696969;"><strong>'.$nomAnnonce.'</strong> </h5>'."\n".'<p style="margin-top: -10px;"><small>'.$typeAnnonce.', '.$localisation.'</small></p>'."\n\t\t".'<div class="d-flex justify-content-between align-items-center">'."\n\t\t".'<div class="btn-group">'."\n\t\t\t".'<a role="button" href="annonce.php?ref='.$reference.'" class="btn btn-sm btn-outline-secondary">Voir</a>'."\n\t\t".'</div>'."\n\t\t".'</div></div></div></div>';
 			} else {
 				// à changer avec bon code html/css
-				echo '<p><img src="src/photos/'.$photo1.'"></br><a href="annonce.php?ref='.$reference.'">'.$nomAnnonce.'</a></br>'.$typeAnnonce.' - '.$prix.'€</br>'.$localisation.'</p>'."\n\t";
+				echo '<div class="col-md-3">'."\n\t".'<div class="card mb-3 box-shadow">'."\n\t\t".' <img class="card-img-top" src="src/photos/'.$photo1.'" alt="Card image cap">'."\n\t\t".'<div class="card-body">'."\n\t\t\t".'<h5 style="color: #696969;"><strong>'.$nomAnnonce.'</strong> </h5>'."\n".'<p style="margin-top: -10px;"><small>'.$typeAnnonce.', '.$localisation.'</small></p><p style="margin-top: -20px;"><small>'.$prix.' €</small></p>'."\n\t\t".'<div class="d-flex justify-content-between align-items-center">'."\n\t\t".'<div class="btn-group">'."\n\t\t\t".'<a role="button" href="annonce.php?ref='.$reference.'" class="btn btn-sm btn-outline-secondary">Voir</a>'."\n\t\t".'</div>'."\n\t\t".'</div></div></div></div>';
 			}
 		}
-
+		echo "</div>";
+		
+		echo '<nav aria-label="Page navigation example"><ul class="pagination">';
 		if ($nbTotalAnnonce <= $nbAnnonceParPage) {
-			echo '1/1';
+			echo '<li class="page-item disabled"><a class="page-link" href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span><span class="sr-only">Previous</span></a></li><li class="page-item disabled"><a class="page-link" href="#">1/1</a></li><li class="page-item disabled"><a class="page-link" href="#" aria-label="Next"><span aria-hidden="true">&raquo;</span><span class="sr-only">Next</span></a></li>';
 		} elseif ($pageCourante == 1) {
 			$pageSuivante = $pageCourante+1;
-			echo '1/'.$nbTotalPage.' <a href="accueil.php?page='.$pageSuivante.'">></a>';
+			echo '<li class="page-item disabled"><a class="page-link " href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span><span class="sr-only">Previous</span></a></li><li class="page-item disabled"><a class="page-link" href="#">1/'.$nbTotalPage.'</a></li><li class="page-item"><a class="page-link" href="accueil.php?page='.$pageSuivante.'" aria-label="Next"><span aria-hidden="true">&raquo;</span><span class="sr-only">Next</span></a></li>';
 		} elseif ($pageCourante > 1 && $pageCourante < $nbTotalPage) {
 			$pageSuivante = $pageCourante+1;
 			$pagePrecedente = $pageCourante-1;
-			echo '<a href="accueil.php?page='.$pagePrecedente.'"><</a>'.$pageCourante.'/'.$nbTotalPage.' <a href="accueil.php?page='.$pageSuivante.'">></a>';
+			echo '<li class="page-item "><a class="page-link" href="accueil.php?page='.$pagePrecedente.'" aria-label="Previous"><span aria-hidden="true">&laquo;</span><span class="sr-only">Previous</span></a></li><li class="page-item disabled"><a class="page-link" href="#">'.$pageCourante.'/'.$nbTotalPage.'</a></li><li class="page-item"><a class="page-link" href="accueil.php?page='.$pageSuivante.'" aria-label="Next"><span aria-hidden="true">&raquo;</span><span class="sr-only">Next</span></a></li>';
 		} elseif ($pageCourante == $nbTotalPage) {
 			$pagePrecedente = $pageCourante-1;
-			echo '<a href="accueil.php?page='.$pagePrecedente.'"><</a>'.$nbTotalPage.'/'.$nbTotalPage.'';
+			echo '<li class="page-item "><a class="page-link" href="accueil.php?page='.$pagePrecedente.'" aria-label="Previous"><span aria-hidden="true">&laquo;</span><span class="sr-only">Previous</span></a></li><li class="page-item disabled"><a class="page-link" href="#">'.$nbTotalPage.'/'.$nbTotalPage.'</a></li><li class="page-item disabled"><a class="page-link " href="#" aria-label="Next"><span aria-hidden="true">&raquo;</span><span class="sr-only">Next</span></a></li>';
 		}
+		echo '</ul></nav>';
 
 	}
+
 
 	// pour afficher l'annonce (appelé dans le fichier annonce.php, ligne 33)
 	function showAnnonce() {
@@ -440,6 +444,7 @@
 
 	function recherche($getRecherche, $getCategorie, $getTypeAnnonce, $getLocalisation) {
 		
+
 		$select_db 		  = connectDB();
 		$query    		  = "SELECT COUNT(*) AS nb_annonce FROM annonce ann, type_annonce typ, utilisateur user, localisation local WHERE ann.idTypeAnnonce=typ.idTypeAnnonce AND ann.pseudo=user.pseudo AND user.idLocal=local.idLocal AND nom LIKE '%".$getRecherche."%' AND ann.idTypeAnnonce LIKE '".$getTypeAnnonce."' AND ann.idCat LIKE '".$getCategorie."' AND user.idLocal LIKE '".$getLocalisation."' ORDER BY reference";
 		$result           = mysqli_query($select_db, $query);
@@ -447,10 +452,10 @@
 		$nbTotalAnnonce   = $row['nb_annonce'];
 
 		if ($nbTotalAnnonce == 0) {
-			echo "Aucunes annonces ne correspondent à vos critères de recherche.";
+			echo "Aucunes annonces ne correspondent avec vos critères de recherche.";
 		} else {
 
-			$nbAnnonceParPage = 3;
+			$nbAnnonceParPage = 4;
 			$nbTotalPage      = ceil($nbTotalAnnonce / $nbAnnonceParPage);
 
 			if (isset($_GET['page'])) {
@@ -478,26 +483,30 @@
 				$localisation = $annonce['descLocal'];
 
 				if ($typeAnnonce != "Vente") {
-					echo '<p><img src="../src/photos/'.$photo1.'"></br><a href="annonce.php?ref='.$reference.'">'.$nomAnnonce.'</a></br>'.$typeAnnonce.'</br>'.$localisation.'</p>'."\n\t";
+				echo '<div class="col-md-3">'."\n\t".'<div class="card mb-3 box-shadow">'."\n\t\t".' <img class="card-img-top" src="src/photos/'.$photo1.'" alt="Card image cap">'."\n\t\t".'<div class="card-body">'."\n\t\t\t".'<h5 style="color: #696969;"><strong>'.$nomAnnonce.'</strong> </h5>'."\n".'<p style="margin-top: -10px;"><small>'.$typeAnnonce.', '.$localisation.'</small></p>'."\n\t\t".'<div class="d-flex justify-content-between align-items-center">'."\n\t\t".'<div class="btn-group">'."\n\t\t\t".'<a role="button" href="annonce.php?ref='.$reference.'" class="btn btn-sm btn-outline-secondary">Voir</a>'."\n\t\t".'</div>'."\n\t\t".'</div></div></div></div>';
 				} else {
 					// à changer avec bon code html/css
-					echo '<p><img src="../src/photos/'.$photo1.'"></br><a href="annonce.php?ref='.$reference.'">'.$nomAnnonce.'</a></br>'.$typeAnnonce.' - '.$prix.'€</br>'.$localisation.'</p>'."\n\t";
+					echo '<div class="col-md-3">'."\n\t".'<div class="card mb-3 box-shadow">'."\n\t\t".' <img class="card-img-top" src="src/photos/'.$photo1.'" alt="Card image cap">'."\n\t\t".'<div class="card-body">'."\n\t\t\t".'<h5 style="color: #696969;"><strong>'.$nomAnnonce.'</strong> </h5>'."\n".'<p style="margin-top: -10px;"><small>'.$typeAnnonce.', '.$localisation.'</small></p><p style="margin-top: -20px;"><small>'.$prix.' €</small></p>'."\n\t\t".'<div class="d-flex justify-content-between align-items-center">'."\n\t\t".'<div class="btn-group">'."\n\t\t\t".'<a role="button" href="annonce.php?ref='.$reference.'" class="btn btn-sm btn-outline-secondary">Voir</a>'."\n\t\t".'</div>'."\n\t\t".'</div></div></div></div>';
 				}
 			}
 
+			echo "</div>";
+		
+			echo '<nav aria-label="Page navigation example"><ul class="pagination">';
 			if ($nbTotalAnnonce <= $nbAnnonceParPage) {
-				echo '1/1';
+				echo '<li class="page-item disabled"><a class="page-link" href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span><span class="sr-only">Previous</span></a></li><li class="page-item disabled"><a class="page-link" href="#">1/1</a></li><li class="page-item disabled"><a class="page-link" href="#" aria-label="Next"><span aria-hidden="true">&raquo;</span><span class="sr-only">Next</span></a></li>';
 			} elseif ($pageCourante == 1) {
 				$pageSuivante = $pageCourante+1;
-				echo '1/'.$nbTotalPage.' <a href="recherche.php?q='.$getRecherche.'&typ='.$getTypeAnnonce.'&cat='.$getCategorie.'&loc='.$getLocalisation.'&page='.$pageSuivante.'">></a>';
+				echo '<li class="page-item disabled"><a class="page-link " href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span><span class="sr-only">Previous</span></a></li><li class="page-item disabled"><a class="page-link" href="#">1/'.$nbTotalPage.'</a></li><li class="page-item"><a class="page-link" href="accueil.php?page='.$pageSuivante.'" aria-label="Next"><span aria-hidden="true">&raquo;</span><span class="sr-only">Next</span></a></li>';
 			} elseif ($pageCourante > 1 && $pageCourante < $nbTotalPage) {
 				$pageSuivante = $pageCourante+1;
 				$pagePrecedente = $pageCourante-1;
-				echo '<a href="recherche.php?q='.$getRecherche.'&typ='.$getTypeAnnonce.'&cat='.$getCategorie.'&loc='.$getLocalisation.'&page='.$pagePrecedente.'"><</a>'.$pageCourante.'/'.$nbTotalPage.' <a href="recherche.php?q='.$getRecherche.'&typ='.$getTypeAnnonce.'&cat='.$getCategorie.'&loc='.$getLocalisation.'page='.$pageSuivante.'">></a>';
+				echo '<li class="page-item "><a class="page-link" href="accueil.php?page='.$pagePrecedente.'" aria-label="Previous"><span aria-hidden="true">&laquo;</span><span class="sr-only">Previous</span></a></li><li class="page-item disabled"><a class="page-link" href="#">'.$pageCourante.'/'.$nbTotalPage.'</a></li><li class="page-item"><a class="page-link" href="accueil.php?page='.$pageSuivante.'" aria-label="Next"><span aria-hidden="true">&raquo;</span><span class="sr-only">Next</span></a></li>';
 			} elseif ($pageCourante == $nbTotalPage) {
 				$pagePrecedente = $pageCourante-1;
-				echo '<a href="recherche.php?q='.$getRecherche.'&typ='.$getTypeAnnonce.'&cat='.$getCategorie.'&loc='.$getLocalisation.'&page='.$pagePrecedente.'"><</a>'.$nbTotalPage.'/'.$nbTotalPage.'';
+				echo '<li class="page-item "><a class="page-link" href="accueil.php?page='.$pagePrecedente.'" aria-label="Previous"><span aria-hidden="true">&laquo;</span><span class="sr-only">Previous</span></a></li><li class="page-item disabled"><a class="page-link" href="#">'.$nbTotalPage.'/'.$nbTotalPage.'</a></li><li class="page-item disabled"><a class="page-link " href="#" aria-label="Next"><span aria-hidden="true">&raquo;</span><span class="sr-only">Next</span></a></li>';
 			}
+			echo '</ul></nav>';
 		}
 	}
 
