@@ -6,10 +6,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 	if (isset($_POST['recherche']) || isset($_POST['localisation']) || isset($_POST['categorie']) || isset($_POST['typeAnnonce'])) {
 
-		$recherche	  = usedForSearch($_POST['recherche']);
-		$typeAnnonce  = usedForSearch($_POST['typeAnnonce']);
-		$categorie    = usedForSearch($_POST['categorie']);
-		$localisation = usedForSearch($_POST['localisation']);
+    $recherche    = usedForSearch(isset($_POST['recherche'])?$_POST['recherche']:NULL);
+    $typeAnnonce  = usedForSearch(isset($_POST['typeAnnonce'])?$_POST['typeAnnonce']:NULL);
+    $categorie    = usedForSearch(isset($_POST['categorie'])?$_POST['categorie']:NULL);
+    $localisation = usedForSearch(isset($_POST['localisation'])?$_POST['localisation']:NULL);
+
+		
+		$typeAnnonce  = rtrim($typeAnnonce);
+		$categorie    = rtrim($categorie);
+		$localisation = rtrim($localisation);
+
 
 		header('Location: recherche.php?q='.$recherche.'&typ='.$typeAnnonce.'&cat='.$categorie.'&loc='.$localisation.'');
 	} 
