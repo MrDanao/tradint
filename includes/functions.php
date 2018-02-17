@@ -49,10 +49,8 @@
 		list($hashed_passwd, $salt) = HashAndSalting($passwd);
 		$select_db                  = connectDB();
 		$query	                    = "INSERT INTO `utilisateur` (`pseudo`, `passwd`, `email`, `numeroTel`, `salt`, `idLocal`) VALUES ('".$pseudo."', '".$hashed_passwd."', '".$email."', '".$phone."', '".$salt."', '".$localisation."');";
-		
-		do {
-			$result	= mysqli_query($select_db, $query);
-		} while (!$result);
+		echo $query;
+		$result	= mysqli_query($select_db, $query);
 		
 		if ($result) {
 			return true;
@@ -123,9 +121,7 @@
 			$select_db                  = connectDB();
 			$query	                    = "UPDATE `utilisateur` SET `passwd` = '".$hashed_passwd."', `salt` = '".$salt."' WHERE `utilisateur`.`pseudo` = '".$pseudo."'";
 		
-			do {
-				$result	= mysqli_query($select_db, $query);
-			} while (!$result);
+			$result	= mysqli_query($select_db, $query);
 		
 			if ($result) {
 				return true;
