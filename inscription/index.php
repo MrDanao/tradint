@@ -3,15 +3,15 @@
 include '../includes/functions.php';
 
 if (isLogged()) {
-	header('Location: ../accueil.php');
+	header('Location: ../annonces');
 }
 
 // si clique sur le bouton "Créer mon compte" (POST)
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 	// si un ou plusieurs champs manquants
-	if ((count(array_filter($_POST)) != count($_POST)) || (!isset($_POST['localisation']))) {
-    	$error = "Veuillez remplir tous les champs.";
+	if ((count(array_filter($_POST)) != count($_POST)) || ($_POST['localisation'] == 'none')) {
+    	$error = '<div class="alert alert-warning alert-dismissible fade show" role="alert"> Veuillez remplir tous les champs.<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
     
     // sinon, tous les champs sont remplis
 	} else {
@@ -31,74 +31,135 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 				// si true alors création du user dans la base de données
 				// fonction insertUserDB dans le fichier ../includes/functions.php ligne 46
 				if (insertUserDB($pseudo, $email, $phone, $localisation, $passwd)) {
-					$error = "Votre compte a bien été créé.</br>Vous serez redirigé vers la page de connexion dans quelques instants";
+					$error =  "Votre compte a bien été créé.</br>Vous serez redirigé vers la page de connexion dans 3 secondes...";
+					sleep(3);
 					header('Location: ../connexion/');
 				} else {
-					$error = "Votre compte n'a pas été créé.";
+					$error = '<div class="alert alert-warning alert-dismissible fade show" role="alert"> Votre compte n\'a pas été créé.<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
 				}
 			} else {
-				$error = "Ce pseudo n'est plus disponible.";
+				$error = '<div class="alert alert-warning alert-dismissible fade show" role="alert"> Ce pseudo n\'est plus disponible.<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
 			}
 
 		} else {
-			$error = "Les mots de passes ne correspondent pas.";
+			$error = '<div class="alert alert-warning alert-dismissible fade show" role="alert"> Les mots de passes ne correspondent pas.<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
 		}
 	}
 }
 
 ?>
-<!DOCTYPE html>
-<html>
-<head>
-	<title>Trad'INT - Inscription</title>
-	<meta charset="utf-8">
-</head>
-<body>
-	<ul>
-		<li><h2>Trad'INT</h2></li>
-		<li><a href="../accueil.php">Accueil</a></li>
-		<li><a href="../poster/">Poster une annonce</a></li>
-		<li><a href="../inscription/">Inscription</a></li>
-		<li><a href="../connexion/">Connexion</a></li>
-	</ul>
-	<h1>ESPACE Inscription</h1>
-	<form action="index.php" method="post">
-        <table>
-            <tr>
-                <th colspan="3"><input type="text" name="pseudo" placeholder="Pseudo"/></th>
-            </tr>
-            <tr>
-                <th colspan="3"><input type="email" name="email" placeholder="Email"/></th>
-            </tr>
-            <tr>
-                <th colspan="3"><input type="tel" name="phone" placeholder="Numéro de téléphone"/></th>
-            </tr>
-            <tr>
-            	<th colspan="3">
-            		<select name="localisation">
-						<?php
-						showOptions("localisation");
-					    ?>
-					</select>
-            	</th>
-            </tr>
-            <tr>
-                <th colspan="3"><input type="password" name="passwd" placeholder="Mot de passe"/></th>
-            </tr>
-            <tr>
-                <th colspan="3"><input type="password" name="passwdconfirm" placeholder="Confirmer le mot de passe"/></th>
-            </tr>
-            <tr>
-                <th colspan="3"><input type="submit" value="Créer mon compte"/></th>
-            </tr>
-            <tr>
-                <th colspan="3" id="error">
-                    <?php
-                    if (isset($error)) { echo $error; }
-                    ?>
-                </th>
-            </tr>
-        </table>
-    </form>
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <link rel="icon" href="../../../../favicon.ico">
+
+    <title>TradINT</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="../style/css/bootstrap.css" rel="stylesheet">
+
+    <!-- CSS-->
+    <link href="../style/style.css" rel="stylesheet">
+  </head>
+  <body>
+    <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark ">
+      <div class="container">
+        <a class="navbar-brand" href="#">TradINT</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample07" aria-controls="navbarsExample07" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarsExample07">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="../">Accueil <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="../accueil.php">Annonces</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="../connexion/">Connexion</a>
+            </li>
+            <li class="nav-item active">
+              <a class="nav-link" href="../inscription/">Inscription <span class="sr-only">(current)</span></a>
+            </li>
+          </ul>
+
+          <form class="form-inline my-2 my-md-0">
+            <input class="form-control" type="text" placeholder="Search" aria-label="Search">
+          </form>
+        </div>
+      </div>
+    </nav>
+    <div class="container corps">
+    	
+		<h1 class="text-center">Créer un compte</h1>
+		<form action="index.php" method="post" class="form-signin">
+			<div class="form-row">
+			    <div class="form-group col-md-12">
+			      <input type="text" class="form-control" id="pseudo" name="pseudo" placeholder="Pseudo">
+			    </div>
+			</div>
+			<div class="form-row">
+				  <div class="form-group col-md-12">
+				    <input type="email" class="form-control" id="email" name="email" placeholder="Email">
+				  </div>
+			</div>
+			<div class="form-row">
+				  <div class="form-group col-md-12">
+				    <input type="text" class="form-control" id="phone" name="phone" placeholder="Numéro de téléphone">
+				  </div>
+			</div>
+			<div class="form-row">
+			    <div class="form-group col-md-12">
+			      	<select id="inputState" name="localisation" class="form-control">
+				      	<option value='%' selected>Votre localisation</option>
+				      	<?php 
+				      		
+					      	$select_db 		  = connectDB();
+							$query    		  = "SELECT * FROM localisation ";
+							$result           = mysqli_query($select_db, $query);
+							while ($annonce = mysqli_fetch_assoc($result)) {
+			                    $idLocal    = $annonce['idLocal'];
+			                    $descLocal   = $annonce['descLocal'];
+  							   	echo "<option value='$idLocal '>$descLocal </option>";
+							}
+				      	?>
+				    </select>
+			    </div>
+			  </div>
+			<div class="form-row">
+				  <div class="form-group col-md-12">
+				    <input type="password" class="form-control" id="inputPassword4" name="passwd" placeholder="Mot de passe">
+				  </div>
+			</div>
+			<div class="form-row">
+				  <div class="form-group col-md-12">
+				    <input type="password" class="form-control" id="inputPassword5" name="passwdconfirm" placeholder="Confirmer le mot de passe">
+				  </div>
+			</div>
+				<button type="submit" class="btn btn-primary">Valider</button>
+			  
+			<div class="form-row" style=" margin-top: 10px;">
+				<?php
+	            	if (isset($error)) { echo $error; }
+	            ?>
+			</div>
+			   
+		</form>
+
+    </div>
 </body>
+  <script src="../style/js/jquery3.js"></script>
+  <script src="../style/js/poppers.js"></script>
+  <script src="../style/js/bootstrap.js"></script>
+  <script type="text/javascript">
+  </script>
+  	
+
 </html>

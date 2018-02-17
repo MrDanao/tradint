@@ -16,82 +16,154 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 
 ?>
-<!DOCTYPE html>
-<html>
-<head>
-	<title>Trad'INT - Recherche</title>
-	<meta charset="utf-8">
-</head>
-<body>
-	<ul>
-		<li><h2>Trad'INT</h2></li>
-		<li><a href="accueil.php">Accueil</a></li>
-		<li><a href="poster/">Poster une annonce</a></li>
-		<?php
-		if (isLogged()) {
-			echo '<li><a href="compte/mesannonces/">Mon Compte/Mes Annonces (à mettre dans le menu déroulant)</a></li>
-		<li><a href="compte/parametres/">Mon Compte/Paramètres (à mettre dans le menu déroulant)</a></li>
-		<li><a href="deconnexion.php">Mon Compte/Se déconnecter (à mettre dans le menu déroulant)</a></li>';
-		} else {
-			echo '<li><a href="inscription/">Inscription</a></li>
-		<li><a href="connexion/">Connexion</a></li>';
-		}
-		?>
-	</ul>
-	<h1>ESPACE Recherche</h1>
 
-	<form action="recherche.php" method="post">
-        <table>
-            <tr>
-                <th colspan="3"><input type="text" name="recherche" placeholder="recherche"/></th>
-            </tr>
-            <tr>
-            	<th colspan="3">
-            		<select name="localisation">
-					    <?php
-					    showOptions("localisation");
-					    ?>
-					</select>
-            	</th>
-            </tr>
-            <tr>
-            	<th colspan="3">
-            		<select name="categorie">
-					    <?php
-					    showOptions("categorie");
-					    ?>
-					</select>
-            	</th>
-            </tr>
-            <tr>
-	            <th colspan="3">
-	            	<select name="typeAnnonce">
-						<?php
-						showOptions("type_annonce");
-						?>
-					</select>
-	            </th>
-	        </tr>
-            <tr>
-                <th colspan="3"><input type="submit" value="Rechercher"/></th>
-            </tr>
-            <tr>
-                <th colspan="3" id="error">
-                    <?php
-                    if (isset($error)) { echo $error; }
-                    ?>
-                </th>
-            </tr>
-        </table>
-    </form>
-	<?php
-	// récupération des données GET dans l'url
-	$recherche    = $_GET['q'];
-	$typeAnnonce  = $_GET['typ'];
-	$categorie    = $_GET['cat'];
-	$localisation = $_GET['loc'];
-	// appel fonction de recherhe
-	recherche($recherche, $categorie, $typeAnnonce, $localisation);
-	?>
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <link rel="icon" href="../../../../favicon.ico">
+
+    <title>TradINT</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="style/css/bootstrap.css" rel="stylesheet">
+
+    <!-- CSS-->
+    <link href="style/style.css" rel="stylesheet">
+  </head>
+  <body>
+    <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark ">
+      <div class="container">
+        <a class="navbar-brand" href="#">TradINT</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample07" aria-controls="navbarsExample07" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarsExample07">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item ">
+              <a class="nav-link" href="index.html">Accueil <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item active">
+              <a class="nav-link" href="accueil.php">Annonces</a>
+            </li>
+             <?php 
+                if (isLogged()) {        
+                  echo '<li class="nav-item"><a class="nav-link" href="poster/">Poster une annonce</a></li>'; 
+                  echo '<li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="compte/" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Mon compte</a><div class="dropdown-menu" aria-labelledby="dropdown01"><a class="dropdown-item" href="#">Gérer mon compte</a><a class="dropdown-item" href="#">Gérer mes annonces</a><a class="dropdown-item" href="deconnexion.php">Deconnexion</a></div></li>';
+                } 
+                else{
+                  echo '<li class="nav-item"><a class="nav-link" href="./connexion/">Connexion</a></li>';
+                  echo '<li class="nav-item"><a class="nav-link" href="./inscription/">Inscription <span class="sr-only">(current)</span></a></li>';
+                }
+              ?>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <div class="container corps">
+    	 <main role="main">
+
+      <section class="jumbotron text-center">
+        <div class="container">
+          	<h1 class="jumbotron-heading">Rechercher</h1>
+          	<form action="accueil.php" method="post" class="form-signin-2">
+				<div class="form-row">
+				    <div class="form-group col-md-8">
+				      <input type="text" class="form-control" id="recherche" name="recherche" placeholder="recherche">
+				    </div>
+					<div class="form-group col-md-4">
+				      <select id="inputState" name="localisation" class="form-control">
+				      	<option value='%' selected>Votre localisation</option>
+				      	<?php 
+				      		
+				      	$select_db 		  = connectDB();
+							  $query    		  = "SELECT * FROM localisation ";
+							  $result           = mysqli_query($select_db, $query);
+							  while ($annonce = mysqli_fetch_assoc($result)) {
+                    $idLocal    = $annonce['idLocal'];
+                    $descLocal   = $annonce['descLocal'];
+  							   	echo "<option value='$idLocal '>$descLocal </option>";
+							  }
+				      	?>
+				      </select>
+				    </div>
+				  </div>
+				<div class="form-row">
+					<div class="form-group col-md-6">
+				      <select id="inputState" name="categorie" class="form-control">
+				        <option value='%' selected>Catégorie</option>
+				        <?php 
+                  
+                $select_db      = connectDB();
+                $query          = "SELECT * FROM categorie ";
+                $result           = mysqli_query($select_db, $query);
+                while ($annonce = mysqli_fetch_assoc($result)) {
+                    $idLocal    = $annonce['idCat'];
+                    $descLocal   = $annonce['descCat'];
+                    echo "<option value='$idLocal '>$descLocal </option>";
+                }
+                ?>
+				      </select>
+				    </div>
+				    <div class="form-group col-md-6">
+				      <select id="inputState" name="typeAnnonce" class="form-control">
+				        <option value='%' selected>Type d'annonce</option>
+				        <?php 
+                  
+                $select_db      = connectDB();
+                $query          = "SELECT * FROM type_annonce ";
+                $result           = mysqli_query($select_db, $query);
+                while ($annonce = mysqli_fetch_assoc($result)) {
+                    $idLocal    = $annonce['idTypeAnnonce'];
+                    $descLocal   = $annonce['descTypeAnnonce'];
+                    echo "<option value='$idLocal '>$descLocal </option>";
+                }
+                ?>
+				      </select>
+				    </div>
+				</div>
+					<button type="submit" class="btn btn-primary">Rechercher</button>
+				  
+				<div class="form-row" style=" margin-top: 10px;">
+					<?php
+		            	if (isset($error)) { echo $error; }
+		            ?>
+				</div>
+			   
+			</form>
+        </div>
+      </section>
+
+      <div class="album py-5 bg-light">
+        <div class="container">
+
+          <div class="row">
+            <?php
+				// récupération des données GET dans l'url
+				$recherche    = $_GET['q'];
+				$typeAnnonce  = $_GET['typ'];
+				$categorie    = $_GET['cat'];
+				$localisation = $_GET['loc'];
+				// appel fonction de recherhe
+				recherche($recherche, $categorie, $typeAnnonce, $localisation);
+			?>
+        </div>
+      </div>
+
+    </main>
+
+
+	</div>
+	<script src="style/js/jquery3.js"></script>
+  	<script src="style/js/poppers.js"></script>
+  	<script src="style/js/bootstrap.js"></script>
+  	<script type="text/javascript">
+  	</script>
+  	
 </body>
 </html>

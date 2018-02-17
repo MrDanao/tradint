@@ -1,9 +1,11 @@
 <?php
+//Terminer !!!!!
+
 session_start();
 include '../includes/functions.php';
 
 if (isLogged()) {
-	header('Location: ../accueil.php');
+	header('Location: ../annonces');
 }
 
 // si clique sur le bouton "Connexion" (POST)
@@ -11,7 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 	// si un ou plusieurs champs manquants
 	if (count(array_filter($_POST)) != count($_POST)) {
-    	$error = "Veuillez remplir tous les champs.";
+    	$error = '<div class="alert alert-warning alert-dismissible fade show" role="alert"> Veuillez remplir tous les champs.<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
     
     // sinon, tous les champs sont remplis
 	} else {
@@ -22,49 +24,89 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		// appel de la fonction connectUser située dans ../includes/functions.php ligne 63
 		if (connectUser($pseudo, $passwd)) {
 				$_SESSION['pseudo'] = $pseudo;
-				header('Location: ../accueil.php');
+				header('Location: ..');
 		} else {
-			$error = "Le pseudo et le mot de passe sont incorrects.";
+			$error = '<div class="alert alert-warning alert-dismissible fade show" role="alert">Le pseudo et le mot de passe sont incorrects.<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
 		}
 
 	}
 }
 
 ?>
-<!DOCTYPE html>
-<html>
-<head>
-	<title>Trad'INT - Connexion</title>
-	<meta charset="utf-8">
-</head>
-<body>
-	<ul>
-		<li><h2>Trad'INT</h2></li>
-		<li><a href="../accueil.php">Accueil</a></li>
-		<li><a href="../poster/">Poster une annonce</a></li>
-		<li><a href="../inscription/">Inscription</a></li>
-		<li><a href="connexion/">Connexion</a></li>
-	</ul>
-	<h1>ESPACE Connexion</h1>
-	<form action="index.php" method="post">
-        <table>
-            <tr>
-                <th colspan="3"><input type="text" name="pseudo" placeholder="Pseudo"/></th>
-            </tr>
-            <tr>
-                <th colspan="3"><input type="password" name="passwd" placeholder="Mot de passe"/></th>
-            </tr>
-            <tr>
-                <th colspan="3"><input type="submit" value="Se connecter"/></th>
-            </tr>
-            <tr>
-                <th colspan="3" id="error">
-                    <?php
-                    if (isset($error)) { echo $error; }
-                    ?>
-                </th>
-            </tr>
-        </table>
-    </form>
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <link rel="icon" href="../../../../favicon.ico">
+
+    <title>TradINT</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="../style/css/bootstrap.css" rel="stylesheet">
+
+    <!-- CSS-->
+    <link href="../style/style.css" rel="stylesheet">
+  </head>
+  <body>
+    <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark ">
+      <div class="container">
+        <a class="navbar-brand" href="#">TradINT</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample07" aria-controls="navbarsExample07" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarsExample07">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item ">
+              <a class="nav-link" href="../index.html">Accueil <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="../accueil.php">Annonces</a>
+            </li>
+            <li class="nav-item active">
+              <a class="nav-link" href="../connexion/">Connexion</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="../inscription/">Inscription <span class="sr-only">(current)</span></a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <div class="container corps">
+	<h1 class="text-center">Connexion</h1>
+	  <form action="index.php" method="post" class="form-signin">
+			<div class="form-row">
+			    <div class="form-group col-md-12">
+			      <input type="text" class="form-control" id="pseudo" name="pseudo" placeholder="Pseudo">
+			    </div>
+			</div>
+			<div class="form-row">
+				  <div class="form-group col-md-12">
+				    <input type="password" class="form-control" id="inputPassword4" name="passwd" placeholder="Mot de passe">
+				  </div>
+			</div>
+				<button type="submit" class="btn btn-primary">Se connecter</button>
+			  
+			<div class="form-row" style=" margin-top: 10px;">
+				<?php
+	            	if (isset($error)) { echo $error; }
+	            ?>
+			</div>
+			   
+		</form>
+
+  </div>
 </body>
+  <script src="../style/js/jquery3.js"></script>
+  <script src="../style/js/poppers.js"></script>
+  <script src="../style/js/bootstrap.js"></script>
+  <script type="text/javascript">
+  </script>
+  	
+
 </html>
