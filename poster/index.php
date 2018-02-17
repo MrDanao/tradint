@@ -80,12 +80,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
               <a class="nav-link" href="../index.html">Accueil <span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item active">
-              <a class="nav-link" href="accueil.php">Annonces</a>
+              <a class="nav-link" href="../accueil.php">Annonces</a>
             </li>
              <?php 
                 if (isLogged()) {        
-                  echo '<li class="nav-item"><a class="nav-link" href="poster/">Poster une annonce</a></li>'; 
-                  echo '<li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="compte/" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Mon compte</a><div class="dropdown-menu" aria-labelledby="dropdown01"><a class="dropdown-item" href="#">Gérer mon compte</a><a class="dropdown-item" href="#">Gérer mes annonces</a><a class="dropdown-item" href="../deconnexion.php">Deconnexion</a></div></li>';
+                  echo '<li class="nav-item"><a class="nav-link" href="../poster/">Poster une annonce</a></li>'; 
+                  echo '<li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="compte/" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Mon compte</a><div class="dropdown-menu" aria-labelledby="dropdown01"><a class="dropdown-item" href="../compte/parametres">Gérer mon compte</a><a class="dropdown-item" href="../compte/mesannonces/">Gérer mes annonces</a><a class="dropdown-item" href="deconnexion.php">Deconnexion</a></div></li>';
                 } 
                 else{
                   echo '<li class="nav-item"><a class="nav-link" href="./connexion/">Connexion</a></li>';
