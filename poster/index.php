@@ -19,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		$photo2      = isFileUp($_FILES['photo2']);
 		$photo3      = isFileUp($_FILES['photo3']);
 
-		if ($typeAnnonce == '1') {
+		if ($typeAnnonce == 1) {
 			if ($_POST['prix'] > 0) {
 				$prix = $_POST['prix'];
 				addAnnonce($utilisateur, $titre, $typeAnnonce, $categorie, $description, $prix, $photo1, $photo2, $photo3);
