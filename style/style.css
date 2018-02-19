@@ -48,8 +48,8 @@
 .box-shadow { box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05); }
 
 .frame {
-    height: 300px;      /* equals max image height */
-    width: 300px;
+    height: 400px;      /* equals max image height */
+    width: 400px;
     margin : auto;
     text-align: center; margin: 1em 0;
     display: table-cell;
