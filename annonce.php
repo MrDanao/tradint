@@ -63,25 +63,18 @@ include 'includes/functions.php';
               <?php
                     //list($pseudoEmail, $pseudoTel) = showAnnonce();
                     
-                    $table['photo2'] = "50_p1.png";
-                    $table['photo3'] = "50_p1.png";
+                    $table['photo2'] = empty($table['photo2'])?"../bg/no_png.png":$table['photo2'];
+                    $table['photo3'] = empty($table['photo2'])?"../bg/no_png.png":$table['photo2'];
                     $i = 1;
                     while (isset($table['photo'.$i])&&$table['photo'.$i]!="") {
-                      if($i!=3){
-                        echo '<div class="col-md-6 img-cent" ><div class="mx-auto frame"><img src="src/photos/'.$table['photo'.$i].'" class="img-fluid mx-auto"></div></div>';
-                      }
-                      else{
-                        echo '</div><div class="row"><div class="col-md-6 img-cent" ><div class="mx-auto frame"><img src="src/photos/'.$table['photo'.$i].'" class="img-fluid mx-auto"></div></div>';
-                      }
+                        echo '<div class="col-sm-12 col-md-4 img-cent" ><div class="mx-auto frame"><img src="src/photos/'.$table['photo'.$i].'" class="img-fluid mx-auto"></div></div>';
                       $i++;
 
                     }
               ?>
             </div>
-          <form action="" method="post">
-            <input type="submit" name="submit" value="Contacter le vendeur"/>
-          </form>
-          
+          <!-- Button trigger modal -->
+          <button type="button" class="btn" data-toggle="modal" data-target="#exampleModal">Contacter le vendeur</button>
           <?php
           if (isset($_POST['submit'])) {
             if (isLogged()) {
@@ -103,5 +96,40 @@ include 'includes/functions.php';
   	<script type="text/javascript">
   	</script>
   	
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Contact</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+          </button>
+          </div>
+          <div class="modal-body">
+            <?php
+                if (isLogged()) {
+                  echo "</br>";
+                  echo '<dl class="row">
+                    <dt class="col-sm-3">Email :</dt>
+                    <dd class="col-sm-9">'.$table['email'].'</dd>
+
+                    <dt class="col-sm-3">Téléphone :</dt>
+                    <dd class="col-sm-9">'.$table['numeroTel'].'</dd>
+                  </dl>';            
+                } else {
+                echo '<div class="alert alert-warning" role="alert">Connectez-vous pour afficher les contacts du vendeur</div>';
+              
+          }
+          ?>
+          </div>
+          <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
 </body>
 </html>
