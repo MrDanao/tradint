@@ -11,7 +11,7 @@
 
     // pour se connecter à la base de données et sélection de la base 'tradint'
 	function connectDB() {
-		$conn = mysqli_connect("localhost", "lamine", "Lamine", "tradint");
+		$conn = mysqli_connect("localhost", "root", "", "tradint");
 		return $conn;
 	}
 
@@ -165,7 +165,7 @@
 		$result           = mysqli_query($select_db, $query);
 		$row 			  = mysqli_fetch_assoc($result);
 		$nbTotalAnnonce   = $row['nb_annonce'];
-		$nbAnnonceParPage = 4;
+		$nbAnnonceParPage = 6;
 		$nbTotalPage      = ceil($nbTotalAnnonce / $nbAnnonceParPage);
 
 		if (isset($_GET['page'])) {
@@ -187,16 +187,18 @@
 
 			$reference    = $annonce['reference'];
 			$nomAnnonce   = $annonce['nom'];
-			$photo1	 	  = $annonce['photo1'];
+			//$photo1	 	  = $annonce['photo1'];
+			$photo1	 	  = ($annonce['photo1']==NULL)?"../bg/no_png.png":$annonce['photo1'];
 			$typeAnnonce  = $annonce['descTypeAnnonce'];
 			$prix		  = $annonce['prix'];
 			$localisation = $annonce['descLocal'];
 
+
 			if ($typeAnnonce != "Vente") {
-				echo '<div class="col-md-3">'."\n\t".'<div class="card mb-3 box-shadow">'."\n\t\t".' <img class="card-img-top" src="src/photos/'.$photo1.'" alt="Card image cap">'."\n\t\t".'<div class="card-body">'."\n\t\t\t".'<h5 style="color: #696969;"><strong>'.$nomAnnonce.'</strong> </h5>'."\n".'<p style="margin-top: -10px;"><small>'.$typeAnnonce.', '.$localisation.'</small></p>'."\n\t\t".'<div class="d-flex justify-content-between align-items-center">'."\n\t\t".'<div class="btn-group">'."\n\t\t\t".'<a role="button" href="annonce.php?ref='.$reference.'" class="btn btn-sm btn-outline-secondary">Voir</a>'."\n\t\t".'</div>'."\n\t\t".'</div></div></div></div>';
+				echo '<div class="col-md-4">'."\n\t".'<div class="card mb-4 box-shadow">'."\n\t\t".'<img class="card-img-top" src="src/photos/'.$photo1.'" alt="Card image cap">'."\n\t\t".'<div class="card-body">'."\n\t\t\t".'<h5 style="color: #696969;"><strong>'.$nomAnnonce.'</strong> </h5>'."\n".'<p style="margin-top: -10px;"><small>'.$typeAnnonce.', '.$localisation.'</small></p>'."\n\t\t".'<div class="d-flex justify-content-between align-items-center">'."\n\t\t".'<div class="btn-group">'."\n\t\t\t".'<a role="button" href="annonce.php?ref='.$reference.'" class="btn btn-sm btn-outline-secondary">Voir</a>'."\n\t\t".'</div>'."\n\t\t".'</div></div></div></div>';
 			} else {
 				// à changer avec bon code html/css
-				echo '<div class="col-md-3">'."\n\t".'<div class="card mb-3 box-shadow">'."\n\t\t".' <img class="card-img-top" src="src/photos/'.$photo1.'" alt="Card image cap">'."\n\t\t".'<div class="card-body">'."\n\t\t\t".'<h5 style="color: #696969;"><strong>'.$nomAnnonce.'</strong> </h5>'."\n".'<p style="margin-top: -10px;"><small>'.$typeAnnonce.', '.$localisation.'</small></p><p style="margin-top: -20px;"><small>'.$prix.' €</small></p>'."\n\t\t".'<div class="d-flex justify-content-between align-items-center">'."\n\t\t".'<div class="btn-group">'."\n\t\t\t".'<a role="button" href="annonce.php?ref='.$reference.'" class="btn btn-sm btn-outline-secondary">Voir</a>'."\n\t\t".'</div>'."\n\t\t".'</div></div></div></div>';
+				echo '<div class="col-md-4">'."\n\t".'<div class="card mb-4 box-shadow">'."\n\t\t".' <img class="card-img-top" src="src/photos/'.$photo1.'" alt="Card image cap">'."\n\t\t".'<div class="card-body">'."\n\t\t\t".'<h5 style="color: #696969;"><strong>'.$nomAnnonce.'</strong> </h5>'."\n".'<p style="margin-top: -10px;"><small>'.$typeAnnonce.', '.$localisation.'</small></p><p style="margin-top: -20px;"><small>'.$prix.' €</small></p>'."\n\t\t".'<div class="d-flex justify-content-between align-items-center">'."\n\t\t".'<div class="btn-group">'."\n\t\t\t".'<a role="button" href="annonce.php?ref='.$reference.'" class="btn btn-sm btn-outline-secondary">Voir</a>'."\n\t\t".'</div>'."\n\t\t".'</div></div></div></div>';
 			}
 		}
 		echo "</div>";
@@ -221,39 +223,41 @@
 
 
 	// pour afficher l'annonce (appelé dans le fichier annonce.php, ligne 33)
+	// function à refaire !!!!!!
 	function showAnnonce() {
 
 		$refAnnonce  = $_GET['ref'];
 		$select_db   = connectDB();
-		$query       = "SELECT DISTINCT ann.reference, ann.nom, ann.descriptif, ann.prix, ann.photo1, ann.pseudo, ann.dateAjout, typ.descTypeAnnonce, cat.descCat, user.email, user.numeroTel FROM annonce ann, categorie cat, type_annonce typ, utilisateur user WHERE ann.reference='".$refAnnonce."' and ann.idTypeAnnonce=typ.idTypeAnnonce and ann.idCat=cat.idCat and ann.pseudo=user.pseudo";
+		$query       = "SELECT DISTINCT ann.nom, ann.descriptif, ann.prix, ann.photo1, ann.photo2, ann.photo3, ann.pseudo, ann.dateAjout, typ.descTypeAnnonce, cat.descCat, user.email, user.numeroTel FROM annonce ann, categorie cat, type_annonce typ, utilisateur user WHERE ann.reference='".$refAnnonce."' and ann.idTypeAnnonce=typ.idTypeAnnonce and ann.idCat=cat.idCat and ann.pseudo=user.pseudo";
 		$result      = mysqli_query($select_db, $query);
 		$row         = mysqli_fetch_assoc($result);
 
 		// récupération des données propres à l'annonce
-		$reference   = $row['reference'];
-		$pseudo      = $row['pseudo'];
-		$pseudoEmail = $row['email'];
-		$pseudoTel   = $row['numeroTel'];
-		$nomAnnonce  = $row['nom'];
-		$prix	     = $row['prix'];
-		$photo1	     = $row['photo1'];
-		$dateAjout	 = $row['dateAjout'];
-		$categorie   = $row['descCat'];
-		$typeAnnonce = $row['descTypeAnnonce'];
-		$descriptif  = $row['descriptif'];
+		//$reference   = $row['reference'];
+		//$pseudo      = $row['pseudo'];
+		//$pseudoEmail = $row['email'];
+		//$pseudoTel   = $row['numeroTel'];
+		//$nomAnnonce  = $row['nom'];
+		//$prix	     = $row['prix'];
+		//$photo1	     = $row['photo1'];
+		//$dateAjout	 = $row['dateAjout'];
+		//$categorie   = $row['descCat'];
+		//$typeAnnonce = $row['descTypeAnnonce'];
+		//$descriptif  = $row['descriptif'];
 		// AJOUTER PHOTO 2 ET PHOTO 3.
 
 		// à changer avec bon code html/css
-		echo $nomAnnonce."</br>";
-		echo '<img src="src/photos/'.$photo1.'"></br>';
-		if ($typeAnnonce != "Vente") {
-			echo $typeAnnonce."</br>";
-		} else {
-			echo $typeAnnonce." - ".$prix."€</br>";
-		}
-		echo $descriptif;
+		//echo $nomAnnonce."</br>";
+		//echo '<img src="src/photos/'.$photo1.'"></br>';
+		//if ($typeAnnonce != "Vente") {
+		//	echo $typeAnnonce."</br>";
+		//} else {
+		//	echo $typeAnnonce." - ".$prix."€</br>";
+		//}
+		//echo $descriptif;
 
-		return array($pseudoEmail, $pseudoTel);
+		//return array($pseudoEmail, $pseudoTel);
+		return $row;
 
 	}
 
@@ -370,7 +374,7 @@
 		$result           = mysqli_query($select_db, $query);
 		$row 			  = mysqli_fetch_assoc($result);
 		$nbTotalAnnonce   = $row['nb_annonce'];
-		$nbAnnonceParPage = 3;
+		$nbAnnonceParPage = 6;
 		$nbTotalPage      = ceil($nbTotalAnnonce / $nbAnnonceParPage);
 
 		if (isset($_GET['page'])) {
@@ -388,7 +392,7 @@
 		$query     = "SELECT reference,nom,prix,photo1,typ.descTypeAnnonce, local.descLocal FROM annonce ann, type_annonce typ, utilisateur user, localisation local WHERE ann.pseudo='".$pseudo."' AND ann.idTypeAnnonce=typ.idTypeAnnonce AND ann.pseudo=user.pseudo AND user.idLocal=local.idLocal ORDER BY reference DESC LIMIT ".$premiereEntree.",".$nbAnnonceParPage."";
 		$result    = mysqli_query($select_db, $query);
 
-		while ($annonce = mysqli_fetch_assoc($result)) {
+		/*while ($annonce = mysqli_fetch_assoc($result)) {
 
 			$reference    = $annonce['reference'];
 			$nomAnnonce   = $annonce['nom'];
@@ -412,12 +416,46 @@
 		} elseif ($pageCourante > 1 && $pageCourante < $nbTotalPage) {
 			$pageSuivante = $pageCourante+1;
 			$pagePrecedente = $pageCourante-1;
-			echo '<a href="mesannonces.php?page='.$pagePrecedente.'"><</a>'.$pageCourante.'/'.$nbTotalPage.' <a href="mesannonces.php?page='.$pageSuivante.'">></a>';
+			echo '<a href=".nces.php?page='.$pagePrecedente.'"><</a>'.$pageCourante.'/'.$nbTotalPage.' <a href="mesannonces.php?page='.$pageSuivante.'">></a>';
 		} elseif ($pageCourante == $nbTotalPage) {
 			$pagePrecedente = $pageCourante-1;
 			echo '<a href="mesannonces.php?page='.$pagePrecedente.'"><</a>'.$nbTotalPage.'/'.$nbTotalPage.'';
-		}
+		} */
 
+		while ($annonce = mysqli_fetch_assoc($result)) {
+
+			$reference    = $annonce['reference'];
+			$nomAnnonce   = $annonce['nom'];
+			$photo1	 	  = $annonce['photo1'];
+			$typeAnnonce  = $annonce['descTypeAnnonce'];
+			$prix		  = $annonce['prix'];
+			$localisation = $annonce['descLocal'];
+
+
+			if ($typeAnnonce != "Vente") {
+				echo '<div class="col-md-4">'."\n\t".'<div class="card mb-4 box-shadow">'."\n\t\t".' <img class="card-img-top" src="../../src/photos/'.$photo1.'" alt="Card image cap">'."\n\t\t".'<div class="card-body">'."\n\t\t\t".'<h5 style="color: #696969;"><strong>'.$nomAnnonce.'</strong> </h5>'."\n".'<p style="margin-top: -10px;"><small>'.$typeAnnonce.', '.$localisation.'</small></p>'."\n\t\t".'<div class="d-flex justify-content-between align-items-center">'."\n\t\t".'<div class="btn-group">'."\n\t\t\t".'<button type="button" class="btn" data-toggle="modal" data-target="#exampleModal" data-whatever="'.$reference.'" data-nom="'.$nomAnnonce.'">Modifier</button><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#supprimer" data-whatever="'.$reference.'">Supprimer</button> '."\n\t\t".'</div>'."\n\t\t".'</div></div></div></div>';
+			} else {
+				// à changer avec bon code html/css
+				echo '<div class="col-md-4">'."\n\t".'<div class="card mb-4 box-shadow">'."\n\t\t".' <img class="card-img-top" src="../../src/photos/'.$photo1.'" alt="Card image cap">'."\n\t\t".'<div class="card-body">'."\n\t\t\t".'<h5 style="color: #696969;"><strong>'.$nomAnnonce.'</strong> </h5>'."\n".'<p style="margin-top: -10px;"><small>'.$typeAnnonce.', '.$localisation.'</small></p><p style="margin-top: -20px;"><small>'.$prix.' €</small></p>'."\n\t\t".'<div class="d-flex justify-content-between align-items-center">'."\n\t\t".'<div class="btn-group">'."\n\t\t\t".'<button type="button" class="btn" data-toggle="modal" data-target="#exampleModal" data-whatever="'.$reference.'" data-nom="'.$nomAnnonce.'">Modifier</button><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#supprimer" data-whatever="'.$reference.'">Supprimer</button> '."\n\t\t".'</div>'."\n\t\t".'</div></div></div></div>';
+			}
+		}
+		echo "</div>";
+		
+		echo '<nav aria-label="Page navigation example"><ul class="pagination">';
+		if ($nbTotalAnnonce <= $nbAnnonceParPage) {
+			echo '<li class="page-item disabled"><a class="page-link" href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span><span class="sr-only">Previous</span></a></li><li class="page-item disabled"><a class="page-link" href="#">1/1</a></li><li class="page-item disabled"><a class="page-link" href="#" aria-label="Next"><span aria-hidden="true">&raquo;</span><span class="sr-only">Next</span></a></li>';
+		} elseif ($pageCourante == 1) {
+			$pageSuivante = $pageCourante+1;
+			echo '<li class="page-item disabled"><a class="page-link " href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span><span class="sr-only">Previous</span></a></li><li class="page-item disabled"><a class="page-link" href="#">1/'.$nbTotalPage.'</a></li><li class="page-item"><a class="page-link" href="index.php?page='.$pageSuivante.'" aria-label="Next"><span aria-hidden="true">&raquo;</span><span class="sr-only">Next</span></a></li>';
+		} elseif ($pageCourante > 1 && $pageCourante < $nbTotalPage) {
+			$pageSuivante = $pageCourante+1;
+			$pagePrecedente = $pageCourante-1;
+			echo '<li class="page-item "><a class="page-link" href="index.php?page='.$pagePrecedente.'" aria-label="Previous"><span aria-hidden="true">&laquo;</span><span class="sr-only">Previous</span></a></li><li class="page-item disabled"><a class="page-link" href="#">'.$pageCourante.'/'.$nbTotalPage.'</a></li><li class="page-item"><a class="page-link" href="index.php?page='.$pageSuivante.'" aria-label="Next"><span aria-hidden="true">&raquo;</span><span class="sr-only">Next</span></a></li>';
+		} elseif ($pageCourante == $nbTotalPage) {
+			$pagePrecedente = $pageCourante-1;
+			echo '<li class="page-item "><a class="page-link" href="index.php?page='.$pagePrecedente.'" aria-label="Previous"><span aria-hidden="true">&laquo;</span><span class="sr-only">Previous</span></a></li><li class="page-item disabled"><a class="page-link" href="#">'.$nbTotalPage.'/'.$nbTotalPage.'</a></li><li class="page-item disabled"><a class="page-link " href="#" aria-label="Next"><span aria-hidden="true">&raquo;</span><span class="sr-only">Next</span></a></li>';
+		}
+		echo '</ul></nav>';
 	}
 
 	function isFileUp($filePhoto) {
@@ -594,7 +632,7 @@
 	}
 
 	// fonction pour modifier une annonce, elle ne touche pas aux photos
-	function modAnnonce($reference, $titre, $typeAnnonce, $categorie, $description, $prix) {
+	/*function modAnnonce($reference, $titre, $typeAnnonce, $categorie, $description, $prix) {
 
 		$select_db   = connectDB();
 		// pour ajouter un anti-slash \ avant un caractère spécial
@@ -609,6 +647,70 @@
 		} else {
 			echo "fail";
 		}
+	}*/
+
+	function modAnnonce($reference, $donnees, $chmp) {
+		$select_db   = connectDB();
+		// pour ajouter un anti-slash \ avant un caractère spécial
+		$titre 		 = mysqli_real_escape_string($select_db, $titre);
+		$description = mysqli_real_escape_string($select_db, $description);
+		switch ($chmp) {
+			case 1 :
+				$query       = "UPDATE `annonce` SET `nom` = '".$donnees."' WHERE `annonce`.`reference` = ".$reference.";";
+				$result      = mysqli_query($select_db, $query);
+				if ($result) {
+					echo "Annonce modifiée dans la base de données.";
+					header('Location: index.php');
+				} else {
+					echo "fail";
+				}
+				break;
+			case 2 :
+				$query       = "UPDATE `annonce` SET `idTypeAnnonce` = '".$donnees."' WHERE `annonce`.`reference` = ".$reference.";";
+				$result      = mysqli_query($select_db, $query);
+				if ($result) {
+					echo "Annonce modifiée dans la base de données.";
+					header('Location: index.php');
+				} else {
+					echo "fail";
+				}
+				break;
+			case 3 :
+				$query       = "UPDATE `annonce` SET `idCat` = '".$donnees."' WHERE `annonce`.`reference` = ".$reference.";";
+				$result      = mysqli_query($select_db, $query);
+				if ($result) {
+					echo "Annonce modifiée dans la base de données.";
+					header('Location: index.php');
+				} else {
+					echo "fail";
+				}
+				break;
+			case 4 :
+				$query       = "UPDATE `annonce` SET `descriptif` = '".$donnees."' WHERE `annonce`.`reference` = ".$reference.";";
+				$result      = mysqli_query($select_db, $query);
+				if ($result) {
+					echo "Annonce modifiée dans la base de données.";
+					header('Location: index.php');
+				} else {
+					echo "fail";
+				}
+				break;
+			case 5 :
+				$query       = "UPDATE `annonce` SET `prix` = '".$donnees."' WHERE `annonce`.`reference` = ".$reference.";";
+				$result      = mysqli_query($select_db, $query);
+				if ($result) {
+					echo "Annonce modifiée dans la base de données.";
+					header('Location: index.php');
+				} else {
+					echo "fail";
+				}
+				break;
+			
+			default:
+				# code...
+				break;
+		}
+
 	}
 
 	// fonction pour changer une photo par une nouvelle
