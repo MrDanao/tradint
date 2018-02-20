@@ -9,12 +9,10 @@ if (!isLogged()) {
 }
 
 $pseudo    = $_SESSION['pseudo'];
-//$reference = $_GET['ref'];
 
 // récupère les data de la base de données, d'où le suffixe "db" dans le nom des variables.
-//list($nomdb, $descriptiondb, $typeAnnoncedb, $typeAnnonceIDdb, $categoriedb, $categorieIDdb, $prixdb, $photo1db, $photo2db, $photo3db) = getDataAnnonce($pseudo, $reference);
+//
 
-// si bouton Annuler clické, alors retour à Mes Annonces
 if (isset($_POST['ref'])) {
     $titre       = isset($_POST['titre'])?$_POST['titre']:NULL;
     $typeAnnonce = isset($_POST['typeAnnonce'])?$_POST['typeAnnonce']:NULL;
@@ -22,7 +20,9 @@ if (isset($_POST['ref'])) {
     $description = isset($_POST['description'])?$_POST['description']:NULL;
     $prix = isset($_POST['prix'])?$_POST['prix']:NULL;
     $reference = $_POST['ref'];
-     /* si une photo1 est uploadée => suppresion de l'ancienne photo, upload de la nouvelle photo et mise à jour de la db
+
+    list($nomdb, $descriptiondb, $typeAnnoncedb, $typeAnnonceIDdb, $categoriedb, $categorieIDdb, $prixdb, $photo1db, $photo2db, $photo3db) = getDataAnnonce($pseudo, $reference);
+    // si une photo1 est uploadée => suppresion de l'ancienne photo, upload de la nouvelle photo et mise à jour de la db
         if (isFileUp($_FILES['photo1']) != "NULL") {
             $photo1 = $_FILES['photo1'];
             $photoToDelete = $photo1db;
@@ -72,12 +72,11 @@ if (isset($_POST['ref'])) {
                 rmPhoto($reference, $photo3db, 3);
             }
         }
-
-*/
     
     // ne pouvant pas utiliser 'isset', alors vérification du remplissement des champs Titre et Description
     if(empty($titre) && empty($typeAnnonce) && empty($categorie) && empty($description) && empty($prix)){
          echo "Aucune modification";
+         header('Location: index.php');
     }else {
         if (!empty($titre)){
             

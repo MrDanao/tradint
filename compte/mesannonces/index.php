@@ -142,7 +142,7 @@ if (!isLogged()) {
 				      <div class="custom-file">
 				    	<input type="file" class="custom-file-input" name="photo1" accept="image/*" required>
 				    	<label class="custom-file-label" for="validatedCustomFile">Photo 1</label>
-				  	</div>
+				  		</div>
 				    </div>
           			<div class="form-group col-md-4">
 				      <div class="custom-file">
@@ -156,6 +156,16 @@ if (!isLogged()) {
 				    	<label class="custom-file-label" for="validatedCustomFile">Photo 3</label>
 				  	</div>
 				    </div>
+				</div>
+				<div class="form-row">
+					<div class="form-check col-md-4">
+ 						<input class="form-check-input" type="checkbox" name="rmPhoto2" id="defaultCheck1">
+  						<label class="form-check-label" for="defaultCheck1">Supprimer photo 2</label>
+					</div>
+					<div class="form-check col-md-4">
+ 						<input class="form-check-input" type="checkbox" name="rmPhoto3" id="defaultCheck1">
+  						<label class="form-check-label" for="defaultCheck1">Supprimer photo 3</label>
+					</div>
 				</div>
             </form>
           </div>
@@ -206,7 +216,7 @@ if (!isLogged()) {
   			// If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
  			// Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
   			var modal = $(this)
-  			modal.find('.modal-title').text('Annonces' + recipient['title_A'])
+  			modal.find('.modal-title').text('Annonces : ' + recipient['title_A'])
   			modal.find('.modal-input').val(recipient['ref'])
 		});
 
@@ -239,36 +249,5 @@ if (!isLogged()) {
 		}
   	</script>
   	
-</body>
-</html>
-
-
-<!DOCTYPE html>
-<html>
-<head>
-	<title>Trad'INT - Mes annonces</title>
-	<meta charset="utf-8">
-	<script type="text/javascript">
-		function rmConfirm(ref) {
-			if (confirm("Êtes-vous sûr de supprimer l'annonce ?")) {
-				window.alert("L'annonce a été supprimée.");
-				window.location.href = "delete.php?ref=" + ref;
-			}
-		}
-	</script>
-</head>
-<body>
-	<ul>
-		<li><h2>Trad'INT</h2></li>
-		<li><a href="">Accueil</a></li>
-		<li><a href="">Poster une annonce</a></li>
-		<li><a href=".">Mon Compte/Mes Annonces (à mettre dans le menu déroulant)</a></li>
-		<li><a href="">Mon Compte/Paramètres (à mettre dans le menu déroulant)</a></li>
-		<li><a href="">Mon Compte/Se déconnecter (à mettre dans le menu déroulant)</a></li>
-	</ul>
-	<h1>Gestion des annonces</h1>
-	<?php
-    	
-    ?>
 </body>
 </html>
