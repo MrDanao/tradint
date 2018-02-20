@@ -108,14 +108,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 				      <input type="text" class="form-control" id="titre" name="titre" placeholder="Titre de l'annonce" required="required">
 				    </div>
           		</div>				
-				<div class="form-row">
-					<div class="form-group col-md-6">
+				      <div class="form-row">
+					       <div class="form-group col-md-6">
 				      <select id="inputState" name="categorie" class="form-control">
-				        <option value='%' selected>Catégorie</option>
+				        <option disabled selected>Catégorie</option>
 				        <?php 
                   
-                $select_db      = connectDB();
-                $query          = "SELECT * FROM categorie ";
+                    $select_db      = connectDB();
+                    $query          = "SELECT * FROM categorie ";
                 $result           = mysqli_query($select_db, $query);
                 while ($annonce = mysqli_fetch_assoc($result)) {
                     $idLocal    = $annonce['idCat'];
@@ -127,7 +127,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 				    </div>
 				    <div class="form-group col-md-6">
 				      <select id="typeAnnonce" name="typeAnnonce" class="form-control" onchange="changeType();">
-				        <option value='%' selected>Type d'annonce</option>
+				        <option disabled selected>Type d'annonce</option>
 				        <?php 
                   
                 $select_db      = connectDB();
@@ -144,7 +144,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 				</div>
 				<div id="prix" class="form-row">
           			
-          		</div>
+        </div>
 				<div class="form-row">
           			<div class="form-group col-md-12">
 				      <textarea class="form-control" id="exampleFormControlTextarea1" name="description" rows="3" placeholder="Description de l'annonce"></textarea>

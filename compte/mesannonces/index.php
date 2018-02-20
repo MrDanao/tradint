@@ -82,16 +82,86 @@ if (!isLogged()) {
       	<div class="modal-dialog modal-lg" role="document">
         	<div class="modal-content">
           		<div class="modal-header">
-          		<h5 class="modal-title" id="exampleModalLabel">Contact</h5>
+          		<h5 class="modal-title" id="exampleModalLabel"></h5>
           		<button type="button" class="close" data-dismiss="modal" aria-label="Close">
           			<span aria-hidden="true">&times;</span>
           		</button>
           	</div>
           <div class="modal-body">
-            modifier
+          	<!--Formulaire de modification-->
+            <form action="modify.php" method="post" enctype="multipart/form-data" class="form-signin" id="form-mod">
+            	<input type="hidden" name="ref" class="modal-input">
+            	<div class="form-row">
+            		<label for="staticEmail" class="col-sm-3 col-form-label">Titre annonce :</label>
+            		<div class="form-group col-md-9">
+            			<input type="text" class="form-control" id="titre" name="titre" placeholder="Titre de l'annonce" required="required">
+            		</div>
+            	</div>
+            	<div class="form-row">
+            		<div class="form-group col-md-6">
+            			<select id="inputState" name="categorie" class="form-control">
+            				<option disabled selected>Catégorie</option>
+            					<?php 
+            						$select_db      = connectDB();
+                   					$query          = "SELECT * FROM categorie ";
+                					$result           = mysqli_query($select_db, $query);
+                					while ($annonce = mysqli_fetch_assoc($result)) {
+                    					$idLocal    = $annonce['idCat'];
+                    					$descLocal   = $annonce['descCat'];
+                    					echo "<option value='$idLocal '>$descLocal </option>";
+                					}
+            					?>
+            			</select>
+            		</div>
+            		<div class="form-group col-md-6">
+            			<select id="typeAnnonce" name="typeAnnonce" class="form-control" onchange="changeType();">
+            				<option disabled selected>Type d'annonce</option>
+            				<?php 
+            					$select_db      = connectDB();
+                				$query          = "SELECT * FROM type_annonce ";
+              					$result           = mysqli_query($select_db, $query);
+                				while ($annonce = mysqli_fetch_assoc($result)) {
+                    				$idLocal    = $annonce['idTypeAnnonce'];
+                    				$descLocal   = $annonce['descTypeAnnonce'];
+                    				echo "<option value='$idLocal '>$descLocal </option>";
+                				}
+            				?>
+            			</select>
+            		</div>
+            	</div>
+            	<div id="prix" class="form-row"> 
+            		
+            	</div>
+            	<div class="form-row">
+            		<div class="form-group col-md-12">
+            			<textarea class="form-control" id="exampleFormControlTextarea1" name="description" rows="3" placeholder="Description de l'annonce"></textarea>
+            		</div>
+            	</div>
+            	<div class="form-row">
+          			<div class="form-group col-md-4">
+				      <div class="custom-file">
+				    	<input type="file" class="custom-file-input" name="photo1" accept="image/*" required>
+				    	<label class="custom-file-label" for="validatedCustomFile">Photo 1</label>
+				  	</div>
+				    </div>
+          			<div class="form-group col-md-4">
+				      <div class="custom-file">
+				    	<input type="file" class="custom-file-input" name="photo2" accept="image/*">
+				    	<label class="custom-file-label" for="validatedCustomFile">Photo 2</label>
+				  	</div>
+				    </div>
+          			<div class="form-group col-md-4">
+				      <div class="custom-file">
+				    	<input type="file" class="custom-file-input" name="photo3" accept="image/*">
+				    	<label class="custom-file-label" for="validatedCustomFile">Photo 3</label>
+				  	</div>
+				    </div>
+				</div>
+            </form>
           </div>
           <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+          <button type="button" class="btn btn-primary" onclick="modifier()">Modifier</button>
           </div>
         </div>
       </div>
@@ -114,7 +184,7 @@ if (!isLogged()) {
           </div>
           <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
-          <button type="button" class="btn btn-danger" onclick="valider()">supprimer</button>
+          <button type="button" class="btn btn-danger" onclick="supprimer()">supprimer</button>
 
           </div>
         </div>
@@ -129,12 +199,15 @@ if (!isLogged()) {
   	<script type="text/javascript">
   		$('#exampleModal').on('show.bs.modal', function (event) {
   			var button = $(event.relatedTarget) // Button that triggered the modal
-  			var recipient = button.data('whatever') // Extract info from data-* attributes
+  			var recipient = {
+  				ref 	: button.data('whatever'),
+  				title_A	: button.data('nom')
+  			} // Extract info from data-* attributes
   			// If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
  			// Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
   			var modal = $(this)
-  			modal.find('.modal-title').text('New message to ' + recipient)
-  			modal.find('.modal-body input').val(recipient)
+  			modal.find('.modal-title').text('Annonces' + recipient['title_A'])
+  			modal.find('.modal-input').val(recipient['ref'])
 		});
 
 
@@ -149,11 +222,21 @@ if (!isLogged()) {
   			modal.find('.modal-body input').val(recipient)
 		});
 
-		function valider(){
-			alert("bonjour")
+		function supprimer(){
 			document.getElementById("form-sup").submit();
 		}
-
+		function modifier(){
+			document.getElementById("form-mod").submit();
+		}
+		function changeType() {
+			if (document.getElementById('typeAnnonce').value != 1) {
+				message = "";
+				document.getElementById('prix').innerHTML = message;
+            } else {
+            	message = "<label for=\"staticEmail\" class=\"col-sm-3 col-form-label\">Prix de l'article :</label><div  class=\"form-group col-md-4\"><input type=\"number\" min=\"0\" class=\"form-control\"  name=\"prix\" placeholder=\"prix\"> </div>";
+				document.getElementById('prix').innerHTML = message;
+            }
+		}
   	</script>
   	
 </body>
