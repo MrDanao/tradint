@@ -111,7 +111,7 @@ Aller sur : `http://adresse_ip/phpmyadmin`
 Dans ce dépôt git se trouve le fichier `bdd.sql` qui décrit en SQL la base de données et ses tables.
 
 1) Créer la base de données `tradint` dans phpmyadmin.
-2) Dans la base `tradint`, importer le fichier `bdd.sql`.
+2) Dans la base `tradint`, importer le fichier `backup_database_for_phpmyadmin.sql`.
 
 Note : quelques catégories, types d'annonce et localisations sont créés.
 
