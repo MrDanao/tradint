@@ -6,6 +6,8 @@ Dans le cadre du module de base de données : projet Leboncoin-like pour le camp
 
 URL du site : [https://tradint.dantran.fr](https://tradint.dantran.fr)
 
+Wiki / Guide : [https://github.com/MrDanao/tradint/wiki/Documentation](https://github.com/MrDanao/tradint/wiki/Documentation)
+
 ## Sommaire
 
 - [Sommaire](https://github.com/MrDanao/tradint#sommaire)
