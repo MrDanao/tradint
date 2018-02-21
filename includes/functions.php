@@ -44,22 +44,18 @@
 
 	// pour ajouter un user dans la table 'utilisateur' de la base 'tradint'
 	function insertUserDB($pseudo, $email, $phone, $localisation, $passwd) {
-
 		// récupère le mot de passe hashé et le salt depuis la fonction HashAndSalting ligne 34
 		list($hashed_passwd, $salt) = HashAndSalting($passwd);
 		$select_db                  = connectDB();
 		$query	                    = "INSERT INTO `utilisateur` (`pseudo`, `passwd`, `email`, `numeroTel`, `salt`, `idLocal`) VALUES ('".$pseudo."', '".$hashed_passwd."', '".$email."', '".$phone."', '".$salt."', '".$localisation."');";
-		
-		do {
-			$result	= mysqli_query($select_db, $query);
-		} while (!$result);
+		echo $query;
+		$result	= mysqli_query($select_db, $query);
 		
 		if ($result) {
 			return true;
 		} else {
 			return false;
 		}
-
 	}
 
 	function rmUser($pseudo) {
@@ -96,7 +92,6 @@
 	}
 
 	function checkPassword($pseudo, $passwd_clair) {
-
 		$select_db        = connectDB();
 		$query            = "SELECT pseudo,passwd,salt FROM utilisateur WHERE pseudo='".$pseudo."';";
 		$result           = mysqli_query($select_db, $query);
@@ -104,28 +99,22 @@
 		$row              = mysqli_fetch_assoc($result);
 		$hashed_passwd_db = $row['passwd'];
 		$salt_db          = $row['salt'];
-
 		$options          = ['cost' => 10, 'salt' => $salt_db];
 		$hashed_passwd    = password_hash($passwd_clair, PASSWORD_BCRYPT, $options);
-
 		if ($hashed_passwd == $hashed_passwd_db) {
 			return true;
 		} else {
 			return false;
 		}
-
 	}
 
 	function changePassword($pseudo, $new_passwd, $new_passwd_confirm) {
-
-		if ($new_passwd == $new_passwd_confirm) {
+		if ($new_passwd == $new_passwd_confirm) { 
 			list($hashed_passwd, $salt) = HashAndSalting($new_passwd);
 			$select_db                  = connectDB();
 			$query	                    = "UPDATE `utilisateur` SET `passwd` = '".$hashed_passwd."', `salt` = '".$salt."' WHERE `utilisateur`.`pseudo` = '".$pseudo."'";
 		
-			do {
-				$result	= mysqli_query($select_db, $query);
-			} while (!$result);
+			$result	= mysqli_query($select_db, $query);
 		
 			if ($result) {
 				return true;
@@ -135,8 +124,8 @@
 		} else {
 			return false;
 		}
-
 	}
+
 
 	// pour checker pseudo et mot de passe lors de la connexion
 	function connectUser($pseudo, $passwd_clair) {
