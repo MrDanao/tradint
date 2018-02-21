@@ -24,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		// appel de la fonction connectUser située dans ../includes/functions.php ligne 63
 		if (connectUser($pseudo, $passwd)) {
 				$_SESSION['pseudo'] = $pseudo;
-				header('Location: ..');
+				header('Location: ../accueil.php');
 		} else {
 			$error = '<div class="alert alert-warning alert-dismissible fade show" role="alert">Le pseudo et le mot de passe sont incorrects.<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
 		}

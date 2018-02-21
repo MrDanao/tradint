@@ -11,7 +11,7 @@
 
     // pour se connecter à la base de données et sélection de la base 'tradint'
 	function connectDB() {
-		$conn = mysqli_connect("localhost", "root", "", "tradint");
+		$conn = mysqli_connect("localhost", "dantran", "vitrygtr", "tradint");
 		return $conn;
 	}
 

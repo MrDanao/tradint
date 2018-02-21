@@ -39,7 +39,7 @@ include 'includes/functions.php';
              <?php 
                 if (isLogged()) {        
                   echo '<li class="nav-item"><a class="nav-link" href="poster/">Poster une annonce</a></li>'; 
-                  echo '<li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="compte/" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Mon compte</a><div class="dropdown-menu" aria-labelledby="dropdown01"><a class="dropdown-item" href="compte/parametres">Gérer mon compte</a><a class="dropdown-item" href="compte/mesannonces/">Gérer mes annonces</a><a class="dropdown-item" href="deconnexion.php">Deconnexion</a></div></li>';
+                  echo '<li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="compte/" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Mon compte</a><div class="dropdown-menu" aria-labelledby="dropdown01"><a class="dropdown-item" href="compte/parametres">Gérer mon compte</a><a class="dropdown-item" href="compte/mesannonces/">Gérer mes annonces</a><a class="dropdown-item" href="deconnexion.php">Déconnexion</a></div></li>';
                 } 
                 else{
                   echo '<li class="nav-item"><a class="nav-link" href="./connexion/">Connexion</a></li>';
@@ -64,7 +64,7 @@ include 'includes/functions.php';
                     //list($pseudoEmail, $pseudoTel) = showAnnonce();
                     
                     $table['photo2'] = empty($table['photo2'])?"../bg/no_png.png":$table['photo2'];
-                    $table['photo3'] = empty($table['photo2'])?"../bg/no_png.png":$table['photo2'];
+                    $table['photo3'] = empty($table['photo3'])?"../bg/no_png.png":$table['photo3'];
                     $i = 1;
                     while (isset($table['photo'.$i])&&$table['photo'.$i]!="") {
                         echo '<div class="col-sm-12 col-md-4 img-cent" ><div class="mx-auto frame"><img src="src/photos/'.$table['photo'.$i].'" class="img-fluid mx-auto"></div></div>';
@@ -88,7 +88,7 @@ include 'includes/functions.php';
       
               <?php 
                 if($table['prix']){
-                  echo '<dt class="col-sm-3">Prix :</dt><dd class="col-sm-9">'.$table['prix'].'</dd>';
+                  echo '<dt class="col-sm-3">Prix :</dt><dd class="col-sm-9">'.$table['prix'].' €</dd>';
                 }    
               ?>
               

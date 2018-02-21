@@ -59,7 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
              <?php 
                 if (isLogged()) {        
                   echo '<li class="nav-item"><a class="nav-link" href="poster/">Poster une annonce</a></li>'; 
-                  echo '<li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="compte/" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Mon compte</a><div class="dropdown-menu" aria-labelledby="dropdown01"><a class="dropdown-item" href="compte/parametres">Gérer mon compte</a><a class="dropdown-item" href="compte/mesannonces/">Gérer mes annonces</a><a class="dropdown-item" href="deconnexion.php">Deconnexion</a></div></li>';
+                  echo '<li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="compte/" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Mon compte</a><div class="dropdown-menu" aria-labelledby="dropdown01"><a class="dropdown-item" href="compte/parametres">Gérer mon compte</a><a class="dropdown-item" href="compte/mesannonces/">Gérer mes annonces</a><a class="dropdown-item" href="deconnexion.php">Déconnexion</a></div></li>';
                 } 
                 else{
                   echo '<li class="nav-item"><a class="nav-link" href="./connexion/">Connexion</a></li>';
@@ -79,7 +79,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
           	<form action="accueil.php" method="post" class="form-signin-2">
 				<div class="form-row">
 				    <div class="form-group col-md-8">
-				      <input type="text" class="form-control" id="recherche" name="recherche" placeholder="recherche">
+				      <input type="text" class="form-control" id="recherche" name="recherche" placeholder="Recherche">
 				    </div>
 					<div class="form-group col-md-4">
 				      <select id="inputState" name="localisation" class="form-control">

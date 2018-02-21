@@ -138,7 +138,7 @@ if (isset($_POST['delete_account'])) {
              <?php 
                 if (isLogged()) {        
                   echo '<li class="nav-item"><a class="nav-link" href="../../poster/">Poster une annonce</a></li>'; 
-                  echo '<li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="compte/" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Mon compte</a><div class="dropdown-menu" aria-labelledby="dropdown01"><a class="dropdown-item" href="../parametres">Gérer mon compte</a><a class="dropdown-item" href="../mesannonces/">Gérer mes annonces</a><a class="dropdown-item" href="../../deconnexion.php">Deconnexion</a></div></li>';
+                  echo '<li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="compte/" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Mon compte</a><div class="dropdown-menu" aria-labelledby="dropdown01"><a class="dropdown-item" href="../parametres">Gérer mon compte</a><a class="dropdown-item" href="../mesannonces/">Gérer mes annonces</a><a class="dropdown-item" href="../../deconnexion.php">Déconnexion</a></div></li>';
                 } 
                 else{
                   echo '<li class="nav-item"><a class="nav-link" href="./connexion/">Connexion</a></li>';
