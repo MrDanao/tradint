@@ -28,21 +28,21 @@ Dans le cadre du module de base de données : projet Leboncoin-like pour le camp
 :heavy_check_mark: Stockage de mot de passe protégé (hash & salt).   
 :heavy_check_mark: Ajout global d'un user dans la database.   
 :clock8: Vérification des chaînes de caractères avant l'envoi ou après au serveur.   
-:clock8: Style CSS.
+:heavy_check_mark: Style CSS.
 
 - Connexion :   
 :heavy_check_mark: Formulaire HTML.   
 :heavy_check_mark: Vérification du remplissement du formulaire.   
 :heavy_check_mark: Vérification de l'existance d'un utilisateur.   
 :heavy_check_mark: Vérification du mot de passe.   
-:clock8: Style CSS.
+:heavy_check_mark: Style CSS.
 
 - Ajout d'annonce :   
 :heavy_check_mark: Formulaire HTML.   
 :heavy_check_mark: Vérification du remplissement du formulaire.        
 :heavy_check_mark: Ajout global d'une annonce dans la database.   
 :clock8: Vérification des chaînes de caractères avant ou après l'envoi au serveur.   
-:clock8: Style CSS.
+:heavy_check_mark: Style CSS.
 
 - Accueil :   
 :heavy_check_mark: Listing des annonces.   
@@ -59,7 +59,7 @@ Dans le cadre du module de base de données : projet Leboncoin-like pour le camp
 - Moteur de recherche d'annonce :   
 :heavy_check_mark: Formulaire HTML.   
 :heavy_check_mark: Recherche avec critères (nom, catégorie, type d'annonce, localisation).   
-:clock8: Style CSS.
+:heavy_check_mark: Style CSS.
 
 - Gestion du compte utilisateur :   
 :heavy_check_mark: Gestionnaire d'annonce (modification et suppression).   
