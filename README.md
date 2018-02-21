@@ -54,7 +54,7 @@ Dans le cadre du module de base de données : projet Leboncoin-like pour le camp
 - Page dédiée à une annonce :   
 :heavy_check_mark: Affichage de l'annonce.   
 :heavy_check_mark: Affichage des coordonnées de contact du vendeur, si l'utilisateur est connectée.   
-:clock8: Style CSS.
+:heavy_check_mark: Style CSS.
 
 - Moteur de recherche d'annonce :   
 :heavy_check_mark: Formulaire HTML.   
@@ -66,7 +66,7 @@ Dans le cadre du module de base de données : projet Leboncoin-like pour le camp
 :heavy_check_mark: Modification de la localisation de l'utilisateur.   
 :heavy_check_mark: Modification du mot de passe.   
 :heavy_check_mark: Suppression du compte.   
-:clock8: Style CSS.
+:heavy_check_mark: Style CSS.
 
 - Final :   
 :clock8: Review générale du code. 
