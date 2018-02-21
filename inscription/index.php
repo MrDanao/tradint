@@ -32,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 				// fonction insertUserDB dans le fichier ../includes/functions.php ligne 46
 				if (insertUserDB($pseudo, $email, $phone, $localisation, $passwd)) {
 					$error =  "Votre compte a bien été créé.</br>Vous serez redirigé vers la page de connexion dans 3 secondes...";
-					sleep(3);
+					//sleep(3);
 					header('Location: ../connexion/');
 				} else {
 					$error = '<div class="alert alert-warning alert-dismissible fade show" role="alert"> Votre compte n\'a pas été créé.<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
@@ -89,10 +89,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
               <a class="nav-link" href="../inscription/">Inscription <span class="sr-only">(current)</span></a>
             </li>
           </ul>
-
-          <form class="form-inline my-2 my-md-0">
-            <input class="form-control" type="text" placeholder="Search" aria-label="Search">
-          </form>
         </div>
       </div>
     </nav>
