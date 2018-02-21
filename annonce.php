@@ -73,6 +73,34 @@ include 'includes/functions.php';
                     }
               ?>
             </div>
+		<dl class="row">
+                    	<dt class="col-sm-3">Titre :</dt>
+                    	<dd class="col-sm-9"><?php echo $table['nom']; ?></dd>
+
+                    	<dt class="col-sm-3">Catégorie :</dt>
+                	<dd class="col-sm-9"><?php echo $table['descCat']; ?></dd>
+			
+			<dt class="col-sm-3">Type d'annonce :</dt>
+                    	<dd class="col-sm-9"><?php echo $table['descTypeAnnonce']; ?></dd>
+			
+			<dt class="col-sm-3">Date d'ajout :</dt>
+                    	<dd class="col-sm-9"><?php echo $table['dateAjout']; ?></dd>
+			
+			<?php 
+				if($table['prix']){
+					echo '<dt class="col-sm-3">Prix :</dt><dd class="col-sm-9">'.$table['prix'].'</dd>';
+				}
+				
+                    		
+			?>
+		
+                </dl>
+		<div class="row">
+			<div class="card">
+				<h5 class="card-title">Description</h5>
+				<p class="card-text"><?php echo $table['descriptif']; ?> </p>
+			</div>
+		</div>
           <!-- Button trigger modal -->
           <button type="button" class="btn" data-toggle="modal" data-target="#exampleModal">Contacter le vendeur</button>
           <?php
