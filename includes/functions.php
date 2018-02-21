@@ -364,7 +364,28 @@
 		}
 
 	}
+	function getDataAnnonce($pseudo, $reference) {
 
+		$select_db = connectDB();
+		$query     = "SELECT ann.pseudo,ann.nom,ann.descriptif,ann.prix,ann.photo1,ann.photo2,ann.photo3,typ.descTypeAnnonce,cat.descCat,ann.idTypeAnnonce,ann.idCat FROM annonce ann, type_annonce typ, categorie cat WHERE pseudo='".$pseudo."' AND reference='".$reference."' AND ann.idTypeAnnonce=typ.idTypeAnnonce AND ann.idCat=cat.idCat";
+		$result    = mysqli_query($select_db, $query);
+		$annonce   = mysqli_fetch_assoc($result);
+
+		$nom           = $annonce['nom'];
+		$description   = $annonce['descriptif'];
+		$typeAnnonce   = $annonce['descTypeAnnonce'];
+		$typeAnnonceID = $annonce['idTypeAnnonce'];
+		$categorie     = $annonce['descCat'];
+		$categorieID   = $annonce['idCat'];
+		$prix          = $annonce['prix'];
+		$photo1        = $annonce['photo1'];
+		$photo2        = $annonce['photo2'];
+		$photo3        = $annonce['photo3'];
+
+		return array($nom, $description, $typeAnnonce, $typeAnnonceID, $categorie, $categorieID, $prix, $photo1, $photo2, $photo3);
+
+	}
+	
 	function showUserAnnonce() {
 
 		$pseudo = $_SESSION['pseudo'];
@@ -392,36 +413,7 @@
 		$query     = "SELECT reference,nom,prix,photo1,typ.descTypeAnnonce, local.descLocal FROM annonce ann, type_annonce typ, utilisateur user, localisation local WHERE ann.pseudo='".$pseudo."' AND ann.idTypeAnnonce=typ.idTypeAnnonce AND ann.pseudo=user.pseudo AND user.idLocal=local.idLocal ORDER BY reference DESC LIMIT ".$premiereEntree.",".$nbAnnonceParPage."";
 		$result    = mysqli_query($select_db, $query);
 
-		/*while ($annonce = mysqli_fetch_assoc($result)) {
-
-			$reference    = $annonce['reference'];
-			$nomAnnonce   = $annonce['nom'];
-			$photo1	 	  = $annonce['photo1'];
-			$typeAnnonce  = $annonce['descTypeAnnonce'];
-			$prix		  = $annonce['prix'];
-			$localisation = $annonce['descLocal'];
-
-			if ($typeAnnonce != "Vente") {
-				echo '<p><img src="../../src/photos/'.$photo1.'"></br><a href="../../annonce.php?ref='.$reference.'">'.$nomAnnonce.'</a></br>'.$typeAnnonce.'</br>'.$localisation.'</br><button onclick="location.href=\'modify.php?ref='.$reference.'\'" type="button">Modifier</button><button onclick="rmConfirm('.$reference.')" type="button">Supprimer</button></p>'."\n\t";
-			} else {
-				echo '<p><img src="../../src/photos/'.$photo1.'"></br><a href="../../annonce.php?ref='.$reference.'">'.$nomAnnonce.'</a></br>'.$typeAnnonce.' - '.$prix.'€</br>'.$localisation.'</br><button onclick="location.href=\'modify.php?ref='.$reference.'\'" type="button">Modifier</button><button onclick="rmConfirm('.$reference.')" type="button">Supprimer</button></p>'."\n\t";
-			}
-		}
-
-		if ($nbTotalAnnonce <= $nbAnnonceParPage) {
-			echo '1/1';
-		} elseif ($pageCourante == 1) {
-			$pageSuivante = $pageCourante+1;
-			echo '1/'.$nbTotalPage.' <a href="mesannonces.php?page='.$pageSuivante.'">></a>';
-		} elseif ($pageCourante > 1 && $pageCourante < $nbTotalPage) {
-			$pageSuivante = $pageCourante+1;
-			$pagePrecedente = $pageCourante-1;
-			echo '<a href=".nces.php?page='.$pagePrecedente.'"><</a>'.$pageCourante.'/'.$nbTotalPage.' <a href="mesannonces.php?page='.$pageSuivante.'">></a>';
-		} elseif ($pageCourante == $nbTotalPage) {
-			$pagePrecedente = $pageCourante-1;
-			echo '<a href="mesannonces.php?page='.$pagePrecedente.'"><</a>'.$nbTotalPage.'/'.$nbTotalPage.'';
-		} */
-
+		
 		while ($annonce = mysqli_fetch_assoc($result)) {
 
 			$reference    = $annonce['reference'];
@@ -431,12 +423,15 @@
 			$prix		  = $annonce['prix'];
 			$localisation = $annonce['descLocal'];
 
+			list($nomdb, $descriptiondb, $typeAnnoncedb, $typeAnnonceIDdb, $categoriedb, $categorieIDdb, $prixdb, $photo1db, $photo2db, $photo3db) = getDataAnnonce($pseudo, $reference);
+
+			$prixdb = !empty($prixdb)?$prixdb:"Pas de prix";
 
 			if ($typeAnnonce != "Vente") {
-				echo '<div class="col-md-4">'."\n\t".'<div class="card mb-4 box-shadow">'."\n\t\t".' <img class="card-img-top" src="../../src/photos/'.$photo1.'" alt="Card image cap">'."\n\t\t".'<div class="card-body">'."\n\t\t\t".'<h5 style="color: #696969;"><strong>'.$nomAnnonce.'</strong> </h5>'."\n".'<p style="margin-top: -10px;"><small>'.$typeAnnonce.', '.$localisation.'</small></p>'."\n\t\t".'<div class="d-flex justify-content-between align-items-center">'."\n\t\t".'<div class="btn-group">'."\n\t\t\t".'<button type="button" class="btn" data-toggle="modal" data-target="#exampleModal" data-whatever="'.$reference.'" data-nom="'.$nomAnnonce.'">Modifier</button><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#supprimer" data-whatever="'.$reference.'">Supprimer</button> '."\n\t\t".'</div>'."\n\t\t".'</div></div></div></div>';
+				echo '<div class="col-md-4">'."\n\t".'<div class="card mb-4 box-shadow">'."\n\t\t".' <img class="card-img-top" src="../../src/photos/'.$photo1.'" alt="Card image cap">'."\n\t\t".'<div class="card-body">'."\n\t\t\t".'<h5 style="color: #696969;"><strong>'.$nomAnnonce.'</strong> </h5>'."\n".'<p style="margin-top: -10px;"><small>'.$typeAnnonce.', '.$localisation.'</small></p>'."\n\t\t".'<div class="d-flex justify-content-between align-items-center">'."\n\t\t".'<div class="btn-group">'."\n\t\t\t".'<button type="button" class="btn" data-toggle="modal" data-target="#exampleModal" data-whatever="'.$reference.'" data-nom="'.$nomAnnonce.'" data-dsc="'.$descriptiondb.'" data-typ="'.$typeAnnoncedb.'" data-cat="'.$categoriedb.'" data-prx="'.$prixdb.'">Modifier</button><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#supprimer" data-whatever="'.$reference.'">Supprimer</button> '."\n\t\t".'</div>'."\n\t\t".'</div></div></div></div>';
 			} else {
 				// à changer avec bon code html/css
-				echo '<div class="col-md-4">'."\n\t".'<div class="card mb-4 box-shadow">'."\n\t\t".' <img class="card-img-top" src="../../src/photos/'.$photo1.'" alt="Card image cap">'."\n\t\t".'<div class="card-body">'."\n\t\t\t".'<h5 style="color: #696969;"><strong>'.$nomAnnonce.'</strong> </h5>'."\n".'<p style="margin-top: -10px;"><small>'.$typeAnnonce.', '.$localisation.'</small></p><p style="margin-top: -20px;"><small>'.$prix.' €</small></p>'."\n\t\t".'<div class="d-flex justify-content-between align-items-center">'."\n\t\t".'<div class="btn-group">'."\n\t\t\t".'<button type="button" class="btn" data-toggle="modal" data-target="#exampleModal" data-whatever="'.$reference.'" data-nom="'.$nomAnnonce.'">Modifier</button><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#supprimer" data-whatever="'.$reference.'">Supprimer</button> '."\n\t\t".'</div>'."\n\t\t".'</div></div></div></div>';
+				echo '<div class="col-md-4">'."\n\t".'<div class="card mb-4 box-shadow">'."\n\t\t".' <img class="card-img-top" src="../../src/photos/'.$photo1.'" alt="Card image cap">'."\n\t\t".'<div class="card-body">'."\n\t\t\t".'<h5 style="color: #696969;"><strong>'.$nomAnnonce.'</strong> </h5>'."\n".'<p style="margin-top: -10px;"><small>'.$typeAnnonce.', '.$localisation.'</small></p><p style="margin-top: -20px;"><small>'.$prix.' €</small></p>'."\n\t\t".'<div class="d-flex justify-content-between align-items-center">'."\n\t\t".'<div class="btn-group">'."\n\t\t\t".'<button type="button" class="btn" data-toggle="modal" data-target="#exampleModal" data-whatever="'.$reference.'" data-nom="'.$nomAnnonce.'" data-dsc="'.$descriptiondb.'" data-typ="'.$typeAnnoncedb.'" data-cat="'.$categorieIDdb.'" data-prx="'.$prixdb.'">Modifier</button><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#supprimer" data-whatever="'.$reference.'">Supprimer</button> '."\n\t\t".'</div>'."\n\t\t".'</div></div></div></div>';
 			}
 		}
 		echo "</div>";
@@ -609,27 +604,7 @@
 		}
 	}
 
-	function getDataAnnonce($pseudo, $reference) {
-
-		$select_db = connectDB();
-		$query     = "SELECT ann.pseudo,ann.nom,ann.descriptif,ann.prix,ann.photo1,ann.photo2,ann.photo3,typ.descTypeAnnonce,cat.descCat,ann.idTypeAnnonce,ann.idCat FROM annonce ann, type_annonce typ, categorie cat WHERE pseudo='".$pseudo."' AND reference='".$reference."' AND ann.idTypeAnnonce=typ.idTypeAnnonce AND ann.idCat=cat.idCat";
-		$result    = mysqli_query($select_db, $query);
-		$annonce   = mysqli_fetch_assoc($result);
-
-		$nom           = $annonce['nom'];
-		$description   = $annonce['descriptif'];
-		$typeAnnonce   = $annonce['descTypeAnnonce'];
-		$typeAnnonceID = $annonce['idTypeAnnonce'];
-		$categorie     = $annonce['descCat'];
-		$categorieID   = $annonce['idCat'];
-		$prix          = $annonce['prix'];
-		$photo1        = $annonce['photo1'];
-		$photo2        = $annonce['photo2'];
-		$photo3        = $annonce['photo3'];
-
-		return array($nom, $description, $typeAnnonce, $typeAnnonceID, $categorie, $categorieID, $prix, $photo1, $photo2, $photo3);
-
-	}
+	
 
 	// fonction pour modifier une annonce, elle ne touche pas aux photos
 	/*function modAnnonce($reference, $titre, $typeAnnonce, $categorie, $description, $prix) {
