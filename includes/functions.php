@@ -109,7 +109,7 @@
 	}
 
 	function changePassword($pseudo, $new_passwd, $new_passwd_confirm) {
-		if ($new_passwd == $new_passwd_confirm) {
+		if ($new_passwd == $new_passwd_confirm) { 
 			list($hashed_passwd, $salt) = HashAndSalting($new_passwd);
 			$select_db                  = connectDB();
 			$query	                    = "UPDATE `utilisateur` SET `passwd` = '".$hashed_passwd."', `salt` = '".$salt."' WHERE `utilisateur`.`pseudo` = '".$pseudo."'";
