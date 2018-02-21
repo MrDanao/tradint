@@ -89,6 +89,24 @@ if (!isLogged()) {
           	</div>
           <div class="modal-body">
           	<!--Formulaire de modification-->
+          	<dl class="row text-left text-justify">
+              <dt class="col-sm-3">Titre :</dt>
+              <dd class="col-sm-9"><p class="t_an"></p></dd>
+
+              <dt class="col-sm-3">Catégorie :</dt>
+              <dd class="col-sm-9"><p class="c_an"></p></dd>
+      
+              <dt class="col-sm-3">Type d'annonce :</dt>
+              <dd class="col-sm-9"><p class="tp_an"></p></dd>
+
+              <dt class="col-sm-3">Prix :</dt>
+              <dd class="col-sm-9"><p class="p_an"></p></dd>
+         
+              
+              <dt class="col-sm-3">Description</dt>
+              <dd class="col-sm-9"><p class="dsc_an"></p></dd>
+            </dl>
+
             <form action="modify.php" method="post" enctype="multipart/form-data" class="form-signin" id="form-mod">
             	<input type="hidden" name="ref" class="modal-input">
             	<div class="form-row">
@@ -211,12 +229,21 @@ if (!isLogged()) {
   			var button = $(event.relatedTarget) // Button that triggered the modal
   			var recipient = {
   				ref 	: button.data('whatever'),
-  				title_A	: button.data('nom')
+  				title_A	: button.data('nom'),
+  				cat_A 	: button.data('cat'),
+  				typ_A 	: button.data('typ'),
+  				prx_A 	: button.data('prx'),
+  				dsc_A 	: button.data('dsc')
   			} // Extract info from data-* attributes
   			// If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
  			// Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
   			var modal = $(this)
-  			modal.find('.modal-title').text('Annonces : ' + recipient['title_A'])
+  			modal.find('.modal-title').text(recipient['title_A'])
+  			modal.find('.t_an').text(recipient['title_A'])
+  			modal.find('.c_an').text(recipient['cat_A'])
+  			modal.find('.tp_an').text(recipient['typ_A'])
+  			modal.find('.p_an').text(recipient['prx_A'])
+  			modal.find('.dsc_an').text(recipient['dsc_A'])
   			modal.find('.modal-input').val(recipient['ref'])
 		});
 
