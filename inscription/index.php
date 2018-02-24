@@ -3,7 +3,7 @@
 include '../includes/functions.php';
 
 if (isLogged()) {
-	header('Location: ../annonces');
+	header('Location: ../accueil.php');
 }
 
 // si clique sur le bouton "Créer mon compte" (POST)
