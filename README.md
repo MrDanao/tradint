@@ -73,7 +73,7 @@ Wiki / Guide : [https://github.com/MrDanao/tradint/wiki/Documentation](https://g
 :heavy_check_mark: Style CSS.
 
 - Final :   
-:clock8: Review générale du code. 
+:heavy_check_mark: Review générale du code. 
 
 ## Environnement
 
