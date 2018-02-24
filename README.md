@@ -52,8 +52,8 @@ Wiki / Guide : [https://github.com/MrDanao/tradint/wiki/Documentation](https://g
 :heavy_check_mark: Listing des annonces.   
 :heavy_check_mark: Lien de redirection vers chaque annonce.   
 :heavy_check_mark: Système de page.   
-:clock8: Visuel de la barre des numéros de page.   
-:clock8: Style CSS.
+:heavy_check_mark: Visuel de la barre des numéros de page.   
+:heavy_check_mark: Style CSS.
 
 - Page dédiée à une annonce :   
 :heavy_check_mark: Affichage de l'annonce.   
