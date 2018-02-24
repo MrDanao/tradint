@@ -11,35 +11,33 @@
 
     // pour se connecter à la base de données et sélection de la base 'tradint'
 	function connectDB() {
-		$conn = mysqli_connect("localhost", "admintradint", "q>Z^mY]#[P`4ej&d", "tradint");
+		$conn = mysqli_connect("localhost", "dantran", "vitrygtr", "tradint");
 		return $conn;
 	}
 
 	// pour vérifier l'inexistance d'un user dans la table 'utilisateur' de la base 'tradint'
 	function checkUserInexistance($new_user) {
-		
+
 		$select_db = connectDB();
 		$query	   = "SELECT pseudo FROM utilisateur WHERE pseudo='".$new_user."';";
 		$result    = mysqli_query($select_db, $query);
-		
 		// si le résultat de le requête retourne 1 seule ligne, alors l'utilisateur existe dans la table 'utilisateur' de la base 'tradint'
 		if (mysqli_num_rows($result) == 1) {
 			return false;
 		} else {
 			return true;
 		}
+		
 	}
 
 	// pour hashing et salting du mot de passe en clair renseigné en paramètre $passwd_clair
 	function HashAndSalting($passwd_clair) {
-		
+
 		$options       = ['cost' => 10, 'salt' => random_bytes(128)];
 		$salt		   = $options['salt'];
 		$hashed_passwd = password_hash($passwd_clair, PASSWORD_BCRYPT, $options);
-
 		// retourne un couple (mot de passe hashé, salt) c'est ce couple qui sera stocké dans la table 'utilisateur' de la base 'tradint'
 		return array($hashed_passwd, $salt);
-		
 	}
 
 	// pour ajouter un user dans la table 'utilisateur' de la base 'tradint'
@@ -56,33 +54,28 @@
 		} else {
 			return false;
 		}
+
 	}
 
 	function rmUser($pseudo) {
-		
-		$select_db = connectDB();
 
+		$select_db = connectDB();
 		// suppresion des photos des annonces de l'utilisateur à supprimer
 		$query     = "SELECT reference FROM annonce WHERE pseudo='".$pseudo."'";
 		$result    = mysqli_query($select_db, $query);
-
 		while ($annonce = mysqli_fetch_assoc($result)) {
-
 			$reference = $annonce['reference'];
-			
 			foreach (glob("../src/photos/".$reference."_*") as $filename) {
 				unlink($filename);
 			}
 		}
-
 		// suppression des annonces
 		$queryRmAnnonce  = "DELETE FROM `annonce` WHERE `annonce`.`pseudo` = '".$pseudo."'";
 		$resultRmAnnonce = mysqli_query($select_db, $queryRmAnnonce);
-
 		// suppression du compte
 		$queryRmUser  = "DELETE FROM `utilisateur` WHERE `utilisateur`.`pseudo` = '".$pseudo."'";
 		$resultRmUser = mysqli_query($select_db, $queryRmUser);
-
+		
 		if ($resultRmAnnonce && $resultRmUser) {
 			return true;
 		} else {
@@ -92,6 +85,7 @@
 	}
 
 	function checkPassword($pseudo, $passwd_clair) {
+
 		$select_db        = connectDB();
 		$query            = "SELECT pseudo,passwd,salt FROM utilisateur WHERE pseudo='".$pseudo."';";
 		$result           = mysqli_query($select_db, $query);
@@ -101,19 +95,21 @@
 		$salt_db          = $row['salt'];
 		$options          = ['cost' => 10, 'salt' => $salt_db];
 		$hashed_passwd    = password_hash($passwd_clair, PASSWORD_BCRYPT, $options);
+		
 		if ($hashed_passwd == $hashed_passwd_db) {
 			return true;
 		} else {
 			return false;
 		}
+
 	}
 
 	function changePassword($pseudo, $new_passwd, $new_passwd_confirm) {
+		
 		if ($new_passwd == $new_passwd_confirm) { 
 			list($hashed_passwd, $salt) = HashAndSalting($new_passwd);
 			$select_db                  = connectDB();
 			$query	                    = "UPDATE `utilisateur` SET `passwd` = '".$hashed_passwd."', `salt` = '".$salt."' WHERE `utilisateur`.`pseudo` = '".$pseudo."'";
-		
 			$result	= mysqli_query($select_db, $query);
 		
 			if ($result) {
@@ -124,29 +120,27 @@
 		} else {
 			return false;
 		}
+
 	}
 
 
 	// pour checker pseudo et mot de passe lors de la connexion
 	function connectUser($pseudo, $passwd_clair) {
-
 		// vérifie l'inexistance du pseudo
 		if (!checkUserInexistance($pseudo)) {
-
 			// si existant, on récupère le mot de passe hashé et le salt stockés dans la table 'utilisateur' de la base 'tradint'
 			if (checkPassword($pseudo, $passwd_clair)) {
 				return true;
 			} else {
 				return false;
 			}
-
 		} else {
 			return false;
 		}
 
 	}
 
-		// pour lister les dernières annonces avec pagination, notamment utilisée dans la page d'accueil (accueil.php, ligne 32)
+	// pour lister les dernières annonces avec pagination, notamment utilisée dans la page d'accueil (accueil.php, ligne 32)
 	function showAccueilAnnonce() {
 		
 		$select_db 		  = connectDB();
@@ -176,7 +170,6 @@
 
 			$reference    = $annonce['reference'];
 			$nomAnnonce   = $annonce['nom'];
-			//$photo1	 	  = $annonce['photo1'];
 			$photo1	 	  = ($annonce['photo1']==NULL)?"../bg/no_png.png":$annonce['photo1'];
 			$typeAnnonce  = $annonce['descTypeAnnonce'];
 			$prix		  = $annonce['prix'];
@@ -186,7 +179,6 @@
 			if ($typeAnnonce != "Vente") {
 				echo '<div class="col-md-4">'."\n\t".'<div class="card mb-4 box-shadow">'."\n\t\t".'<img class="card-img-top" src="src/photos/'.$photo1.'" alt="Card image cap">'."\n\t\t".'<div class="card-body">'."\n\t\t\t".'<h5 style="color: #696969;"><strong>'.$nomAnnonce.'</strong> </h5>'."\n".'<p style="margin-top: -10px;"><small>'.$typeAnnonce.', '.$localisation.'</small></p>'."\n\t\t".'<div class="d-flex justify-content-between align-items-center">'."\n\t\t".'<div class="btn-group">'."\n\t\t\t".'<a role="button" href="annonce.php?ref='.$reference.'" class="btn btn-sm btn-outline-secondary">Voir</a>'."\n\t\t".'</div>'."\n\t\t".'</div></div></div></div>';
 			} else {
-				// à changer avec bon code html/css
 				echo '<div class="col-md-4">'."\n\t".'<div class="card mb-4 box-shadow">'."\n\t\t".' <img class="card-img-top" src="src/photos/'.$photo1.'" alt="Card image cap">'."\n\t\t".'<div class="card-body">'."\n\t\t\t".'<h5 style="color: #696969;"><strong>'.$nomAnnonce.'</strong> </h5>'."\n".'<p style="margin-top: -10px;"><small>'.$typeAnnonce.', '.$localisation.'</small></p><p style="margin-top: -20px;"><small>'.$prix.' €</small></p>'."\n\t\t".'<div class="d-flex justify-content-between align-items-center">'."\n\t\t".'<div class="btn-group">'."\n\t\t\t".'<a role="button" href="annonce.php?ref='.$reference.'" class="btn btn-sm btn-outline-secondary">Voir</a>'."\n\t\t".'</div>'."\n\t\t".'</div></div></div></div>';
 			}
 		}
@@ -212,7 +204,6 @@
 
 
 	// pour afficher l'annonce (appelé dans le fichier annonce.php, ligne 33)
-	// function à refaire !!!!!!
 	function showAnnonce() {
 
 		$refAnnonce  = $_GET['ref'];
@@ -221,31 +212,6 @@
 		$result      = mysqli_query($select_db, $query);
 		$row         = mysqli_fetch_assoc($result);
 
-		// récupération des données propres à l'annonce
-		//$reference   = $row['reference'];
-		//$pseudo      = $row['pseudo'];
-		//$pseudoEmail = $row['email'];
-		//$pseudoTel   = $row['numeroTel'];
-		//$nomAnnonce  = $row['nom'];
-		//$prix	     = $row['prix'];
-		//$photo1	     = $row['photo1'];
-		//$dateAjout	 = $row['dateAjout'];
-		//$categorie   = $row['descCat'];
-		//$typeAnnonce = $row['descTypeAnnonce'];
-		//$descriptif  = $row['descriptif'];
-		// AJOUTER PHOTO 2 ET PHOTO 3.
-
-		// à changer avec bon code html/css
-		//echo $nomAnnonce."</br>";
-		//echo '<img src="src/photos/'.$photo1.'"></br>';
-		//if ($typeAnnonce != "Vente") {
-		//	echo $typeAnnonce."</br>";
-		//} else {
-		//	echo $typeAnnonce." - ".$prix."€</br>";
-		//}
-		//echo $descriptif;
-
-		//return array($pseudoEmail, $pseudoTel);
 		return $row;
 
 	}
@@ -305,7 +271,6 @@
 		$titre 		 = mysqli_real_escape_string($select_db, $titre);
 		$description = mysqli_real_escape_string($select_db, $description);
 		$query       = "INSERT INTO `annonce` (`reference`, `nom`, `descriptif`, `prix`, `dateAjout`, `photo1`, `photo2`, `photo3`, `pseudo`, `idTypeAnnonce`, `idCat`) VALUES (NULL, '".$titre."', '".$description."', ".$prix.", CURRENT_TIMESTAMP, 'nomPhoto1', NULL, NULL, '".$utilisateur."', '".$typeAnnonce."', '".$categorie."')";
-		//echo $query; // pour debug
 		$result      = mysqli_query($select_db, $query);
 
 		if ($result) {
@@ -333,12 +298,12 @@
 		} else {
 			echo "fail";
 		}
+
 	}
 
 	function rmAnnonce($pseudo, $reference) {
 
 		$select_db = connectDB();
-
 		// suppression des annonces
 		$queryRmAnnonce  = "DELETE FROM `annonce` WHERE `annonce`.`pseudo` = '".$pseudo."' AND `annonce`.`reference` = '".$reference."'";
 		$resultRmAnnonce = mysqli_query($select_db, $queryRmAnnonce);
@@ -353,6 +318,7 @@
 		}
 
 	}
+
 	function getDataAnnonce($pseudo, $reference) {
 
 		$select_db = connectDB();
@@ -417,10 +383,9 @@
 			$prixdb = !empty($prixdb)?$prixdb:"Pas de prix";
 
 			if ($typeAnnonce != "Vente") {
-				echo '<div class="col-md-4">'."\n\t".'<div class="card mb-4 box-shadow">'."\n\t\t".' <img class="card-img-top" src="../../src/photos/'.$photo1.'" alt="Card image cap">'."\n\t\t".'<div class="card-body">'."\n\t\t\t".'<h5 style="color: #696969;"><strong>'.$nomAnnonce.'</strong> </h5>'."\n".'<p style="margin-top: -10px;"><small>'.$typeAnnonce.', '.$localisation.'</small></p>'."\n\t\t".'<div class="d-flex justify-content-between align-items-center">'."\n\t\t".'<div class="btn-group">'."\n\t\t\t".'<button type="button" class="btn" data-toggle="modal" data-target="#exampleModal" data-whatever="'.$reference.'" data-nom="'.$nomAnnonce.'" data-dsc="'.$descriptiondb.'" data-typ="'.$typeAnnoncedb.'" data-cat="'.$categoriedb.'" data-prx="'.$prixdb.'">Modifier</button><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#supprimer" data-whatever="'.$reference.'">Supprimer</button> '."\n\t\t".'</div>'."\n\t\t".'</div></div></div></div>';
+				echo '<div class="col-md-4">'."\n\t".'<div class="card mb-4 box-shadow">'."\n\t\t".' <img class="card-img-top" src="../../src/photos/'.$photo1.'" alt="Card image cap">'."\n\t\t".'<div class="card-body">'."\n\t\t\t".'<h5 style="color: #696969;"><strong><a href="../../annonce.php?ref='.$reference.'">'.$nomAnnonce.'</a></strong> </h5>'."\n".'<p style="margin-top: -10px;"><small>'.$typeAnnonce.', '.$localisation.'</small></p>'."\n\t\t".'<div class="d-flex justify-content-between align-items-center">'."\n\t\t".'<div class="btn-group">'."\n\t\t\t".'<button type="button" class="btn" data-toggle="modal" data-target="#exampleModal" data-whatever="'.$reference.'" data-nom="'.$nomAnnonce.'" data-dsc="'.$descriptiondb.'" data-typ="'.$typeAnnoncedb.'" data-cat="'.$categoriedb.'" data-prx="'.$prixdb.'">Modifier</button><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#supprimer" data-whatever="'.$reference.'">Supprimer</button> '."\n\t\t".'</div>'."\n\t\t".'</div></div></div></div>';
 			} else {
-				// à changer avec bon code html/css
-				echo '<div class="col-md-4">'."\n\t".'<div class="card mb-4 box-shadow">'."\n\t\t".' <img class="card-img-top" src="../../src/photos/'.$photo1.'" alt="Card image cap">'."\n\t\t".'<div class="card-body">'."\n\t\t\t".'<h5 style="color: #696969;"><strong>'.$nomAnnonce.'</strong> </h5>'."\n".'<p style="margin-top: -10px;"><small>'.$typeAnnonce.', '.$localisation.'</small></p><p style="margin-top: -20px;"><small>'.$prix.' €</small></p>'."\n\t\t".'<div class="d-flex justify-content-between align-items-center">'."\n\t\t".'<div class="btn-group">'."\n\t\t\t".'<button type="button" class="btn" data-toggle="modal" data-target="#exampleModal" data-whatever="'.$reference.'" data-nom="'.$nomAnnonce.'" data-dsc="'.$descriptiondb.'" data-typ="'.$typeAnnoncedb.'" data-cat="'.$categorieIDdb.'" data-prx="'.$prixdb.'">Modifier</button><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#supprimer" data-whatever="'.$reference.'">Supprimer</button> '."\n\t\t".'</div>'."\n\t\t".'</div></div></div></div>';
+				echo '<div class="col-md-4">'."\n\t".'<div class="card mb-4 box-shadow">'."\n\t\t".' <img class="card-img-top" src="../../src/photos/'.$photo1.'" alt="Card image cap">'."\n\t\t".'<div class="card-body">'."\n\t\t\t".'<h5 style="color: #696969;"><strong><a href="../../annonce.php?ref='.$reference.'">'.$nomAnnonce.'</a></strong> </h5>'."\n".'<p style="margin-top: -10px;"><small>'.$typeAnnonce.', '.$localisation.'</small></p><p style="margin-top: -20px;"><small>'.$prix.' €</small></p>'."\n\t\t".'<div class="d-flex justify-content-between align-items-center">'."\n\t\t".'<div class="btn-group">'."\n\t\t\t".'<button type="button" class="btn" data-toggle="modal" data-target="#exampleModal" data-whatever="'.$reference.'" data-nom="'.$nomAnnonce.'" data-dsc="'.$descriptiondb.'" data-typ="'.$typeAnnoncedb.'" data-cat="'.$categorieIDdb.'" data-prx="'.$prixdb.'">Modifier</button><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#supprimer" data-whatever="'.$reference.'">Supprimer</button> '."\n\t\t".'</div>'."\n\t\t".'</div></div></div></div>';
 			}
 		}
 		echo "</div>";
@@ -440,6 +405,7 @@
 			echo '<li class="page-item "><a class="page-link" href="index.php?page='.$pagePrecedente.'" aria-label="Previous"><span aria-hidden="true">&laquo;</span><span class="sr-only">Previous</span></a></li><li class="page-item disabled"><a class="page-link" href="#">'.$nbTotalPage.'/'.$nbTotalPage.'</a></li><li class="page-item disabled"><a class="page-link " href="#" aria-label="Next"><span aria-hidden="true">&raquo;</span><span class="sr-only">Next</span></a></li>';
 		}
 		echo '</ul></nav>';
+
 	}
 
 	function isFileUp($filePhoto) {
@@ -507,7 +473,6 @@
 				if ($typeAnnonce != "Vente") {
 				echo '<div class="col-md-3">'."\n\t".'<div class="card mb-3 box-shadow">'."\n\t\t".' <img class="card-img-top" src="src/photos/'.$photo1.'" alt="Card image cap">'."\n\t\t".'<div class="card-body">'."\n\t\t\t".'<h5 style="color: #696969;"><strong>'.$nomAnnonce.'</strong> </h5>'."\n".'<p style="margin-top: -10px;"><small>'.$typeAnnonce.', '.$localisation.'</small></p>'."\n\t\t".'<div class="d-flex justify-content-between align-items-center">'."\n\t\t".'<div class="btn-group">'."\n\t\t\t".'<a role="button" href="annonce.php?ref='.$reference.'" class="btn btn-sm btn-outline-secondary">Voir</a>'."\n\t\t".'</div>'."\n\t\t".'</div></div></div></div>';
 				} else {
-					// à changer avec bon code html/css
 					echo '<div class="col-md-3">'."\n\t".'<div class="card mb-3 box-shadow">'."\n\t\t".' <img class="card-img-top" src="src/photos/'.$photo1.'" alt="Card image cap">'."\n\t\t".'<div class="card-body">'."\n\t\t\t".'<h5 style="color: #696969;"><strong>'.$nomAnnonce.'</strong> </h5>'."\n".'<p style="margin-top: -10px;"><small>'.$typeAnnonce.', '.$localisation.'</small></p><p style="margin-top: -20px;"><small>'.$prix.' €</small></p>'."\n\t\t".'<div class="d-flex justify-content-between align-items-center">'."\n\t\t".'<div class="btn-group">'."\n\t\t\t".'<a role="button" href="annonce.php?ref='.$reference.'" class="btn btn-sm btn-outline-secondary">Voir</a>'."\n\t\t".'</div>'."\n\t\t".'</div></div></div></div>';
 				}
 			}
@@ -530,6 +495,7 @@
 			}
 			echo '</ul></nav>';
 		}
+
 	}
 
 	function showOptions($table) {
@@ -558,6 +524,7 @@
 			echo '<option value="'.$id.'">'.$desc.'</option>';
 
 		}
+
 	}
 
 	// fonction identique à showOptions mais ajoute l'attribut "selected" à l'option concernée. cette fonction est utilisée pour la page de modification d'annonce.
@@ -591,27 +558,8 @@
 			}
 
 		}
+
 	}
-
-	
-
-	// fonction pour modifier une annonce, elle ne touche pas aux photos
-	/*function modAnnonce($reference, $titre, $typeAnnonce, $categorie, $description, $prix) {
-
-		$select_db   = connectDB();
-		// pour ajouter un anti-slash \ avant un caractère spécial
-		$titre 		 = mysqli_real_escape_string($select_db, $titre);
-		$description = mysqli_real_escape_string($select_db, $description);
-		$query       = "UPDATE `annonce` SET `nom` = '".$titre."', `idTypeAnnonce` = '".$typeAnnonce."', `idCat` = '".$categorie."', `descriptif` = '".$description."', `prix` = ".$prix." WHERE `annonce`.`reference` = ".$reference.";";
-		$result      = mysqli_query($select_db, $query);
-
-		if ($result) {
-			echo "Annonce modifiée dans la base de données.";
-			header('Location: index.php');
-		} else {
-			echo "fail";
-		}
-	}*/
 
 	function modAnnonce($reference, $donnees, $chmp) {
 		$select_db   = connectDB();
@@ -725,7 +673,6 @@
 		} else {
 			return false;
 		}
-
 
 	}
 ?>

@@ -44,6 +44,7 @@ if (isset($_POST['change_pass'])) {
 		$new_passwd         = $_POST['new_passwd'];
 		$new_passwd_confirm = $_POST['new_passwd_confirm'];
 
+		// appel de la fonction checkPassword située dans ../includes/functions.php ligne 87
 		if (checkPassword($pseudo, $current_passwd)) {
 
 			if (($current_passwd == $new_passwd) && ($current_passwd == $new_passwd_confirm)) {
@@ -83,6 +84,7 @@ if (isset($_POST['delete_account'])) {
 
 		if (isset($_POST['confirm_deletion'])) {
 			
+			// appel de la fonction rmUser située dans ../includes/functions.php ligne 60
 			if (rmUser($pseudo)) {
 				$user_rm_log = "La suppression de votre compte a été effectuée. Vous serez redirigé vers la page d'accueil dans quelques instants...";
 				$_SESSION  = array();
@@ -102,143 +104,122 @@ if (isset($_POST['delete_account'])) {
 ?>
 <!doctype html>
 <html lang="fr">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
-
-    <link rel="icon" href="../../../../favicon.ico">
-
-    <title>TradINT</title>
-
-    <!-- Bootstrap CSS -->
-    <link href="../../style/css/bootstrap.css" rel="stylesheet">
-
-    <!-- CSS-->
-    <link href="../../style/style.css" rel="stylesheet">
-    
-  </head>
-  <body>
-    <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark ">
-      <div class="container">
-        <a class="navbar-brand" href="#">TradINT</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample07" aria-controls="navbarsExample07" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <div class="collapse navbar-collapse" id="navbarsExample07">
-          <ul class="navbar-nav mr-auto">
-            <li class="nav-item ">
-              <a class="nav-link" href="../../index.html">Accueil <span class="sr-only">(current)</span></a>
-            </li>
-            <li class="nav-item active">
-              <a class="nav-link" href="../../accueil.php">Annonces</a>
-            </li>
-             <?php 
-                if (isLogged()) {        
-                  echo '<li class="nav-item"><a class="nav-link" href="../../poster/">Poster une annonce</a></li>'; 
-                  echo '<li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="compte/" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Mon compte</a><div class="dropdown-menu" aria-labelledby="dropdown01"><a class="dropdown-item" href="../parametres">Gérer mon compte</a><a class="dropdown-item" href="../mesannonces/">Gérer mes annonces</a><a class="dropdown-item" href="../../deconnexion.php">Déconnexion</a></div></li>';
-                } 
-                else{
-                  echo '<li class="nav-item"><a class="nav-link" href="./connexion/">Connexion</a></li>';
-                  echo '<li class="nav-item"><a class="nav-link" href="./inscription/">Inscription <span class="sr-only">(current)</span></a></li>';
-                }
-              ?>
-          </ul>
-        </div>
-      </div>
-    </nav>
-    <div class="container corps">
-    <main role="main">
-    	<section class="jumbotron text-center">
-	    	<div class="row">
-	        	<div class="col-md-4">
-	            	<h2>Localisation</h2>
-	            	<form action="index.php" method="post">
-	          			<div class="form-row">
-							<div class="form-group col-md-12">
-						      	<select id="inputState" name="localisation" class="form-control">
-							        <?php
+	<head>
+		<meta charset="utf-8">
+    	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    	<meta name="description" content="">
+    	<meta name="author" content="">
+    	<link rel="icon" href="../../../../favicon.ico">
+    	<title>TradINT</title>
+    	<!-- Bootstrap CSS -->
+    	<link href="../../style/css/bootstrap.css" rel="stylesheet">
+    	<!-- CSS-->
+    	<link href="../../style/style.css" rel="stylesheet">
+	</head>
+	<body>
+    	<nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark ">
+			<div class="container">
+				<a class="navbar-brand" href="#">TradINT</a>
+				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample07" aria-controls="navbarsExample07" aria-expanded="false" aria-label="Toggle navigation">
+          			<span class="navbar-toggler-icon"></span>
+        		</button>
+				<div class="collapse navbar-collapse" id="navbarsExample07">
+					<ul class="navbar-nav mr-auto">
+						<li class="nav-item ">
+							<a class="nav-link" href="../../index.html">Accueil <span class="sr-only">(current)</span></a>
+						</li>
+						<li class="nav-item active">
+							<a class="nav-link" href="../../accueil.php">Annonces</a>
+						</li>
+						<?php 
+						if (isLogged()) {        
+                			echo '<li class="nav-item"><a class="nav-link" href="../../poster/">Poster une annonce</a></li>'; 
+                			echo '<li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="compte/" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Mon compte</a><div class="dropdown-menu" aria-labelledby="dropdown01"><a class="dropdown-item" href="../parametres">Gérer mon compte</a><a class="dropdown-item" href="../mesannonces/">Gérer mes annonces</a><a class="dropdown-item" href="../../deconnexion.php">Déconnexion</a></div></li>';
+						} else {
+                			echo '<li class="nav-item"><a class="nav-link" href="./connexion/">Connexion</a></li>';
+                			echo '<li class="nav-item"><a class="nav-link" href="./inscription/">Inscription <span class="sr-only">(current)</span></a></li>';
+                		}
+              			?>
+          			</ul>
+        		</div>
+      		</div>
+    	</nav>
+    	<div class="container corps">
+    		<main role="main">
+    			<section class="jumbotron text-center">
+	    			<div class="row">
+	        			<div class="col-md-4">
+		            		<h2>Localisation</h2>
+		            		<form action="index.php" method="post">
+		          				<div class="form-row">
+									<div class="form-group col-md-12">
+							      		<select id="inputState" name="localisation" class="form-control">
+								        <?php
 										showOptionsModify("localisation", $localisation);
-						   			?>
-						      	</select>
-					    	</div>
-						</div>
-						<input type="submit" name="changeLoc" value="Modifier" class="btn btn-primary">
-				  		<div class="form-row" style=" margin-top: 10px;">
-							<?php
-                    			if (isset($loc_change_log)) { echo $loc_change_log; }
-                    		?>
-						</div>
-			   
-					</form>
-	          	</div>
-	          	<!--Champs de mot de passe-->
-	          	<div class="col-md-4">
-	          		<h2>Mot de passe</h2>
-			        <form action="index.php" method="post">
-						<div class="form-row">
-						  <div class="form-group col-md-12">
-						    <input type="password" class="form-control" name="current_passwd" placeholder="Mot de passe actuel">
-						  </div>
-						</div>
-						<div class="form-row">
-						  <div class="form-group col-md-12">
-						    <input type="password" class="form-control" name="new_passwd" placeholder="Nouveau mot de passe">
-						  </div>
-						</div>
-						<div class="form-row">
-					  		<div class="form-group col-md-12">
-					    		<input type="password" class="form-control" name="new_passwd_confirm" placeholder="Confirmer le mot de passe">
-							</div>
-						</div>
-						<input type="submit" value="Modifier" name="change_pass" class="btn btn-primary"/>
-			  
-						<div class="form-row" style=" margin-top: 10px;">
-							<?php
-                    			if (isset($pass_change_log)) { echo $pass_change_log; }
-                   			?>
-						</div>
-					</form>
-		        </div>
-		        <!--Champs Supprimer compte-->
-	         	<div class="col-md-4">
-		            <h2>Supprimer compte</h2>
-		            <form action="index.php" method="post">
-						<div class="form-row">
-						  <div class="form-group col-md-12">
-						    <input type="password" class="form-control" name="passwd" placeholder="Mot de passe">
-						  </div>
-						</div>
-						<div class="form-row">
-						  <div class="form-group col-md-12">
-						    <div class="form-check">
-    							<input type="checkbox" class="form-check-input" name="confirm_deletion">
-    							<label class="form-check-label" for="exampleCheck1">Je confirme la suppression du compte</label>
-  							</div>
-						  </div>
-						</div>
-						<input type="submit" class="btn btn-primary" value="Supprimer le compte" name="delete_account"/>
-			  
-						<div class="form-row" style=" margin-top: 10px;">
-							<?php
-                    			if (isset($user_rm_log)) { echo $user_rm_log; }
-                    		?>
-						</div>
-					</form>
-	          	</div>
-	        </div>
-	    </section>
-    </main>
-
-
-	</div>
-	<script src="../../style/js/jquery3.js"></script>
-  	<script src="../../style/js/poppers.js"></script>
-  	<script src="../../style/js/bootstrap.js"></script>
-  	<script type="text/javascript">
-  	</script>
-  	
-</body>
+							   			?>
+							      		</select>
+						    		</div>
+								</div>
+								<input type="submit" name="changeLoc" value="Modifier" class="btn btn-primary">
+					  			<div class="form-row" style=" margin-top: 10px;">
+								<?php if (isset($loc_change_log)) { echo $loc_change_log; } ?>
+								</div> 
+							</form>
+		          		</div>
+	          			<!--Champs de mot de passe-->
+	          			<div class="col-md-4">
+	          				<h2>Mot de passe</h2>
+			        		<form action="index.php" method="post">
+								<div class="form-row">
+						  			<div class="form-group col-md-12">
+						    			<input type="password" class="form-control" name="current_passwd" placeholder="Mot de passe actuel">
+									</div>
+								</div>
+								<div class="form-row">
+						  			<div class="form-group col-md-12">
+						    			<input type="password" class="form-control" name="new_passwd" placeholder="Nouveau mot de passe">
+									</div>
+								</div>
+								<div class="form-row">
+					  				<div class="form-group col-md-12">
+					    				<input type="password" class="form-control" name="new_passwd_confirm" placeholder="Confirmer le mot de passe">
+									</div>
+								</div>
+								<input type="submit" value="Modifier" name="change_pass" class="btn btn-primary"/>
+								<div class="form-row" style=" margin-top: 10px;">
+								<?php if (isset($pass_change_log)) { echo $pass_change_log; } ?>
+								</div>
+							</form>
+		        		</div>
+		        		<!--Champs Supprimer compte-->
+	         			<div class="col-md-4">
+		            		<h2>Supprimer compte</h2>
+		            		<form action="index.php" method="post">
+								<div class="form-row">
+						  			<div class="form-group col-md-12">
+						    			<input type="password" class="form-control" name="passwd" placeholder="Mot de passe">
+									</div>
+								</div>
+								<div class="form-row">
+						  			<div class="form-group col-md-12">
+						    			<div class="form-check">
+    										<input type="checkbox" class="form-check-input" name="confirm_deletion">
+    										<label class="form-check-label" for="exampleCheck1">Je confirme la suppression du compte</label>
+  										</div>
+									</div>
+								</div>
+								<input type="submit" class="btn btn-primary" value="Supprimer le compte" name="delete_account"/>
+								<div class="form-row" style=" margin-top: 10px;">
+								<?php if (isset($user_rm_log)) { echo $user_rm_log; } ?>
+								</div>
+							</form>
+		          		</div>
+		        	</div>
+		    	</section>
+	    	</main>
+		</div>
+		<script src="../../style/js/jquery3.js"></script>
+	  	<script src="../../style/js/poppers.js"></script>
+	  	<script src="../../style/js/bootstrap.js"></script>
+	</body>
 </html>
