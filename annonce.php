@@ -52,13 +52,10 @@ include 'includes/functions.php';
           <h1><?php echo $table['nom']; ?></h1>
           <div class="row">
           <?php                   
-          $table['photo2'] = empty($table['photo2'])?"../bg/no_png.png":$table['photo2'];
-          $table['photo3'] = empty($table['photo3'])?"../bg/no_png.png":$table['photo3'];
-          $i = 1;
-          while (isset($table['photo'.$i])&&$table['photo'.$i]!="") {
-            echo '<div class="col-sm-12 col-md-4 img-cent" ><div class="mx-auto frame"><img src="src/photos/'.$table['photo'.$i].'" class="img-fluid mx-auto"></div></div>';
-            $i++;
-
+          for ($i = 1; $i <= 3; $i++) {
+            if (!empty($table['photo'.$i])) {
+              echo '<div class="col-sm-12 col-md-4 img-cent" ><div class="mx-auto frame"><img src="src/photos/'.$table['photo'.$i].'" class="img-fluid mx-auto"></div></div>';
+            }
           }
           ?>
           </div>
