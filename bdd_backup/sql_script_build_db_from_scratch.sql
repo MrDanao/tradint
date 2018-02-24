@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Client :  localhost:3306
--- Généré le :  Sam 24 Février 2018 à 23:27
+-- Généré le :  Sam 24 Février 2018 à 23:45
 -- Version du serveur :  10.1.26-MariaDB-0+deb9u1
 -- Version de PHP :  7.0.27-0+deb9u1
 
@@ -71,6 +71,8 @@ CREATE TABLE `dataAnnonce` (
 ,`idCat` int(11)
 ,`dateAjout` datetime
 ,`pseudo` varchar(50)
+,`email` varchar(100)
+,`numeroTel` char(10)
 ,`idLocal` int(11)
 ,`descLocal` varchar(100)
 );
@@ -119,7 +121,7 @@ CREATE TABLE `utilisateur` (
 --
 DROP TABLE IF EXISTS `dataAnnonce`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`admintradint`@`localhost` SQL SECURITY DEFINER VIEW `dataAnnonce`  AS  select `ann`.`reference` AS `reference`,`ann`.`nom` AS `nom`,`ann`.`descriptif` AS `descriptif`,`ann`.`prix` AS `prix`,`ann`.`photo1` AS `photo1`,`ann`.`photo2` AS `photo2`,`ann`.`photo3` AS `photo3`,`typ`.`descTypeAnnonce` AS `descTypeAnnonce`,`ann`.`idTypeAnnonce` AS `idTypeAnnonce`,`cat`.`descCat` AS `descCat`,`ann`.`idCat` AS `idCat`,`ann`.`dateAjout` AS `dateAjout`,`ann`.`pseudo` AS `pseudo`,`user`.`idLocal` AS `idLocal`,`local`.`descLocal` AS `descLocal` from ((((`annonce` `ann` join `type_annonce` `typ`) join `categorie` `cat`) join `utilisateur` `user`) join `localisation` `local`) where ((`ann`.`idTypeAnnonce` = `typ`.`idTypeAnnonce`) and (`ann`.`idCat` = `cat`.`idCat`) and (`ann`.`pseudo` = `user`.`pseudo`) and (`user`.`idLocal` = `local`.`idLocal`)) order by `ann`.`reference` desc ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`admintradint`@`localhost` SQL SECURITY DEFINER VIEW `dataAnnonce`  AS  select `ann`.`reference` AS `reference`,`ann`.`nom` AS `nom`,`ann`.`descriptif` AS `descriptif`,`ann`.`prix` AS `prix`,`ann`.`photo1` AS `photo1`,`ann`.`photo2` AS `photo2`,`ann`.`photo3` AS `photo3`,`typ`.`descTypeAnnonce` AS `descTypeAnnonce`,`ann`.`idTypeAnnonce` AS `idTypeAnnonce`,`cat`.`descCat` AS `descCat`,`ann`.`idCat` AS `idCat`,`ann`.`dateAjout` AS `dateAjout`,`ann`.`pseudo` AS `pseudo`,`user`.`email` AS `email`,`user`.`numeroTel` AS `numeroTel`,`user`.`idLocal` AS `idLocal`,`local`.`descLocal` AS `descLocal` from ((((`annonce` `ann` join `type_annonce` `typ`) join `categorie` `cat`) join `utilisateur` `user`) join `localisation` `local`) where ((`ann`.`idTypeAnnonce` = `typ`.`idTypeAnnonce`) and (`ann`.`idCat` = `cat`.`idCat`) and (`ann`.`pseudo` = `user`.`pseudo`) and (`user`.`idLocal` = `local`.`idLocal`)) order by `ann`.`reference` desc ;
 
 --
 -- Index pour les tables exportées
