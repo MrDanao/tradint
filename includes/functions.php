@@ -34,7 +34,7 @@
 	function HashAndSalting($passwd_clair) {
 
 		$options       = ['cost' => 10, 'salt' => random_bytes(128)];
-		$salt		   = $options['salt'];
+		$salt          = $options['salt'];
 		$hashed_passwd = password_hash($passwd_clair, PASSWORD_BCRYPT, $options);
 		// retourne un couple (mot de passe hashé, salt) c'est ce couple qui sera stocké dans la table 'utilisateur' de la base 'tradint'
 		return array($hashed_passwd, $salt);
@@ -143,10 +143,10 @@
 	// pour lister les dernières annonces avec pagination, notamment utilisée dans la page d'accueil (accueil.php, ligne 32)
 	function showAccueilAnnonce() {
 		
-		$select_db 		  = connectDB();
-		$query    		  = "SELECT COUNT(*) AS nb_annonce FROM annonce";
+		$select_db        = connectDB();
+		$query            = "SELECT COUNT(*) AS nb_annonce FROM annonce";
 		$result           = mysqli_query($select_db, $query);
-		$row 			  = mysqli_fetch_assoc($result);
+		$row              = mysqli_fetch_assoc($result);
 		$nbTotalAnnonce   = $row['nb_annonce'];
 		$nbAnnonceParPage = 6;
 		$nbTotalPage      = ceil($nbTotalAnnonce / $nbAnnonceParPage);
@@ -162,17 +162,16 @@
 		}
 
 		$premiereEntree = ($pageCourante-1)*$nbAnnonceParPage;
-
-		$query     = "SELECT reference,nom,prix,photo1,typ.descTypeAnnonce, local.descLocal FROM annonce ann, type_annonce typ, utilisateur user, localisation local WHERE ann.idTypeAnnonce=typ.idTypeAnnonce AND ann.pseudo=user.pseudo AND user.idLocal=local.idLocal ORDER BY reference DESC LIMIT ".$premiereEntree.",".$nbAnnonceParPage."";
+		$query     = "SELECT * FROM dataAnnonce LIMIT ".$premiereEntree.",".$nbAnnonceParPage."";
 		$result    = mysqli_query($select_db, $query);
 
 		while ($annonce = mysqli_fetch_assoc($result)) {
 
 			$reference    = $annonce['reference'];
 			$nomAnnonce   = $annonce['nom'];
-			$photo1	 	  = ($annonce['photo1']==NULL)?"../bg/no_png.png":$annonce['photo1'];
+			$photo1       = ($annonce['photo1']==NULL)?"../bg/no_png.png":$annonce['photo1'];
 			$typeAnnonce  = $annonce['descTypeAnnonce'];
-			$prix		  = $annonce['prix'];
+			$prix         = $annonce['prix'];
 			$localisation = $annonce['descLocal'];
 
 
@@ -208,7 +207,7 @@
 
 		$refAnnonce  = $_GET['ref'];
 		$select_db   = connectDB();
-		$query       = "SELECT DISTINCT ann.nom, ann.descriptif, ann.prix, ann.photo1, ann.photo2, ann.photo3, ann.pseudo, ann.dateAjout, typ.descTypeAnnonce, cat.descCat, user.email, user.numeroTel FROM annonce ann, categorie cat, type_annonce typ, utilisateur user WHERE ann.reference='".$refAnnonce."' and ann.idTypeAnnonce=typ.idTypeAnnonce and ann.idCat=cat.idCat and ann.pseudo=user.pseudo";
+		$query       = "SELECT * from dataAnnonce WHERE reference='".$refAnnonce."'";
 		$result      = mysqli_query($select_db, $query);
 		$row         = mysqli_fetch_assoc($result);
 
@@ -233,34 +232,34 @@
 	function UploadInsertPhoto($photo, $id, $number, $link) {
 
 		$tmpPathFile = $photo['tmp_name'];
-        $tmpMimeFile = $photo['type'];
+        	$tmpMimeFile = $photo['type'];
             		
-        switch ($tmpMimeFile) {
+        	switch ($tmpMimeFile) {
         	
-        	case 'image/jpeg':
-          		$file_destination = ''.$link.'../src/photos/'.$id.'_p'.$number.'.jpg';
-           		if (move_uploaded_file($tmpPathFile, $file_destination)) {
-           			$select_db = connectDB();
-           			$query = "UPDATE `annonce` SET `photo".$number."` = '".$id."_p".$number.".jpg' WHERE `annonce`.`reference` = ".$id."";
+        		case 'image/jpeg':
+          			$file_destination = ''.$link.'../src/photos/'.$id.'_p'.$number.'.jpg';
+           			if (move_uploaded_file($tmpPathFile, $file_destination)) {
+           				$select_db = connectDB();
+           				$query = "UPDATE `annonce` SET `photo".$number."` = '".$id."_p".$number.".jpg' WHERE `annonce`.`reference` = ".$id."";
 					$result = mysqli_query($select_db, $query);
-               		return true;
-           		} else {
-               		return false;
-           		}
-           		break;
+               				return true;
+           			} else {
+               				return false;
+           			}
+           			break;
            	
-           	case 'image/png':
-          		$file_destination = ''.$link.'../src/photos/'.$id.'_p'.$number.'.png';
-           		if (move_uploaded_file($tmpPathFile, $file_destination)) {
-           			$select_db = connectDB();
-           			$query = "UPDATE `annonce` SET `photo".$number."` = '".$id."_p".$number.".png' WHERE `annonce`.`reference` = ".$id."";
+           		case 'image/png':
+          			$file_destination = ''.$link.'../src/photos/'.$id.'_p'.$number.'.png';
+           			if (move_uploaded_file($tmpPathFile, $file_destination)) {
+           				$select_db = connectDB();
+           				$query = "UPDATE `annonce` SET `photo".$number."` = '".$id."_p".$number.".png' WHERE `annonce`.`reference` = ".$id."";
 					$result = mysqli_query($select_db, $query);
-               		return true;
-           		} else {
-               		return false;
-           		}
-           		break;
-        }
+               				return true;
+           			} else {
+               				return false;
+           			}
+           			break;
+        	}
 
 	}
 
@@ -268,7 +267,7 @@
 
 		$select_db   = connectDB();
 		// pour ajouter un anti-slash \ avant un caractère spécial
-		$titre 		 = mysqli_real_escape_string($select_db, $titre);
+		$titre       = mysqli_real_escape_string($select_db, $titre);
 		$description = mysqli_real_escape_string($select_db, $description);
 		$query       = "INSERT INTO `annonce` (`reference`, `nom`, `descriptif`, `prix`, `dateAjout`, `photo1`, `photo2`, `photo3`, `pseudo`, `idTypeAnnonce`, `idCat`) VALUES (NULL, '".$titre."', '".$description."', ".$prix.", CURRENT_TIMESTAMP, 'nomPhoto1', NULL, NULL, '".$utilisateur."', '".$typeAnnonce."', '".$categorie."')";
 		$result      = mysqli_query($select_db, $query);
@@ -322,7 +321,7 @@
 	function getDataAnnonce($pseudo, $reference) {
 
 		$select_db = connectDB();
-		$query     = "SELECT ann.pseudo,ann.nom,ann.descriptif,ann.prix,ann.photo1,ann.photo2,ann.photo3,typ.descTypeAnnonce,cat.descCat,ann.idTypeAnnonce,ann.idCat FROM annonce ann, type_annonce typ, categorie cat WHERE pseudo='".$pseudo."' AND reference='".$reference."' AND ann.idTypeAnnonce=typ.idTypeAnnonce AND ann.idCat=cat.idCat";
+		$query     = "SELECT * FROM dataAnnonce WHERE pseudo='".$pseudo."' AND reference='".$reference."'";
 		$result    = mysqli_query($select_db, $query);
 		$annonce   = mysqli_fetch_assoc($result);
 
@@ -343,12 +342,11 @@
 	
 	function showUserAnnonce() {
 
-		$pseudo = $_SESSION['pseudo'];
-
-		$select_db 		  = connectDB();
-		$query    		  = "SELECT COUNT(*) AS nb_annonce FROM annonce WHERE pseudo='".$pseudo."'";
+		$pseudo           = $_SESSION['pseudo'];
+		$select_db        = connectDB();
+		$query            = "SELECT COUNT(*) AS nb_annonce FROM annonce WHERE pseudo='".$pseudo."'";
 		$result           = mysqli_query($select_db, $query);
-		$row 			  = mysqli_fetch_assoc($result);
+		$row              = mysqli_fetch_assoc($result);
 		$nbTotalAnnonce   = $row['nb_annonce'];
 		$nbAnnonceParPage = 6;
 		$nbTotalPage      = ceil($nbTotalAnnonce / $nbAnnonceParPage);
@@ -365,7 +363,7 @@
 
 		$premiereEntree = ($pageCourante-1)*$nbAnnonceParPage;
 
-		$query     = "SELECT reference,nom,prix,photo1,typ.descTypeAnnonce, local.descLocal FROM annonce ann, type_annonce typ, utilisateur user, localisation local WHERE ann.pseudo='".$pseudo."' AND ann.idTypeAnnonce=typ.idTypeAnnonce AND ann.pseudo=user.pseudo AND user.idLocal=local.idLocal ORDER BY reference DESC LIMIT ".$premiereEntree.",".$nbAnnonceParPage."";
+		$query     = "SELECT * FROM dataAnnonce WHERE pseudo='".$pseudo."' LIMIT ".$premiereEntree.",".$nbAnnonceParPage."";
 		$result    = mysqli_query($select_db, $query);
 
 		
@@ -373,9 +371,9 @@
 
 			$reference    = $annonce['reference'];
 			$nomAnnonce   = $annonce['nom'];
-			$photo1	 	  = $annonce['photo1'];
+			$photo1       = $annonce['photo1'];
 			$typeAnnonce  = $annonce['descTypeAnnonce'];
-			$prix		  = $annonce['prix'];
+			$prix         = $annonce['prix'];
 			$localisation = $annonce['descLocal'];
 
 			list($nomdb, $descriptiondb, $typeAnnoncedb, $typeAnnonceIDdb, $categoriedb, $categorieIDdb, $prixdb, $photo1db, $photo2db, $photo3db) = getDataAnnonce($pseudo, $reference);
@@ -431,19 +429,18 @@
 	}
 
 	function recherche($getRecherche, $getCategorie, $getTypeAnnonce, $getLocalisation) {
-		
 
-		$select_db 		  = connectDB();
-		$query    		  = "SELECT COUNT(*) AS nb_annonce FROM annonce ann, type_annonce typ, utilisateur user, localisation local WHERE ann.idTypeAnnonce=typ.idTypeAnnonce AND ann.pseudo=user.pseudo AND user.idLocal=local.idLocal AND nom LIKE '%".$getRecherche."%' AND ann.idTypeAnnonce LIKE '".$getTypeAnnonce."' AND ann.idCat LIKE '".$getCategorie."' AND user.idLocal LIKE '".$getLocalisation."' ORDER BY reference";
-		$result           = mysqli_query($select_db, $query);
-		$row 			  = mysqli_fetch_assoc($result);
-		$nbTotalAnnonce   = $row['nb_annonce'];
+		$select_db      = connectDB();
+		$query          = "SELECT COUNT(*) AS nb_annonce FROM dataAnnonce WHERE nom LIKE '%".$getRecherche."%' AND idTypeAnnonce LIKE '".$getTypeAnnonce."' AND idCat LIKE '".$getCategorie."' AND idLocal LIKE '".$getLocalisation."'";
+		$result         = mysqli_query($select_db, $query);
+		$row            = mysqli_fetch_assoc($result);
+		$nbTotalAnnonce = $row['nb_annonce'];
 
 		if ($nbTotalAnnonce == 0) {
 			echo "Aucunes annonces ne correspondent avec vos critères de recherche.";
 		} else {
 
-			$nbAnnonceParPage = 4;
+			$nbAnnonceParPage = 6;
 			$nbTotalPage      = ceil($nbTotalAnnonce / $nbAnnonceParPage);
 
 			if (isset($_GET['page'])) {
@@ -458,16 +455,16 @@
 
 			$premiereEntree = ($pageCourante-1)*$nbAnnonceParPage;
 
-			$query     = "SELECT reference,nom,prix,photo1,typ.descTypeAnnonce, local.descLocal FROM annonce ann, type_annonce typ, utilisateur user, localisation local WHERE ann.idTypeAnnonce=typ.idTypeAnnonce AND ann.pseudo=user.pseudo AND user.idLocal=local.idLocal AND nom LIKE '%".$getRecherche."%' AND ann.idTypeAnnonce LIKE '".$getTypeAnnonce."' AND ann.idCat LIKE '".$getCategorie."' AND user.idLocal LIKE '".$getLocalisation."' ORDER BY reference DESC LIMIT ".$premiereEntree.",".$nbAnnonceParPage."";
+			$query     = "SELECT * FROM dataAnnonce WHERE nom LIKE '%".$getRecherche."%' AND idTypeAnnonce LIKE '".$getTypeAnnonce."' AND idCat LIKE '".$getCategorie."' AND idLocal LIKE '".$getLocalisation."' LIMIT ".$premiereEntree.",".$nbAnnonceParPage."";
 			$result    = mysqli_query($select_db, $query);
 
 			while ($annonce = mysqli_fetch_assoc($result)) {
 
 				$reference    = $annonce['reference'];
 				$nomAnnonce   = $annonce['nom'];
-				$photo1	 	  = $annonce['photo1'];
+				$photo1       = $annonce['photo1'];
 				$typeAnnonce  = $annonce['descTypeAnnonce'];
-				$prix		  = $annonce['prix'];
+				$prix         = $annonce['prix'];
 				$localisation = $annonce['descLocal'];
 
 				if ($typeAnnonce != "Vente") {
