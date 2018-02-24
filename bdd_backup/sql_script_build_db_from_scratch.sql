@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.5.4.1deb2ubuntu2
--- http://www.phpmyadmin.net
+-- version 4.6.6deb4
+-- https://www.phpmyadmin.net/
 --
--- Client :  localhost
--- Généré le :  Sam 17 Février 2018 à 19:38
--- Version du serveur :  5.7.21-0ubuntu0.16.04.1
--- Version de PHP :  7.0.25-0ubuntu0.16.04.1
+-- Client :  localhost:3306
+-- Généré le :  Sam 24 Février 2018 à 23:27
+-- Version du serveur :  10.1.26-MariaDB-0+deb9u1
+-- Version de PHP :  7.0.27-0+deb9u1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -54,6 +54,30 @@ CREATE TABLE `categorie` (
 -- --------------------------------------------------------
 
 --
+-- Doublure de structure pour la vue `dataAnnonce`
+-- (Voir ci-dessous la vue réelle)
+--
+CREATE TABLE `dataAnnonce` (
+`reference` int(10)
+,`nom` varchar(255)
+,`descriptif` varchar(2000)
+,`prix` int(11)
+,`photo1` varchar(1000)
+,`photo2` varchar(1000)
+,`photo3` varchar(1000)
+,`descTypeAnnonce` varchar(100)
+,`idTypeAnnonce` int(11)
+,`descCat` varchar(100)
+,`idCat` int(11)
+,`dateAjout` datetime
+,`pseudo` varchar(50)
+,`idLocal` int(11)
+,`descLocal` varchar(100)
+);
+
+-- --------------------------------------------------------
+
+--
 -- Structure de la table `localisation`
 --
 
@@ -87,6 +111,15 @@ CREATE TABLE `utilisateur` (
   `salt` binary(128) NOT NULL,
   `idLocal` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la vue `dataAnnonce`
+--
+DROP TABLE IF EXISTS `dataAnnonce`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`admintradint`@`localhost` SQL SECURITY DEFINER VIEW `dataAnnonce`  AS  select `ann`.`reference` AS `reference`,`ann`.`nom` AS `nom`,`ann`.`descriptif` AS `descriptif`,`ann`.`prix` AS `prix`,`ann`.`photo1` AS `photo1`,`ann`.`photo2` AS `photo2`,`ann`.`photo3` AS `photo3`,`typ`.`descTypeAnnonce` AS `descTypeAnnonce`,`ann`.`idTypeAnnonce` AS `idTypeAnnonce`,`cat`.`descCat` AS `descCat`,`ann`.`idCat` AS `idCat`,`ann`.`dateAjout` AS `dateAjout`,`ann`.`pseudo` AS `pseudo`,`user`.`idLocal` AS `idLocal`,`local`.`descLocal` AS `descLocal` from ((((`annonce` `ann` join `type_annonce` `typ`) join `categorie` `cat`) join `utilisateur` `user`) join `localisation` `local`) where ((`ann`.`idTypeAnnonce` = `typ`.`idTypeAnnonce`) and (`ann`.`idCat` = `cat`.`idCat`) and (`ann`.`pseudo` = `user`.`pseudo`) and (`user`.`idLocal` = `local`.`idLocal`)) order by `ann`.`reference` desc ;
 
 --
 -- Index pour les tables exportées
@@ -134,12 +167,12 @@ ALTER TABLE `utilisateur`
 -- AUTO_INCREMENT pour la table `annonce`
 --
 ALTER TABLE `annonce`
-  MODIFY `reference` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
+  MODIFY `reference` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=70;
 --
 -- AUTO_INCREMENT pour la table `categorie`
 --
 ALTER TABLE `categorie`
-  MODIFY `idCat` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `idCat` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 --
 -- AUTO_INCREMENT pour la table `localisation`
 --
