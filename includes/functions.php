@@ -2,14 +2,14 @@
 
 	// pour vérifier si une session a été établie
 	function isLogged() {
-        if (isset($_SESSION['pseudo'])) {
-            return true;
-        } else {
-            return false;
-        }
-    }
+        	if (isset($_SESSION['pseudo'])) {
+            		return true;
+        	} else {
+            		return false;
+        	}
+    	}
 
-    // pour se connecter à la base de données et sélection de la base 'tradint'
+    	// pour se connecter à la base de données et sélection de la base 'tradint'
 	function connectDB() {
 		$conn = mysqli_connect("localhost", "dantran", "vitrygtr", "tradint");
 		return $conn;
