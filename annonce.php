@@ -19,21 +19,20 @@ include 'includes/functions.php';
   <body>
     <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark ">
       <div class="container">
-        <a class="navbar-brand" href="#">TradINT</a>
+        <a class="navbar-brand" href=".">TradINT</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample07" aria-controls="navbarsExample07" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarsExample07">
           <ul class="navbar-nav mr-auto">
-            <li class="nav-item ">
-              <a class="nav-link" href="index.html">Accueil <span class="sr-only">(current)</span></a>
-            </li>
             <li class="nav-item active">
-              <a class="nav-link" href="accueil.php">Annonces</a>
+              <a class="nav-link" href="accueil.php">Accueil</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="poster/">Poster une annonce</a>
             </li>
             <?php 
             if (isLogged()) {        
-              echo '<li class="nav-item"><a class="nav-link" href="poster/">Poster une annonce</a></li>'; 
               echo '<li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="compte/" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Mon compte</a><div class="dropdown-menu" aria-labelledby="dropdown01"><a class="dropdown-item" href="compte/parametres">Gérer mon compte</a><a class="dropdown-item" href="compte/mesannonces/">Gérer mes annonces</a><a class="dropdown-item" href="deconnexion.php">Déconnexion</a></div></li>';
             } else {
               echo '<li class="nav-item"><a class="nav-link" href="./connexion/">Connexion</a></li>';
